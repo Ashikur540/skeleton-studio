@@ -1,4 +1,14 @@
 import { parse } from "@babel/parser";
+import type {
+  ArrowFunctionExpression,
+  Expression,
+  FunctionDeclaration,
+  JSXElement,
+  JSXEmptyExpression,
+  JSXFragment,
+  Node,
+  ReturnStatement,
+} from "@babel/types";
 import {
   isArrowFunctionExpression,
   isCallExpression,
@@ -17,16 +27,6 @@ import {
   isReturnStatement,
   isStringLiteral,
   isVariableDeclaration,
-} from "@babel/types";
-import type {
-  ArrowFunctionExpression,
-  Expression,
-  FunctionDeclaration,
-  JSXElement,
-  JSXEmptyExpression,
-  JSXFragment,
-  Node,
-  ReturnStatement,
 } from "@babel/types";
 
 import { generateId } from "@/lib/ir/helpers";
@@ -212,11 +212,7 @@ function getClassNameAttr(el: JSXElement): string {
     if (a.name.name !== "className" && a.name.name !== "class") continue;
     const v = a.value;
     if (v && isStringLiteral(v)) return v.value;
-    if (
-      v &&
-      isJSXExpressionContainer(v) &&
-      isStringLiteral(v.expression)
-    ) {
+    if (v && isJSXExpressionContainer(v) && isStringLiteral(v.expression)) {
       return v.expression.value;
     }
   }

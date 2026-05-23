@@ -1,13 +1,9 @@
 "use client";
+import { mutateNode } from "@/lib/ir/helpers";
+import type { GlobalSettings, ParseError, SkeletonNode } from "@/lib/ir/types";
+import { parseComponent } from "@/lib/parser/parse-component";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { mutateNode } from "@/lib/ir/helpers";
-import type {
-  GlobalSettings,
-  ParseError,
-  SkeletonNode,
-} from "@/lib/ir/types";
-import { parseComponent } from "@/lib/parser/parse-component";
 
 /**
  * Runtime state of the skeleton editor session. Holds the raw JSX source, the

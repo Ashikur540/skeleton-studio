@@ -2,6 +2,9 @@
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { findNode } from "@/lib/ir/helpers";
 import type { SkeletonNode } from "@/lib/ir/types";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 
 /**
  * Right-pane editor that surfaces editable properties for the currently selected
@@ -61,14 +64,14 @@ export function PropertiesPanel() {
           min={1}
         />
       )}
-      <label className="flex items-center gap-2 text-sm">
-        <input
-          type="checkbox"
+      <div className="flex items-center gap-2">
+        <Checkbox
+          id="node-visible"
           checked={node.visible}
-          onChange={(e) => update({ visible: e.target.checked })}
+          onCheckedChange={(v) => update({ visible: v === true })}
         />
-        Visible
-      </label>
+        <Label htmlFor="node-visible">Visible</Label>
+      </div>
       {node.confidence === "fallback" && (
         <div className="text-xs text-amber-400">
           Low-confidence block — verify dimensions.
@@ -95,12 +98,13 @@ function NumberField({
   min?: number;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-xs text-muted-foreground">
-      {label}
-      <input
+    <div className="flex flex-col gap-1">
+      <Label className="text-xs text-muted-foreground">{label}</Label>
+      <Input
         type="number"
         min={min}
         value={value ?? ""}
+        className="h-8"
         onChange={(e) => {
           const raw = e.target.value;
           if (raw === "") onChange(undefined);
@@ -109,9 +113,8 @@ function NumberField({
             if (!Number.isNaN(n)) onChange(n);
           }
         }}
-        className="px-2 py-1 rounded bg-card border border-border text-foreground text-sm"
       />
-    </label>
+    </div>
   );
 }
 
@@ -130,13 +133,13 @@ function FullToggle({
   onChange: (on: boolean) => void;
 }) {
   return (
-    <label className="flex items-center gap-2 text-sm">
-      <input
-        type="checkbox"
+    <div className="flex items-center gap-2">
+      <Checkbox
+        id="node-full-width"
         checked={active}
-        onChange={(e) => onChange(e.target.checked)}
+        onCheckedChange={(v) => onChange(v === true)}
       />
-      {label}
-    </label>
+      <Label htmlFor="node-full-width">{label}</Label>
+    </div>
   );
 }

@@ -1,5 +1,8 @@
 "use client";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 /**
  * Left-pane textarea where the user pastes JSX source, plus the Generate
@@ -15,23 +18,22 @@ export function PasteInput() {
 
   return (
     <div className="flex flex-col gap-2 h-full">
-      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+      <Label
+        htmlFor="jsx-source"
+        className="text-xs font-medium text-muted-foreground uppercase tracking-wide"
+      >
         Paste JSX
-      </label>
-      <textarea
+      </Label>
+      <Textarea
+        id="jsx-source"
         value={source}
         onChange={(e) => setSource(e.target.value)}
         spellCheck={false}
-        className="flex-1 w-full p-3 rounded-lg bg-card text-foreground font-mono text-sm border border-border focus:outline-none focus:border-primary resize-none"
+        className="flex-1 font-mono text-sm resize-none"
         placeholder="export default function Card() { ... }"
       />
       <div className="flex items-center gap-3">
-        <button
-          onClick={() => parseNow()}
-          className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
-        >
-          Generate Skeleton
-        </button>
+        <Button onClick={() => parseNow()}>Generate Skeleton</Button>
         {error && (
           <span className="text-sm text-destructive">
             {error.kind === "syntax-error" && "Syntax error: "}

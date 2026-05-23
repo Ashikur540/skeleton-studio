@@ -1,6 +1,7 @@
 "use client";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { EXAMPLE_SNIPPETS } from "@/lib/examples/snippets";
+import { Button } from "@/components/ui/button";
 
 /**
  * Quick-load pill buttons that drop a curated JSX snippet into the paste box
@@ -15,16 +16,17 @@ export function ExampleSnippets() {
     <div className="flex items-center gap-2 text-sm">
       <span className="text-muted-foreground">Try:</span>
       {EXAMPLE_SNIPPETS.map((snip) => (
-        <button
+        <Button
           key={snip.id}
+          variant="outline"
+          size="sm"
           onClick={() => {
             setSource(snip.source);
             parseNow(snip.source);
           }}
-          className="px-3 py-1 rounded-full bg-card border border-border text-foreground hover:bg-secondary/80"
         >
           {snip.name}
-        </button>
+        </Button>
       ))}
     </div>
   );

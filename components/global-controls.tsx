@@ -1,5 +1,13 @@
 "use client";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 /**
  * Curated Tailwind background-color tokens presented in the base-color dropdown.
@@ -26,7 +34,7 @@ export function GlobalControls() {
 
   return (
     <div className="flex flex-wrap items-center gap-4 px-4 py-3 border-b border-border text-sm">
-      <Select
+      <LabeledSelect
         label="Animation"
         value={settings.animation}
         options={[
@@ -35,7 +43,7 @@ export function GlobalControls() {
         ]}
         onChange={(v) => setSettings({ animation: v as "pulse" | "shimmer" })}
       />
-      <Select
+      <LabeledSelect
         label="Speed"
         value={settings.speed}
         options={[
@@ -45,7 +53,7 @@ export function GlobalControls() {
         ]}
         onChange={(v) => setSettings({ speed: v as "slow" | "normal" | "fast" })}
       />
-      <Select
+      <LabeledSelect
         label="Base color"
         value={settings.baseColor}
         options={BASE_COLORS}
@@ -56,11 +64,11 @@ export function GlobalControls() {
 }
 
 /**
- * Small labeled native select used across the control bar. Kept component-local
+ * Small labeled shadcn Select used across the control bar. Kept component-local
  * because no other file needs a labeled select yet; extract to a shared UI file
  * if a second use site appears.
  */
-function Select({
+function LabeledSelect({
   label,
   value,
   options,
@@ -72,19 +80,20 @@ function Select({
   onChange: (v: string) => void;
 }) {
   return (
-    <label className="flex items-center gap-2 text-muted-foreground">
-      {label}
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className="px-2 py-1 rounded bg-card border border-border text-foreground"
-      >
-        {options.map((o) => (
-          <option key={o.value} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </label>
+    <div className="flex items-center gap-2">
+      <Label className="text-muted-foreground">{label}</Label>
+      <Select value={value} onValueChange={onChange}>
+        <SelectTrigger className="w-[140px]">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          {options.map((o) => (
+            <SelectItem key={o.value} value={o.value}>
+              {o.label}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
+    </div>
   );
 }
