@@ -333,7 +333,7 @@ function collectChildren(
       continue;
     }
     if (isJSXExpressionContainer(c)) {
-      const mapChild = extractFromMap(c.expression, fromMap);
+      const mapChild = extractFromMap(c.expression);
       if (mapChild) out.push(mapChild);
     }
   }
@@ -349,7 +349,6 @@ function collectChildren(
  */
 function extractFromMap(
   expr: Expression | JSXEmptyExpression,
-  _fromMap: boolean,
 ): SkeletonNode | null {
   if (!isCallExpression(expr)) return null;
   if (!isMemberExpression(expr.callee)) return null;
