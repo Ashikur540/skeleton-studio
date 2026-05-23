@@ -1,6 +1,6 @@
 "use client";
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
-import { blockClasses } from "@/lib/exporters/format-classes";
+import { blockStyles } from "@/lib/exporters/runtime-styles";
 
 /**
  * The data a parent component must supply to drive the renderer: the IR node
@@ -24,14 +24,15 @@ export function SkeletonRenderer({ node, settings, selectedId, onSelect }: Props
 }
 
 /**
- * Internal recursive renderer for a single SkeletonNode. Hidden nodes are
- * skipped; paragraph nodes expand into N stacked text lines to match the
- * exporter output; low-confidence leaf nodes receive a subtle amber outline
- * so users can spot blocks whose dimensions were guessed by the parser.
+ * Internal recursive renderer for one SkeletonNode. Static styling comes from
+ * Tailwind classes; dynamic dimensions arrive via inline styles so Tailwind's
+ * static-scan limitation never strands a runtime-built `w-[Xpx]` without CSS.
+ * Hidden nodes drop out; paragraphs expand into N stacked text lines; fallback
+ * leaves get a subtle amber outline so users can spot guessed dimensions.
  */
 function Node({ node, settings, selectedId, onSelect }: Props) {
   if (!node.visible) return null;
-  const cls = blockClasses(node, settings);
+  const { className, style } = blockStyles(node, settings);
   const isSelected = selectedId === node.id;
   const ring = isSelected ? " ring-2 ring-primary" : "";
   const lowConfidence =
@@ -46,22 +47,39 @@ function Node({ node, settings, selectedId, onSelect }: Props) {
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
+    const line = blockStyles({ ...node, kind: "text" }, settings);
     return (
       <div className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
         {Array.from({ length: lines }, (_, i) => (
-          <div key={i} className={blockClasses({ ...node, kind: "text" }, settings) + lowConfidence} />
+          <div
+            key={i}
+            className={line.className + lowConfidence}
+            style={line.style}
+          />
         ))}
       </div>
     );
   }
 
   if (!node.children || node.children.length === 0) {
-    return <div className={cls + ring + lowConfidence} onClick={handleClick} />;
+    return (
+      <div
+        className={className + ring + lowConfidence}
+        style={style}
+        onClick={handleClick}
+      />
+    );
   }
   return (
-    <div className={cls + ring} onClick={handleClick}>
+    <div className={className + ring} style={style} onClick={handleClick}>
       {node.children.map((c) => (
-        <Node key={c.id} node={c} settings={settings} selectedId={selectedId} onSelect={onSelect} />
+        <Node
+          key={c.id}
+          node={c}
+          settings={settings}
+          selectedId={selectedId}
+          onSelect={onSelect}
+        />
       ))}
     </div>
   );

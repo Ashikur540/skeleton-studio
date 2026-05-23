@@ -27,7 +27,7 @@ export function PasteInput() {
       />
       <div className="flex items-center gap-3">
         <button
-          onClick={parseNow}
+          onClick={() => parseNow()}
           className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
         >
           Generate Skeleton

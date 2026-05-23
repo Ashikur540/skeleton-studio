@@ -24,13 +24,14 @@ type State = {
 
 /**
  * Mutating operations exposed alongside State. setSource records live edits;
- * parseNow re-runs the parser on the current source; selectNode tracks the
- * active UI selection; patchNode applies a partial update to a single IR node;
- * setSettings merges a global settings patch; reset returns to the blank slate.
+ * parseNow re-runs the parser on the supplied or current source; selectNode
+ * tracks active selection; patchNode applies a partial update to a single IR
+ * node; setSettings merges a global settings patch; reset returns to the blank
+ * slate AND clears persisted state.
  */
 type Actions = {
   setSource: (s: string) => void;
-  parseNow: () => void;
+  parseNow: (sourceOverride?: string) => void;
   selectNode: (id: string | null) => void;
   patchNode: (id: string, patch: Partial<SkeletonNode>) => void;
   setSettings: (patch: Partial<GlobalSettings>) => void;
@@ -39,21 +40,20 @@ type Actions = {
 
 /**
  * Initial render settings applied on first load and restored after a full reset.
- * Represents the most neutral, universally legible configuration for first-time
- * users — light theme, zinc palette, pulse animation at normal speed.
+ * Pulse animation, neutral zinc palette, light preview background — the most
+ * universally legible defaults for a first paint.
  */
 const DEFAULT_SETTINGS: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
-  theme: "light",
 };
 
 /**
- * Single Zustand store powering the entire skeleton editor. Combines all state
- * slices and action creators into one hook so components never import more than
- * one store. Persists source, tree, and settings to localStorage under a versioned
- * key so the user's work survives a page refresh without manual save.
+ * Single Zustand store powering the entire skeleton editor. Only `source` and
+ * `settings` are persisted to localStorage — the tree is intentionally recomputed
+ * from source on rehydrate so parser/schema changes never strand stale IR data.
+ * The persist key is versioned so bumping it invalidates incompatible storage.
  */
 export const useSkeletonStore = create<State & Actions>()(
   persist(
@@ -66,8 +66,8 @@ export const useSkeletonStore = create<State & Actions>()(
 
       setSource: (s) => set({ source: s }),
 
-      parseNow: () => {
-        const { source } = get();
+      parseNow: (sourceOverride) => {
+        const source = sourceOverride ?? get().source;
         if (!source.trim()) {
           set({ tree: null, error: null, selectedId: null });
           return;
@@ -91,22 +91,30 @@ export const useSkeletonStore = create<State & Actions>()(
       setSettings: (patch) =>
         set((s) => ({ settings: { ...s.settings, ...patch } })),
 
-      reset: () =>
+      reset: () => {
         set({
           source: "",
           tree: null,
           error: null,
           selectedId: null,
           settings: DEFAULT_SETTINGS,
-        }),
+        });
+      },
     }),
     {
-      name: "skeleton-generator-v1",
+      name: "skeleton-generator-v2",
       partialize: (s) => ({
         source: s.source,
-        tree: s.tree,
         settings: s.settings,
       }),
+      onRehydrateStorage: () => (state) => {
+        // After persist restores source + settings, rebuild the tree by parsing
+        // the source. Guarantees the tree always matches the current parser
+        // version rather than a stale shape from a previous schema.
+        if (state && state.source.trim()) {
+          state.parseNow();
+        }
+      },
     },
   ),
 );

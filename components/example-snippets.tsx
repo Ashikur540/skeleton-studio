@@ -4,9 +4,8 @@ import { EXAMPLE_SNIPPETS } from "@/lib/examples/snippets";
 
 /**
  * Quick-load pill buttons that drop a curated JSX snippet into the paste box
- * and immediately run the parser. Designed for first-time users who want to
- * explore the workflow without writing or pasting their own component first.
- * Uses queueMicrotask so parseNow reads the new source value Zustand just wrote.
+ * and immediately run the parser with the new source passed explicitly. Lets
+ * first-time users explore the workflow without typing.
  */
 export function ExampleSnippets() {
   const setSource = useSkeletonStore((s) => s.setSource);
@@ -20,8 +19,7 @@ export function ExampleSnippets() {
           key={snip.id}
           onClick={() => {
             setSource(snip.source);
-            // setState is sync in Zustand; queueMicrotask lets parseNow read the new source.
-            queueMicrotask(parseNow);
+            parseNow(snip.source);
           }}
           className="px-3 py-1 rounded-full bg-card border border-border text-foreground hover:bg-secondary/80"
         >

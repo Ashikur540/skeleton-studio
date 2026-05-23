@@ -128,3 +128,11 @@
     @apply font-sans;
   }
 }
+
+/* Keyframes used by the live skeleton-shimmer preview. The renderer assigns
+   the animation inline so Tailwind's static scan limitation doesn't strand
+   a runtime-built `animate-[shimmer_...]` utility without CSS. */
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}

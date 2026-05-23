@@ -44,12 +44,13 @@ export type SkeletonNode = {
 /**
  * Global rendering settings applied to every node uniformly.
  * Stored once per session and persisted to localStorage by the Zustand store.
+ * Chrome theme is owned by next-themes, not this struct, so light/dark switching
+ * affects the editor surroundings rather than the skeleton output.
  */
 export type GlobalSettings = {
   animation: "pulse" | "shimmer";
   speed: "slow" | "normal" | "fast";
   baseColor: string;
-  theme: "light" | "dark";
 };
 
 /**

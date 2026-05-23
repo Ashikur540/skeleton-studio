@@ -6,7 +6,6 @@ const settings: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
-  theme: "light",
 };
 
 function node(partial: Partial<SkeletonNode> = {}): SkeletonNode {

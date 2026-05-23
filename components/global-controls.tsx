@@ -15,10 +15,10 @@ const BASE_COLORS: { value: string; label: string }[] = [
 ];
 
 /**
- * Top control bar exposing the four global render settings: animation style,
- * animation speed, base fill color, and preview theme. All changes flow through
- * setSettings into the Zustand store and automatically propagate to the preview
- * renderer and both exporters without additional wiring.
+ * Top control bar exposing the three global render settings: animation style,
+ * animation speed, and base fill color. Editor light/dark is handled by the
+ * separate ThemeToggle in the header, so this bar focuses purely on skeleton
+ * appearance.
  */
 export function GlobalControls() {
   const settings = useSkeletonStore((s) => s.settings);
@@ -50,15 +50,6 @@ export function GlobalControls() {
         value={settings.baseColor}
         options={BASE_COLORS}
         onChange={(v) => setSettings({ baseColor: v })}
-      />
-      <Select
-        label="Theme"
-        value={settings.theme}
-        options={[
-          { value: "light", label: "Light" },
-          { value: "dark", label: "Dark" },
-        ]}
-        onChange={(v) => setSettings({ theme: v as "light" | "dark" })}
       />
     </div>
   );
