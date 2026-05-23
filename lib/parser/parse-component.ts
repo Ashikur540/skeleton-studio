@@ -312,6 +312,18 @@ function convertJSX(
   const children = collectChildren(node.children, fromMap);
   if (children.length > 0) skeletonNode.children = children;
 
+  // A leaf container with explicit dimensions is almost certainly a skeleton
+  // fill block in disguise (e.g. <div className="w-12 h-12 rounded-full" />).
+  // Promote it to "card" so the renderer emits a visible fill instead of an
+  // empty wrapper.
+  if (
+    skeletonNode.kind === "container" &&
+    !skeletonNode.children &&
+    (classHints.width !== undefined || classHints.height !== undefined)
+  ) {
+    skeletonNode.kind = "card";
+  }
+
   return skeletonNode;
 }
 

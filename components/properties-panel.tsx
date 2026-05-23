@@ -18,7 +18,7 @@ export function PropertiesPanel() {
 
   if (!node) {
     return (
-      <aside className="w-72 p-4 border-l border-zinc-800 text-sm text-zinc-500">
+      <aside className="w-72 p-4 border-l border-border text-sm text-muted-foreground">
         Select a block to edit its properties.
       </aside>
     );
@@ -27,8 +27,8 @@ export function PropertiesPanel() {
   const update = (patch: Partial<SkeletonNode>) => patchNode(node.id, patch);
 
   return (
-    <aside className="w-72 p-4 border-l border-zinc-800 flex flex-col gap-4">
-      <div className="text-xs uppercase tracking-wide text-zinc-400">
+    <aside className="w-72 p-4 border-l border-border flex flex-col gap-4">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground">
         {node.kind}
         {node.sourceTag ? ` · <${node.sourceTag}>` : ""}
       </div>
@@ -95,7 +95,7 @@ function NumberField({
   min?: number;
 }) {
   return (
-    <label className="flex flex-col gap-1 text-xs text-zinc-400">
+    <label className="flex flex-col gap-1 text-xs text-muted-foreground">
       {label}
       <input
         type="number"
@@ -109,7 +109,7 @@ function NumberField({
             if (!Number.isNaN(n)) onChange(n);
           }
         }}
-        className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-100 text-sm"
+        className="px-2 py-1 rounded bg-card border border-border text-foreground text-sm"
       />
     </label>
   );

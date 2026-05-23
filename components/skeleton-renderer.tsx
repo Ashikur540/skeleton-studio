@@ -33,7 +33,7 @@ function Node({ node, settings, selectedId, onSelect }: Props) {
   if (!node.visible) return null;
   const cls = blockClasses(node, settings);
   const isSelected = selectedId === node.id;
-  const ring = isSelected ? " ring-2 ring-blue-500" : "";
+  const ring = isSelected ? " ring-2 ring-primary" : "";
   const lowConfidence =
     node.confidence === "fallback" && node.kind !== "container"
       ? " outline outline-1 outline-amber-400/50"

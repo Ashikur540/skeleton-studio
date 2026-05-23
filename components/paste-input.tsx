@@ -15,25 +15,25 @@ export function PasteInput() {
 
   return (
     <div className="flex flex-col gap-2 h-full">
-      <label className="text-xs font-medium text-zinc-400 uppercase tracking-wide">
+      <label className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
         Paste JSX
       </label>
       <textarea
         value={source}
         onChange={(e) => setSource(e.target.value)}
         spellCheck={false}
-        className="flex-1 w-full p-3 rounded-lg bg-zinc-900 text-zinc-100 font-mono text-sm border border-zinc-800 focus:outline-none focus:border-blue-500 resize-none"
+        className="flex-1 w-full p-3 rounded-lg bg-card text-foreground font-mono text-sm border border-border focus:outline-none focus:border-primary resize-none"
         placeholder="export default function Card() { ... }"
       />
       <div className="flex items-center gap-3">
         <button
           onClick={parseNow}
-          className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-500"
+          className="px-4 py-2 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90"
         >
           Generate Skeleton
         </button>
         {error && (
-          <span className="text-sm text-red-400">
+          <span className="text-sm text-destructive">
             {error.kind === "syntax-error" && "Syntax error: "}
             {error.kind === "no-return" && "No JSX return found. "}
             {error.kind === "no-component" && "Return is not JSX. "}

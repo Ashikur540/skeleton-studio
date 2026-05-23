@@ -37,6 +37,9 @@ export function blockClasses(
       cls.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
       if (node.layout.gap !== undefined) cls.push(`gap-[${node.layout.gap}px]`);
     }
+    if (node.width === "full") cls.push("w-full");
+    else if (typeof node.width === "number") cls.push(`w-[${node.width}px]`);
+    if (typeof node.height === "number") cls.push(`h-[${node.height}px]`);
     return cls.join(" ").trim();
   }
 

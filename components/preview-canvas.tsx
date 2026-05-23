@@ -21,7 +21,7 @@ export function PreviewCanvas() {
 
   return (
     <div
-      className={`flex-1 h-full rounded-lg border border-zinc-800 p-8 overflow-auto ${bg}`}
+      className={`flex-1 h-full rounded-lg border border-border p-8 overflow-auto ${bg}`}
       onClick={() => selectNode(null)}
     >
       {tree ? (
@@ -32,7 +32,7 @@ export function PreviewCanvas() {
           onSelect={selectNode}
         />
       ) : (
-        <div className="flex h-full items-center justify-center text-zinc-500 text-sm">
+        <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
           Paste a component to see its skeleton.
         </div>
       )}

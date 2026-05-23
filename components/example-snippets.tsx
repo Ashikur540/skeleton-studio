@@ -14,7 +14,7 @@ export function ExampleSnippets() {
 
   return (
     <div className="flex items-center gap-2 text-sm">
-      <span className="text-zinc-500">Try:</span>
+      <span className="text-muted-foreground">Try:</span>
       {EXAMPLE_SNIPPETS.map((snip) => (
         <button
           key={snip.id}
@@ -23,7 +23,7 @@ export function ExampleSnippets() {
             // setState is sync in Zustand; queueMicrotask lets parseNow read the new source.
             queueMicrotask(parseNow);
           }}
-          className="px-3 py-1 rounded-full bg-zinc-900 border border-zinc-800 text-zinc-300 hover:bg-zinc-800"
+          className="px-3 py-1 rounded-full bg-card border border-border text-foreground hover:bg-secondary/80"
         >
           {snip.name}
         </button>

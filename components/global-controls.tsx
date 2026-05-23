@@ -25,7 +25,7 @@ export function GlobalControls() {
   const setSettings = useSkeletonStore((s) => s.setSettings);
 
   return (
-    <div className="flex flex-wrap items-center gap-4 px-4 py-3 border-b border-zinc-800 text-sm">
+    <div className="flex flex-wrap items-center gap-4 px-4 py-3 border-b border-border text-sm">
       <Select
         label="Animation"
         value={settings.animation}
@@ -81,12 +81,12 @@ function Select({
   onChange: (v: string) => void;
 }) {
   return (
-    <label className="flex items-center gap-2 text-zinc-400">
+    <label className="flex items-center gap-2 text-muted-foreground">
       {label}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="px-2 py-1 rounded bg-zinc-900 border border-zinc-800 text-zinc-100"
+        className="px-2 py-1 rounded bg-card border border-border text-foreground"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

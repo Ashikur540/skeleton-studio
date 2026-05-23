@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { exportReact } from "@/lib/exporters/react-tailwind";
 import { exportHTML } from "@/lib/exporters/html-tailwind";
+import { Button } from "@/components/ui/button";
 
 type Tab = "react" | "html";
 
@@ -32,10 +33,10 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
       onClick={onClose}
     >
       <div
-        className="w-[720px] max-h-[80vh] bg-zinc-950 border border-zinc-800 rounded-xl flex flex-col"
+        className="w-[720px] max-h-[80vh] bg-background border border-border rounded-xl flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        <header className="flex items-center justify-between p-4 border-b border-zinc-800">
+        <header className="flex items-center justify-between p-4 border-b border-border">
           <div className="flex gap-2">
             <TabButton active={tab === "react"} onClick={() => setTab("react")}>
               React + Tailwind
@@ -46,22 +47,18 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
           </div>
           <button
             onClick={onClose}
-            className="text-zinc-400 hover:text-zinc-100 text-sm"
+            className="text-muted-foreground hover:text-foreground text-sm"
           >
             Close
           </button>
         </header>
-        <pre className="flex-1 overflow-auto p-4 text-xs text-zinc-200 font-mono whitespace-pre">
+        <pre className="flex-1 overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre">
           {output || "Generate a skeleton first."}
         </pre>
-        <footer className="p-4 border-t border-zinc-800 flex justify-end">
-          <button
-            onClick={copy}
-            disabled={!output}
-            className="px-4 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-500 disabled:opacity-50"
-          >
+        <footer className="p-4 border-t border-border flex justify-end">
+          <Button onClick={copy} disabled={!output} size="sm">
             Copy
-          </button>
+          </Button>
         </footer>
       </div>
     </div>
@@ -87,8 +84,8 @@ function TabButton({
       onClick={onClick}
       className={`px-3 py-1.5 rounded-lg text-sm ${
         active
-          ? "bg-zinc-800 text-zinc-100"
-          : "text-zinc-400 hover:text-zinc-200"
+          ? "bg-secondary text-foreground"
+          : "text-muted-foreground hover:text-foreground"
       }`}
     >
       {children}

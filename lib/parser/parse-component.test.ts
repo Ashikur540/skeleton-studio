@@ -92,7 +92,9 @@ describe("parseComponent (.map handling)", () => {
     if (!r.ok) return;
     expect(r.tree.children).toHaveLength(1);
     const child = r.tree.children![0];
-    expect(child.kind).toBe("container");
+    // <li> with explicit dimensions and no children gets promoted from
+    // container to card so the representative row renders as a fill.
+    expect(child.kind).toBe("card");
     expect(child.sourceTag).toBe("li");
     expect(child.width).toBe(256);
     expect(child.height).toBe(32);
@@ -212,5 +214,42 @@ describe("parseComponent (confidence)", () => {
     expect(r.tree.sourceTag).toBe("section");
     expect(r.tree.children?.[0].sourceTag).toBe("h2");
     expect(r.tree.children?.[1].sourceTag).toBe("button");
+  });
+});
+
+describe("parseComponent (leaf div promotion)", () => {
+  it("promotes a sized empty div to 'card' so it renders as a fill", () => {
+    const r = parseComponent(`
+      function Avatar() {
+        return <div className="w-12 h-12 rounded-full" />;
+      }
+    `);
+    if (!r.ok) throw new Error("expected ok");
+    expect(r.tree.kind).toBe("card");
+    expect(r.tree.width).toBe(48);
+    expect(r.tree.height).toBe(48);
+    expect(r.tree.radius).toBe(9999);
+  });
+
+  it("keeps a div with children as 'container'", () => {
+    const r = parseComponent(`
+      function X() {
+        return (
+          <div className="w-12 h-12">
+            <span />
+          </div>
+        );
+      }
+    `);
+    if (!r.ok) throw new Error("expected ok");
+    expect(r.tree.kind).toBe("container");
+  });
+
+  it("keeps a bare empty div with no hints as 'container'", () => {
+    const r = parseComponent(`
+      function X() { return <div />; }
+    `);
+    if (!r.ok) throw new Error("expected ok");
+    expect(r.tree.kind).toBe("container");
   });
 });
