@@ -28,6 +28,16 @@ export const TAG_DEFAULTS: Record<string, TagDefault> = {
   input:    { kind: "input", defaults: { width: 240, height: 40, radius: 6 } },
   textarea: { kind: "input", defaults: { width: 320, height: 80, radius: 6 } },
   select:   { kind: "input", defaults: { width: 200, height: 40, radius: 6 } },
+  // Table elements — th/td become text cells; tr is a row-flow container, and
+  // the wrapper tags (table/thead/tbody/tfoot/caption) stack vertically.
+  th: { kind: "text", defaults: { height: 16, width: 80, radius: 4 } },
+  td: { kind: "text", defaults: { height: 16, width: 120, radius: 4 } },
+  tr: { kind: "container", defaults: { direction: "row", gap: 12 } },
+  table:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  thead:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  tbody:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  tfoot:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  caption: { kind: "text", defaults: { height: 14, width: 120, radius: 4 } },
 };
 
 /**
@@ -40,17 +50,25 @@ export const CONTAINER_TAGS = new Set([
 ]);
 
 /**
- * Maps capitalised React component names to skeleton kinds for heuristic classification.
- * Allows the parser to infer skeleton type from component tags (e.g., <Avatar /> → "avatar") without explicit class hints.
+ * Curated map of well-known React component identifiers to skeleton kind + defaults.
+ * Higher precedence than the regex pattern matcher; reserve for component names whose
+ * intent is unambiguous (Avatar, Card) or where the defaults differ meaningfully from
+ * the generic suffix-based guess. shadcn Table primitives are registered explicitly
+ * so each table layer (row vs cell vs caption) lands on the right kind and direction.
  */
-export const COMPONENT_TAG_HINTS: Record<string, SkeletonKind> = {
-  Avatar: "avatar",
-  Image:  "image",
-  Img:    "image",
-  Card:   "card",
-  Button: "button",
-  Input:  "input",
-  TextField: "input",
-  Heading:   "text",
-  Paragraph: "paragraph",
+export const COMPONENT_TAG_HINTS: Record<string, TagDefault> = {
+  Avatar: { kind: "avatar", defaults: { width: 48, height: 48, radius: 9999 } },
+  Card:   { kind: "card", defaults: { width: 320, height: 200, radius: 12 } },
+
+  // shadcn / Radix Table primitives — match the HTML equivalents in semantics.
+  Table:         { kind: "container", defaults: { direction: "col", gap: 8 } },
+  TableHeader:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  TableBody:     { kind: "container", defaults: { direction: "col", gap: 8 } },
+  TableFooter:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  TableRow:      { kind: "container", defaults: { direction: "row", gap: 12 } },
+  // Cells use width:"full" so flex shrink distributes row width equally among
+  // siblings — gives roughly aligned columns without a real grid layout.
+  TableHead:     { kind: "text", defaults: { height: 16, width: "full", radius: 4 } },
+  TableCell:     { kind: "text", defaults: { height: 16, width: "full", radius: 4 } },
+  TableCaption:  { kind: "text", defaults: { height: 14, width: 160, radius: 4 } },
 };

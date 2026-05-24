@@ -35,7 +35,8 @@ describe("parseComponent (happy path)", () => {
     expect(t.children?.[0].kind).toBe("image");
     expect(t.children?.[0].width).toBe(48);
     expect(t.children?.[1].kind).toBe("paragraph");
-    expect(t.children?.[1].lineCount).toBe(3);
+    // "text" is 4 chars — well below the 24-char threshold for multi-line.
+    expect(t.children?.[1].lineCount).toBe(1);
   });
 
   it("preserves sourceTag for capitalized component identifiers", () => {
@@ -142,6 +143,19 @@ describe("parseComponent (errors)", () => {
     expect(r.ok).toBe(false);
     if (r.ok) return;
     expect(r.error.kind).toBe("syntax-error");
+  });
+
+  it("surfaces Babel line/column on syntax errors so the editor can decorate", () => {
+    const r = parseComponent(
+      "function X() {\n  return (\n<>\n<div class=\"$$bad\">\n  <!-- comment -->\n",
+    );
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.error.kind).toBe("syntax-error");
+    expect(r.error.loc).toBeDefined();
+    expect(typeof r.error.loc!.line).toBe("number");
+    expect(typeof r.error.loc!.column).toBe("number");
+    expect(r.error.loc!.line).toBeGreaterThan(0);
   });
 
   it("returns no-return when component has no return", () => {

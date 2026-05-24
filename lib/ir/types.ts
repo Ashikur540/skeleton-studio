@@ -23,6 +23,37 @@ export type Confidence = "high" | "medium" | "fallback";
 /** Layout flow direction for container nodes (mirrors flex-row / flex-col). */
 export type LayoutDirection = "row" | "col";
 
+/** Cross-axis alignment (Tailwind items-*). */
+export type Alignment = "start" | "end" | "center" | "stretch" | "baseline";
+
+/** Main-axis distribution (Tailwind justify-*). */
+export type Justify =
+  | "start"
+  | "end"
+  | "center"
+  | "between"
+  | "around"
+  | "evenly";
+
+/**
+ * Per-side padding values in pixels. Any side not specified means "no padding"
+ * for that side; the renderer applies only the sides that are set.
+ */
+export type Padding = {
+  top?: number;
+  right?: number;
+  bottom?: number;
+  left?: number;
+};
+
+/**
+ * Visual treatment for structural containers. `plain` renders as a transparent
+ * flex wrapper (current default); `card` adds a subtle outline + padding +
+ * radius so a `<div className="bg-white border rounded-2xl">` reads as a
+ * visible surface rather than disappearing.
+ */
+export type Appearance = "plain" | "card";
+
 /**
  * The IR's single recursive node. Produced by the parser, consumed by the
  * preview renderer and exporters. Mutated immutably through `mutateNode`.
@@ -37,7 +68,28 @@ export type SkeletonNode = {
   radius?: number;
   lineCount?: number;
   visible: boolean;
-  layout?: { direction: LayoutDirection; gap?: number };
+  layout?: {
+    direction: LayoutDirection;
+    gap?: number;
+    alignItems?: Alignment;
+    justifyContent?: Justify;
+    wrap?: boolean;
+  };
+  padding?: Padding;
+  appearance?: Appearance;
+  /**
+   * Per-side margin pixels, used as a transient signal during classification
+   * so the parent can roll children's vertical margins into its own flex gap.
+   * Stripped before the IR reaches the renderer (margins don't survive into
+   * the rendered preview — they live on as parent `layout.gap`).
+   */
+  margin?: Padding;
+  /**
+   * How many copies of this node the renderer should draw in sequence.
+   * Set on nodes derived from `.map()` so dynamic lists look like multi-row
+   * loading skeletons rather than a single ghost row. Undefined = 1 copy.
+   */
+  repeat?: number;
   children?: SkeletonNode[];
 };
 
@@ -64,12 +116,24 @@ export type StyleHints = {
   radius?: number;
   gap?: number;
   direction?: LayoutDirection;
+  padding?: Padding;
+  margin?: Padding;
+  surface?: "card";
+  alignItems?: Alignment;
+  justifyContent?: Justify;
+  wrap?: boolean;
+  position?: "absolute" | "fixed" | "relative" | "sticky";
 };
 
-/** Structured parser error. `kind` lets the UI pick a friendly message. */
+/**
+ * Structured parser error. `kind` lets the UI pick a friendly message; `loc`
+ * carries Babel's 1-based line + 0-based column so the editor can decorate
+ * the offending position with a red marker.
+ */
 export type ParseError = {
   kind: "no-return" | "syntax-error" | "no-component";
   message: string;
+  loc?: { line: number; column: number };
 };
 
 /**

@@ -24,13 +24,46 @@ export function SkeletonRenderer({ node, settings, selectedId, onSelect }: Props
 }
 
 /**
+ * Render a node N times in sequence when `node.repeat > 1` (e.g. a `.map()`
+ * representative inside a TableBody). Each copy delegates to the single
+ * renderer with repeat stripped so it doesn't recurse infinitely. All copies
+ * share the source node's id so selecting any of them edits the prototype.
+ */
+function Node(props: Props) {
+  const repeat = props.node.repeat ?? 1;
+  if (repeat <= 1) return <SingleNode {...props} />;
+  const singleNode = { ...props.node, repeat: undefined };
+  return (
+    <>
+      {Array.from({ length: repeat }, (_, i) => (
+        <SingleNode key={i} {...props} node={singleNode} />
+      ))}
+    </>
+  );
+}
+
+/**
+ * Deterministic last-line shortening factor for paragraph skeletons. Maps a
+ * node id to a stable value in [0.55, 0.85] so each paragraph's tail bar
+ * looks naturally ragged without flickering between renders.
+ */
+function lastLineFactor(id: string): number {
+  let h = 0;
+  for (let i = 0; i < id.length; i += 1) {
+    h = (h * 31 + id.charCodeAt(i)) | 0;
+  }
+  const slot = Math.abs(h) % 30;
+  return 0.55 + slot / 100;
+}
+
+/**
  * Internal recursive renderer for one SkeletonNode. Static styling comes from
  * Tailwind classes; dynamic dimensions arrive via inline styles so Tailwind's
  * static-scan limitation never strands a runtime-built `w-[Xpx]` without CSS.
  * Hidden nodes drop out; paragraphs expand into N stacked text lines; fallback
  * leaves get a subtle amber outline so users can spot guessed dimensions.
  */
-function Node({ node, settings, selectedId, onSelect }: Props) {
+function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   if (!node.visible) return null;
   const { className, style } = blockStyles(node, settings);
   const isSelected = selectedId === node.id;
@@ -47,16 +80,28 @@ function Node({ node, settings, selectedId, onSelect }: Props) {
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
-    const line = blockStyles({ ...node, kind: "text" }, settings);
+    const base = blockStyles({ ...node, kind: "text" }, settings);
+    const baseWidth =
+      typeof node.width === "number" ? node.width : undefined;
     return (
       <div className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
-        {Array.from({ length: lines }, (_, i) => (
-          <div
-            key={i}
-            className={line.className + lowConfidence}
-            style={line.style}
-          />
-        ))}
+        {Array.from({ length: lines }, (_, i) => {
+          const isShortenedLast = i === lines - 1 && lines > 1;
+          const lineStyle =
+            isShortenedLast && baseWidth !== undefined
+              ? {
+                  ...base.style,
+                  width: Math.round(baseWidth * lastLineFactor(node.id)),
+                }
+              : base.style;
+          return (
+            <div
+              key={i}
+              className={base.className + lowConfidence}
+              style={lineStyle}
+            />
+          );
+        })}
       </div>
     );
   }

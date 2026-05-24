@@ -1,10 +1,32 @@
 "use client";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { findNode } from "@/lib/ir/helpers";
-import type { SkeletonNode } from "@/lib/ir/types";
+import type { Appearance, SkeletonKind, SkeletonNode } from "@/lib/ir/types";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+
+/**
+ * Every available skeleton block kind, ordered for the manual-reclassify
+ * dropdown. Fill kinds first (most common overrides), structural ones last.
+ */
+const KIND_OPTIONS: { value: SkeletonKind; label: string }[] = [
+  { value: "text", label: "Text" },
+  { value: "paragraph", label: "Paragraph (multi-line)" },
+  { value: "image", label: "Image" },
+  { value: "avatar", label: "Avatar" },
+  { value: "button", label: "Button" },
+  { value: "card", label: "Card (fill block)" },
+  { value: "input", label: "Input" },
+  { value: "container", label: "Container (wrapper, no fill)" },
+];
 
 /**
  * Right-pane editor that surfaces editable properties for the currently selected
@@ -36,6 +58,49 @@ export function PropertiesPanel() {
         {node.sourceTag ? ` · <${node.sourceTag}>` : ""}
       </div>
 
+      <div className="flex flex-col gap-1">
+        <Label className="text-xs text-muted-foreground">Kind</Label>
+        <Select
+          value={node.kind}
+          onValueChange={(v) => update({ kind: v as SkeletonKind })}
+        >
+          <SelectTrigger className="h-8">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            {KIND_OPTIONS.map((o) => (
+              <SelectItem key={o.value} value={o.value}>
+                {o.label}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+
+      {node.kind === "container" && (
+        <div className="flex flex-col gap-1">
+          <Label className="text-xs text-muted-foreground">Appearance</Label>
+          <Select
+            value={node.appearance ?? "plain"}
+            onValueChange={(v) =>
+              update({ appearance: v as Appearance })
+            }
+          >
+            <SelectTrigger className="h-8">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="plain">
+                Plain (transparent wrapper)
+              </SelectItem>
+              <SelectItem value="card">
+                Card (outlined surface)
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
       <NumberField
         label="Width (px, blank = auto)"
         value={typeof node.width === "number" ? node.width : undefined}
@@ -61,6 +126,14 @@ export function PropertiesPanel() {
           label="Line count"
           value={node.lineCount}
           onChange={(v) => update({ lineCount: v ?? 1 })}
+          min={1}
+        />
+      )}
+      {node.repeat !== undefined && (
+        <NumberField
+          label="Repeat (rows from .map)"
+          value={node.repeat}
+          onChange={(v) => update({ repeat: v && v > 1 ? v : undefined })}
           min={1}
         />
       )}
