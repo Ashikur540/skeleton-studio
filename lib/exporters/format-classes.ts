@@ -1,4 +1,10 @@
-import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
+import type {
+  Alignment,
+  GlobalSettings,
+  Justify,
+  Padding,
+  SkeletonNode,
+} from "@/lib/ir/types";
 
 /**
  * Maps the user-facing speed setting to an arbitrary animation-duration
@@ -20,51 +26,187 @@ export const SHIMMER_KEYFRAMES = `@keyframes shimmer {
   100% { background-position:  200% 0; }
 }`;
 
+/** Default gap between siblings when a container has children but no flex gap. */
+const DEFAULT_CONTAINER_GAP = 8;
+/** Default padding inside a card-like surface wrapper. */
+const CARD_WRAPPER_PADDING = 16;
+/** Default gap inside a card-like surface wrapper. */
+const CARD_WRAPPER_GAP = 12;
+
+const ALIGN_CLS: Record<Alignment, string> = {
+  start: "items-start",
+  end: "items-end",
+  center: "items-center",
+  stretch: "items-stretch",
+  baseline: "items-baseline",
+};
+
+const JUSTIFY_CLS: Record<Justify, string> = {
+  start: "justify-start",
+  end: "justify-end",
+  center: "justify-center",
+  between: "justify-between",
+  around: "justify-around",
+  evenly: "justify-evenly",
+};
+
 /**
- * Converts a SkeletonNode + GlobalSettings into a Tailwind class string.
- * Container nodes emit layout-only classes (flex, direction, gap); leaf nodes
- * emit color, animation, dimensions, and border-radius classes.
+ * Convert a SkeletonNode + GlobalSettings into a Tailwind class string for
+ * the exported skeleton code. Routes through three paths (surface wrapper /
+ * structural container / animated fill) so the exported output mirrors the
+ * runtime preview without duplicating per-property logic.
  */
 export function blockClasses(
   node: SkeletonNode,
   settings: GlobalSettings,
 ): string {
-  const cls: string[] = [];
+  if (isSurfaceWrapper(node)) return surfaceClasses(node);
+  if (node.kind === "container") return containerClasses(node);
+  return fillClasses(node, settings);
+}
 
-  if (node.kind === "container") {
-    if (node.layout) {
-      cls.push("flex");
-      cls.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
-      if (node.layout.gap !== undefined) cls.push(`gap-[${node.layout.gap}px]`);
-    }
-    if (node.width === "full") cls.push("w-full");
-    else if (typeof node.width === "number") cls.push(`w-[${node.width}px]`);
-    if (typeof node.height === "number") cls.push(`h-[${node.height}px]`);
-    return cls.join(" ").trim();
+/**
+ * Predicate: should this node render as a card-like surface (outline + padding
+ * + radius) rather than a transparent flex wrapper? True for card kinds that
+ * wrap children and for containers the parser flagged with appearance="card".
+ */
+function isSurfaceWrapper(node: SkeletonNode): boolean {
+  if (node.kind === "card" && node.children && node.children.length > 0) {
+    return true;
   }
+  if (node.kind === "container" && node.appearance === "card") return true;
+  return false;
+}
 
-  cls.push(settings.baseColor);
+/**
+ * Build class list for a card-like surface wrapper: outline ring, default
+ * padding (overridable per side), default gap, optional explicit dims +
+ * radius, plus alignment carried from layout.
+ */
+function surfaceClasses(node: SkeletonNode): string {
+  const dir = node.layout?.direction === "row" ? "flex-row" : "flex-col";
+  const gap = node.layout?.gap ?? CARD_WRAPPER_GAP;
+  const cls = ["flex", dir, "ring-1", "ring-foreground/10", `gap-[${gap}px]`];
+  pushSurfacePadding(cls, node.padding);
+  cls.push(...dimensionClasses(node));
+  pushRadius(cls, node);
+  cls.push(...alignmentClasses(node.layout));
+  return cls.join(" ").trim();
+}
 
+/**
+ * Build class list for a structural container. Default vertical stack with
+ * comfortable gap when children exist without explicit flex, otherwise honor
+ * whatever layout the parser produced. No surface chrome.
+ */
+function containerClasses(node: SkeletonNode): string {
+  const cls: string[] = [];
+  if (node.layout) {
+    cls.push("flex");
+    cls.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
+    if (node.layout.gap !== undefined) {
+      cls.push(`gap-[${node.layout.gap}px]`);
+    }
+  } else if (node.children && node.children.length > 0) {
+    cls.push("flex", "flex-col", `gap-[${DEFAULT_CONTAINER_GAP}px]`);
+  }
+  cls.push(...alignmentClasses(node.layout));
+  cls.push(...dimensionClasses(node));
+  cls.push(...paddingClasses(node.padding));
+  return cls.join(" ").trim();
+}
+
+/**
+ * Build class list for an animated fill block (text, paragraph line, button,
+ * image, avatar, leaf card). baseColor + animation + dimensions + optional
+ * radius and padding. The animation class uses pulse or shimmer depending on
+ * the user's selection.
+ */
+function fillClasses(node: SkeletonNode, settings: GlobalSettings): string {
+  const cls: string[] = [settings.baseColor];
   if (settings.animation === "pulse") {
     cls.push("animate-pulse");
   } else {
-    cls.push("animate-[shimmer_1.5s_linear_infinite]");
-    cls.push("bg-gradient-to-r");
-    cls.push("from-transparent");
-    cls.push("via-white/40");
-    cls.push("to-transparent");
-    cls.push("bg-[length:200%_100%]");
+    cls.push(
+      "animate-[shimmer_1.5s_linear_infinite]",
+      "bg-gradient-to-r",
+      "from-transparent",
+      "via-white/40",
+      "to-transparent",
+      "bg-[length:200%_100%]",
+    );
   }
   cls.push(SPEED_MAP[settings.speed]);
-
-  if (node.width === "full") cls.push("w-full");
-  else if (typeof node.width === "number") cls.push(`w-[${node.width}px]`);
-
-  if (typeof node.height === "number") cls.push(`h-[${node.height}px]`);
-
-  if (typeof node.radius === "number") {
-    cls.push(node.radius >= 9999 ? "rounded-full" : `rounded-[${node.radius}px]`);
-  }
-
+  cls.push(...dimensionClasses(node));
+  pushRadius(cls, node);
+  cls.push(...paddingClasses(node.padding));
   return cls.join(" ").trim();
+}
+
+/**
+ * Emit Tailwind utility classes for per-side padding. Only sides that are set
+ * produce classes; explicit zeros render as `pt-[0px]` so they can override
+ * any wrapper default the consumer might be merging in.
+ */
+function paddingClasses(p: Padding | undefined): string[] {
+  if (!p) return [];
+  const out: string[] = [];
+  if (p.top !== undefined) out.push(`pt-[${p.top}px]`);
+  if (p.right !== undefined) out.push(`pr-[${p.right}px]`);
+  if (p.bottom !== undefined) out.push(`pb-[${p.bottom}px]`);
+  if (p.left !== undefined) out.push(`pl-[${p.left}px]`);
+  return out;
+}
+
+/**
+ * Push four per-side padding classes onto the class list with the surface
+ * wrapper default filling any side the node didn't pin. Separate from
+ * `paddingClasses` because surfaces always render four sides (defaults
+ * included), whereas plain containers/fills only emit explicitly-set sides.
+ */
+function pushSurfacePadding(cls: string[], p: Padding | undefined): void {
+  cls.push(`pt-[${p?.top ?? CARD_WRAPPER_PADDING}px]`);
+  cls.push(`pr-[${p?.right ?? CARD_WRAPPER_PADDING}px]`);
+  cls.push(`pb-[${p?.bottom ?? CARD_WRAPPER_PADDING}px]`);
+  cls.push(`pl-[${p?.left ?? CARD_WRAPPER_PADDING}px]`);
+}
+
+/**
+ * Emit width + height utility classes. `width === "full"` becomes `w-full`
+ * (kept as the readable preset rather than `w-[100%]`); numeric values use
+ * the arbitrary `[Npx]` form so any pixel value survives Tailwind's scanner.
+ */
+function dimensionClasses(node: SkeletonNode): string[] {
+  const out: string[] = [];
+  if (node.width === "full") out.push("w-full");
+  else if (typeof node.width === "number") out.push(`w-[${node.width}px]`);
+  if (typeof node.height === "number") out.push(`h-[${node.height}px]`);
+  return out;
+}
+
+/**
+ * Append a radius class. Treats radius >= 9999 as `rounded-full`; any other
+ * numeric value emits `rounded-[Npx]` so even unusual values land verbatim.
+ */
+function pushRadius(cls: string[], node: SkeletonNode): void {
+  if (typeof node.radius !== "number") return;
+  cls.push(
+    node.radius >= 9999 ? "rounded-full" : `rounded-[${node.radius}px]`,
+  );
+}
+
+/**
+ * Emit items- / justify- / flex-wrap utility classes when their layout hints
+ * are present. Returns an empty array when nothing to add so callers can
+ * safely spread the result into their own class list.
+ */
+function alignmentClasses(layout: SkeletonNode["layout"]): string[] {
+  if (!layout) return [];
+  const out: string[] = [];
+  if (layout.alignItems) out.push(ALIGN_CLS[layout.alignItems]);
+  if (layout.justifyContent) out.push(JUSTIFY_CLS[layout.justifyContent]);
+  if (layout.wrap !== undefined) {
+    out.push(layout.wrap ? "flex-wrap" : "flex-nowrap");
+  }
+  return out;
 }

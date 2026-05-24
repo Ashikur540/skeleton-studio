@@ -74,4 +74,94 @@ describe("blockClasses", () => {
   it("exposes shimmer keyframes for exporters to inline", () => {
     expect(SHIMMER_KEYFRAMES).toContain("@keyframes shimmer");
   });
+
+  it("emits per-side padding classes on fill nodes", () => {
+    const cls = blockClasses(
+      node({
+        width: 100,
+        height: 20,
+        padding: { top: 12, left: 24, right: 24 },
+      }),
+      settings,
+    );
+    expect(cls).toContain("pt-[12px]");
+    expect(cls).toContain("pl-[24px]");
+    expect(cls).toContain("pr-[24px]");
+    expect(cls).not.toContain("pb-[");
+  });
+
+  it("emits per-side padding on container nodes", () => {
+    const cls = blockClasses(
+      node({
+        kind: "container",
+        layout: { direction: "col" },
+        padding: { bottom: 16 },
+      }),
+      settings,
+    );
+    expect(cls).toContain("pb-[16px]");
+  });
+
+  it("emits alignment + wrap classes from container layout", () => {
+    const cls = blockClasses(
+      node({
+        kind: "container",
+        layout: {
+          direction: "row",
+          gap: 8,
+          alignItems: "center",
+          justifyContent: "between",
+          wrap: true,
+        },
+      }),
+      settings,
+    );
+    expect(cls).toContain("items-center");
+    expect(cls).toContain("justify-between");
+    expect(cls).toContain("flex-wrap");
+  });
+
+  it("card-with-children renders surface chrome (ring + padding + flex-col)", () => {
+    const cls = blockClasses(
+      node({
+        kind: "card",
+        width: 320,
+        radius: 16,
+        children: [node({ id: "x" })],
+      }),
+      settings,
+    );
+    expect(cls).toContain("ring-1");
+    expect(cls).toContain("flex-col");
+    expect(cls).toContain("pt-[16px]");
+    expect(cls).toContain("rounded-[16px]");
+    expect(cls).not.toContain("animate-pulse");
+  });
+
+  it("container with appearance=card renders surface chrome", () => {
+    const cls = blockClasses(
+      node({
+        kind: "container",
+        appearance: "card",
+        radius: 12,
+        children: [node({ id: "x" })],
+      }),
+      settings,
+    );
+    expect(cls).toContain("ring-1");
+    expect(cls).toContain("rounded-[12px]");
+  });
+
+  it("surface wrapper honors explicit per-side padding over default", () => {
+    const cls = blockClasses(
+      node({
+        kind: "card",
+        children: [node({ id: "x" })],
+        padding: { bottom: 0 },
+      }),
+      settings,
+    );
+    expect(cls).toContain("pb-[0px]");
+    expect(cls).toContain("pt-[16px]");
+  });
 });

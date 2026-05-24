@@ -290,14 +290,6 @@ export function classify(raw: RawNode): SkeletonNode | null {
     if (children.length > 0) node.children = children;
   }
 
-  // When this node is a known list container (TableBody, tbody, ul, ol), bump
-  // any .map()-derived children's repeat count so the skeleton communicates
-  // "multi-item list loading" rather than a tiny one-row tease.
-  if (LIST_CONTAINER_TAGS.has(raw.tag) && node.children) {
-    for (const c of node.children) {
-      if (c.repeat === DEFAULT_MAP_REPEAT) c.repeat = LIST_MAP_REPEAT;
-    }
-  }
 
   // Layout assignment: needs to know child margins so we can roll them into
   // a uniform parent gap (CSS margins on flex children are unreliable and
@@ -389,25 +381,10 @@ const FILL_LEAF_KINDS: Set<SkeletonKind> = new Set([
  * classes express row banding and dividers, not card surfaces — never promote
  * them to appearance="card" or chrome stacks on every row and cell.
  */
-/** Default repeat count for a `.map()` representative child. */
+/** Default repeat count for a `.map()` representative child. Uniform across
+ * list and non-list contexts so a long dataset doesn't blow up the preview
+ * pane. Users can crank it higher per-node via the Repeat field in the panel. */
 const DEFAULT_MAP_REPEAT = 3;
-
-/** Bumped repeat count when the .map() lives inside a list container. */
-const LIST_MAP_REPEAT = 5;
-
-/**
- * Tags whose children are commonly produced by `.map()` over a dataset. When
- * a child of one of these gets a repeat count, bump it so the skeleton reads
- * as a multi-row table or multi-item list during loading.
- */
-const LIST_CONTAINER_TAGS = new Set([
-  "TableBody",
-  "tbody",
-  "ul",
-  "ol",
-  "TableHeader",
-  "TableFooter",
-]);
 
 const TABLE_STRUCTURAL_TAGS = new Set([
   // HTML

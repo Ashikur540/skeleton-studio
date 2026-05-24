@@ -29,14 +29,16 @@ export const TAG_DEFAULTS: Record<string, TagDefault> = {
   textarea: { kind: "input", defaults: { width: 320, height: 80, radius: 6 } },
   select:   { kind: "input", defaults: { width: 200, height: 40, radius: 6 } },
   // Table elements — th/td become text cells; tr is a row-flow container, and
-  // the wrapper tags (table/thead/tbody/tfoot/caption) stack vertically.
-  th: { kind: "text", defaults: { height: 16, width: 80, radius: 4 } },
-  td: { kind: "text", defaults: { height: 16, width: 120, radius: 4 } },
-  tr: { kind: "container", defaults: { direction: "row", gap: 12 } },
-  table:   { kind: "container", defaults: { direction: "col", gap: 8 } },
-  thead:   { kind: "container", defaults: { direction: "col", gap: 8 } },
-  tbody:   { kind: "container", defaults: { direction: "col", gap: 8 } },
-  tfoot:   { kind: "container", defaults: { direction: "col", gap: 8 } },
+  // the wrapper tags (table/thead/tbody/tfoot) stack vertically. width:"full"
+  // throughout the chain so cells distribute via flex-shrink instead of
+  // cascading their width demand up to an unbounded ancestor.
+  th: { kind: "text", defaults: { height: 16, width: "full", radius: 4 } },
+  td: { kind: "text", defaults: { height: 16, width: "full", radius: 4 } },
+  tr: { kind: "container", defaults: { direction: "row", gap: 12, width: "full" } },
+  table:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  thead:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  tbody:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  tfoot:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
   caption: { kind: "text", defaults: { height: 14, width: 120, radius: 4 } },
 };
 
@@ -61,11 +63,12 @@ export const COMPONENT_TAG_HINTS: Record<string, TagDefault> = {
   Card:   { kind: "card", defaults: { width: 320, height: 200, radius: 12 } },
 
   // shadcn / Radix Table primitives — match the HTML equivalents in semantics.
-  Table:         { kind: "container", defaults: { direction: "col", gap: 8 } },
-  TableHeader:   { kind: "container", defaults: { direction: "col", gap: 8 } },
-  TableBody:     { kind: "container", defaults: { direction: "col", gap: 8 } },
-  TableFooter:   { kind: "container", defaults: { direction: "col", gap: 8 } },
-  TableRow:      { kind: "container", defaults: { direction: "row", gap: 12 } },
+  // width:"full" propagates so cells share a bounded row width via flex-shrink.
+  Table:         { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  TableHeader:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  TableBody:     { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  TableFooter:   { kind: "container", defaults: { direction: "col", gap: 8, width: "full" } },
+  TableRow:      { kind: "container", defaults: { direction: "row", gap: 12, width: "full" } },
   // Cells use width:"full" so flex shrink distributes row width equally among
   // siblings — gives roughly aligned columns without a real grid layout.
   TableHead:     { kind: "text", defaults: { height: 16, width: "full", radius: 4 } },

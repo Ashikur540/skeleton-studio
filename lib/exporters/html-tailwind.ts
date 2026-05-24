@@ -2,39 +2,67 @@ import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
 import { SHIMMER_KEYFRAMES, blockClasses } from "./format-classes";
 
 /**
- * Converts a skeleton IR tree + settings into a complete HTML + Tailwind string.
+ * Convert a skeleton IR tree + settings into a complete HTML + Tailwind string.
  * When animation is shimmer, a <style> block carrying the keyframes is prepended
  * so the output works standalone without external CSS imports.
  */
-export function exportHTML(tree: SkeletonNode, settings: GlobalSettings): string {
+export function exportHTML(
+  tree: SkeletonNode,
+  settings: GlobalSettings,
+): string {
   const styleBlock =
     settings.animation === "shimmer"
       ? `<style>\n${SHIMMER_KEYFRAMES}\n</style>\n`
       : "";
-  return `${styleBlock}${renderNode(tree, settings, 0)}\n`;
+  return `${styleBlock}${renderNodeOrRepeat(tree, settings, 0)}\n`;
 }
 
 /**
- * Recursively emits HTML for a skeleton node. Hidden nodes are skipped entirely.
- * Mirrors the React exporter but uses `class=` instead of `className=` and
- * self-closing tags. Paragraph nodes expand into stacked text lines.
+ * Render a node N times in sequence when `repeat > 1`. Matches the React
+ * exporter's repeat handling so both flavours produce equivalent skeletons
+ * for `.map()`-derived nodes.
  */
-function renderNode(node: SkeletonNode, settings: GlobalSettings, indent: number): string {
+function renderNodeOrRepeat(
+  node: SkeletonNode,
+  settings: GlobalSettings,
+  indent: number,
+): string {
+  const repeat = node.repeat ?? 1;
+  if (repeat <= 1) return renderNode(node, settings, indent);
+  const single = renderNode(
+    { ...node, repeat: undefined },
+    settings,
+    indent,
+  );
+  return Array.from({ length: repeat }, () => single).join("\n");
+}
+
+/**
+ * Recursively emit HTML for one skeleton node. Mirrors the React exporter but
+ * uses `class=` instead of `className=` and self-closing-tag conventions for
+ * leaf divs. Paragraph nodes expand into stacked text lines.
+ */
+function renderNode(
+  node: SkeletonNode,
+  settings: GlobalSettings,
+  indent: number,
+): string {
   if (!node.visible) return "";
   const pad = " ".repeat(indent);
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
     const lineCls = blockClasses({ ...node, kind: "text" }, settings);
-    const linesHtml = Array.from({ length: lines }, () =>
-      `${pad}  <div class="${lineCls}"></div>`,
+    const linesHtml = Array.from(
+      { length: lines },
+      () => `${pad}  <div class="${lineCls}"></div>`,
     ).join("\n");
     return `${pad}<div class="flex flex-col gap-2">\n${linesHtml}\n${pad}</div>`;
   }
 
   const cls = blockClasses(node, settings);
   const childTags = (node.children ?? [])
-    .map((c) => renderNode(c, settings, indent + 2))
+    .map((c) => renderNodeOrRepeat(c, settings, indent + 2))
     .filter(Boolean);
 
   if (childTags.length === 0) {

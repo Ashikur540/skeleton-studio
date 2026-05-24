@@ -1,22 +1,17 @@
 "use client";
-import { useMemo, useState } from "react";
-import { useSkeletonStore } from "@/store/use-skeleton-store";
-import { exportReact } from "@/lib/exporters/react-tailwind";
-import { exportHTML } from "@/lib/exporters/html-tailwind";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@/components/ui/tabs";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { exportHTML } from "@/lib/exporters/html-tailwind";
+import { exportReact } from "@/lib/exporters/react-tailwind";
+import { useSkeletonStore } from "@/store/use-skeleton-store";
+import { useMemo, useState } from "react";
 
 type Tab = "react" | "html";
 
@@ -49,32 +44,54 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
 
   return (
     <Dialog open={true} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent className="max-w-[720px] max-h-[80vh] flex flex-col">
+      <DialogContent
+        className={
+          // shadcn DialogContent defaults to `display: grid` with auto rows
+          // which lets the middle Tabs row grow to fit its content, blowing
+          // past max-h. Force flex-col so the middle row is a true flex-1
+          // bounded by max-h-[85vh]. Plus responsive width caps that beat
+          // the built-in sm:max-w-md.
+          "flex! flex-col! max-h-[85vh] " +
+          "sm:max-w-160! md:max-w-205! lg:max-w-250! xl:max-w-275!"
+        }
+      >
         <DialogHeader>
           <DialogTitle>Export</DialogTitle>
         </DialogHeader>
         <Tabs
           value={tab}
           onValueChange={(v) => setTab(v as Tab)}
-          className="flex flex-col flex-1 min-h-0"
+          className="flex flex-col flex-1 min-h-0 min-w-0"
         >
           <TabsList>
             <TabsTrigger value="react">React + Tailwind</TabsTrigger>
             <TabsTrigger value="html">HTML + Tailwind</TabsTrigger>
           </TabsList>
-          <TabsContent value="react" className="flex-1 min-h-0">
-            <pre className="h-full overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre bg-card rounded-lg">
+          <TabsContent value="react" className="flex-1 min-h-0 min-w-0">
+            <pre
+              className={
+                " w-full max-h-125 min-w-0 overflow-auto p-4 text-xs text-foreground font-mono " +
+                "whitespace-pre-wrap break-all bg-card rounded-lg"
+              }
+            >
               {reactOutput || "Generate a skeleton first."}
             </pre>
           </TabsContent>
-          <TabsContent value="html" className="flex-1 min-h-0">
-            <pre className="h-full overflow-auto p-4 text-xs text-foreground font-mono whitespace-pre bg-card rounded-lg">
+          <TabsContent value="html" className="flex-1 min-h-0 min-w-0">
+            <pre
+              className={
+                " w-full max-h-125 min-w-0 overflow-auto p-4 text-xs text-foreground font-mono " +
+                "whitespace-pre-wrap break-all bg-card rounded-lg"
+              }
+            >
               {htmlOutput || "Generate a skeleton first."}
             </pre>
           </TabsContent>
         </Tabs>
         <DialogFooter>
-          <Button onClick={copy} disabled={!output}>Copy</Button>
+          <Button onClick={copy} disabled={!output}>
+            Copy
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

@@ -426,17 +426,14 @@ describe("classify (.map repeat counts)", () => {
     expect(node!.repeat).toBeUndefined();
   });
 
-  it("TableBody bumps fromMap child repeat to 5", () => {
+  it("uniform default repeat of 3 inside any list-style parent", () => {
     const body = classify(el("TableBody", "", [el("TableRow", "", [], true)]));
-    expect(body!.children![0].repeat).toBe(5);
-  });
-
-  it("ul bumps fromMap child repeat to 5", () => {
+    expect(body!.children![0].repeat).toBe(3);
     const ul = classify(el("ul", "", [el("li", "", [], true)]));
-    expect(ul!.children![0].repeat).toBe(5);
+    expect(ul!.children![0].repeat).toBe(3);
   });
 
-  it("non-list parent leaves fromMap repeat at default 3", () => {
+  it("non-list parent also leaves fromMap repeat at default 3", () => {
     const div = classify(el("div", "", [el("span", "", [], true)]));
     expect(div!.children![0].repeat).toBe(3);
   });
@@ -521,16 +518,16 @@ describe("classify (table tags skip surface promotion)", () => {
 });
 
 describe("classify (table tags)", () => {
-  it("th renders as text", () => {
+  it("th renders as text with full width (flex distributes via row)", () => {
     const node = classify(el("th", "", [], false, {}, true));
     expect(node!.kind).toBe("text");
-    expect(node!.width).toBe(80);
+    expect(node!.width).toBe("full");
   });
 
-  it("td renders as text", () => {
+  it("td renders as text with full width", () => {
     const node = classify(el("td", "", [], false, {}, true));
     expect(node!.kind).toBe("text");
-    expect(node!.width).toBe(120);
+    expect(node!.width).toBe("full");
   });
 
   it("tr renders as a flex-row container with gap", () => {

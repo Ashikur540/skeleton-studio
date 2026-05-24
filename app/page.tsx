@@ -1,14 +1,14 @@
 "use client";
-import { useState } from "react";
+import { ExampleSnippets } from "@/components/example-snippets";
+import { ExportModal } from "@/components/export-modal";
+import { GlobalControls } from "@/components/global-controls";
 import { PasteInput } from "@/components/paste-input";
 import { PreviewCanvas } from "@/components/preview-canvas";
 import { PropertiesPanel } from "@/components/properties-panel";
-import { GlobalControls } from "@/components/global-controls";
-import { ExampleSnippets } from "@/components/example-snippets";
-import { ExportModal } from "@/components/export-modal";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
+import { useState } from "react";
 
 /**
  * Top-level editor page. Composes the paste input, preview canvas, properties
@@ -29,14 +29,18 @@ export default function Home() {
         </div>
         <div className="flex items-center gap-2">
           <ThemeToggle />
-          <Button onClick={() => setExportOpen(true)} disabled={!tree} size="sm">
+          <Button
+            onClick={() => setExportOpen(true)}
+            disabled={!tree}
+            size="sm"
+          >
             Export
           </Button>
         </div>
       </header>
       <GlobalControls />
       <main className="flex flex-1 min-h-0">
-        <section className="w-[420px] p-4 border-r flex flex-col min-h-0">
+        <section className="w-[420px] p-4 border-r flex flex-col min-h-0 shrink-0">
           <PasteInput />
         </section>
         <section className="flex-1 p-4 min-h-0 flex">

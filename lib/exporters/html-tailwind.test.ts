@@ -66,4 +66,33 @@ describe("exportHTML", () => {
     expect(out).toContain("<style>");
     expect(out).toContain("@keyframes shimmer");
   });
+
+  it("repeats a node N times when repeat > 1", () => {
+    const tree: SkeletonNode = {
+      id: "row",
+      kind: "container",
+      confidence: "medium",
+      visible: true,
+      layout: { direction: "row" },
+      repeat: 4,
+      children: [leaf],
+    };
+    const out = exportHTML(tree, settings);
+    expect(out.match(/flex-row/g)?.length).toBe(4);
+  });
+
+  it("emits surface chrome for container with appearance=card", () => {
+    const tree: SkeletonNode = {
+      id: "card",
+      kind: "container",
+      confidence: "high",
+      visible: true,
+      appearance: "card",
+      radius: 12,
+      children: [leaf],
+    };
+    const out = exportHTML(tree, settings);
+    expect(out).toContain("ring-1");
+    expect(out).toContain("rounded-[12px]");
+  });
 });

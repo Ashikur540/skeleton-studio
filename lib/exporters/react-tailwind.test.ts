@@ -78,4 +78,34 @@ describe("exportReact", () => {
     expect(out).toContain("@keyframes shimmer");
     expect(out).toContain("animate-[shimmer_");
   });
+
+  it("repeats a node N times when repeat > 1", () => {
+    const tree: SkeletonNode = {
+      id: "row",
+      kind: "container",
+      confidence: "medium",
+      visible: true,
+      layout: { direction: "row" },
+      repeat: 5,
+      children: [leaf],
+    };
+    const out = exportReact(tree, settings);
+    expect(out.match(/flex-row/g)?.length).toBe(5);
+    expect(out.match(/w-\[100px\]/g)?.length).toBe(5);
+  });
+
+  it("emits ring-1 and rounded chrome for a card-with-children", () => {
+    const tree: SkeletonNode = {
+      id: "card",
+      kind: "card",
+      confidence: "high",
+      visible: true,
+      width: 320,
+      radius: 16,
+      children: [leaf],
+    };
+    const out = exportReact(tree, settings);
+    expect(out).toContain("ring-1");
+    expect(out).toContain("rounded-[16px]");
+  });
 });

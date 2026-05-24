@@ -28,7 +28,7 @@ export default function RootLayout({
         dmSans.variable,
       )}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="h-full flex flex-col overflow-hidden bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
