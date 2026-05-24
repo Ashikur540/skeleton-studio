@@ -55,6 +55,21 @@ export type Padding = {
 export type Appearance = "plain" | "card";
 
 /**
+ * Higher-level UI archetype a container subtree resembles, detected by a
+ * pattern pass run after classification. Drives spacing/alignment refinements
+ * (e.g. row + center-align for `media-object`) without overriding any explicit
+ * Tailwind-derived signal. Strictly informational on fill leaves.
+ */
+export type Archetype =
+  | "media-object"
+  | "form-field"
+  | "nav-bar"
+  | "hero"
+  | "card-grid"
+  | "pricing-card"
+  | "stat-tile";
+
+/**
  * The IR's single recursive node. Produced by the parser, consumed by the
  * preview renderer and exporters. Mutated immutably through `mutateNode`.
  */
@@ -90,6 +105,12 @@ export type SkeletonNode = {
    * loading skeletons rather than a single ghost row. Undefined = 1 copy.
    */
   repeat?: number;
+  /**
+   * Higher-level UI archetype this node matches (e.g. media-object, form-field).
+   * Set by the archetype detector after classification; consumed by the
+   * properties panel for display and by tuning logic for default spacing.
+   */
+  archetype?: Archetype;
   children?: SkeletonNode[];
 };
 

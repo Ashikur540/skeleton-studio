@@ -375,8 +375,18 @@ describe("classify (leaf-container promotion)", () => {
     expect(node!.radius).toBe(8);
   });
 
-  it("promotes pattern-matched empty container (CardHeader leaf) to card", () => {
+  it("promotes empty shadcn CardHeader leaf to card with full-width strip", () => {
+    // CardHeader now has an explicit shadcn hint that pins width:"full" + a
+    // column layout, so the leaf-promotion path keeps that width and falls
+    // back to default height/radius for the empty case.
     const node = classify(el("CardHeader"));
+    expect(node!.kind).toBe("card");
+    expect(node!.width).toBe("full");
+    expect(node!.height).toBe(80);
+  });
+
+  it("promotes empty pattern-only container (MysteryHeader leaf) to card with default dims", () => {
+    const node = classify(el("MysteryHeader"));
     expect(node!.kind).toBe("card");
     expect(node!.width).toBe(200);
     expect(node!.height).toBe(80);
@@ -649,6 +659,171 @@ describe("classify (semantic patterns)", () => {
     expect(classify(el("Avatar"))!.confidence).toBe("medium");
     expect(classify(el("SubmitButton"))!.confidence).toBe("medium");
     expect(classify(el("Card"))!.confidence).toBe("medium");
+  });
+});
+
+describe("classify (shadcn Card subcomponents)", () => {
+  it("CardTitle resolves to a tall text bar", () => {
+    const node = classify(el("CardTitle"));
+    expect(node!.kind).toBe("text");
+    expect(node!.height).toBe(24);
+    expect(node!.width).toBe("full");
+  });
+
+  it("CardDescription resolves to a paragraph block", () => {
+    const node = classify(el("CardDescription"));
+    expect(node!.kind).toBe("paragraph");
+    expect(node!.height).toBe(14);
+  });
+
+  it("CardHeader with children stacks vertically with a tight gap", () => {
+    const node = classify(
+      el("CardHeader", "", [el("CardTitle"), el("CardDescription")]),
+    );
+    expect(node!.kind).toBe("container");
+    expect(node!.layout?.direction).toBe("col");
+    expect(node!.layout?.gap).toBe(6);
+  });
+
+  it("CardFooter lays out actions in a row", () => {
+    const node = classify(el("CardFooter", "", [el("Button")]));
+    expect(node!.kind).toBe("container");
+    expect(node!.layout?.direction).toBe("row");
+  });
+});
+
+describe("classify (shadcn Tabs)", () => {
+  it("TabsList lays out triggers horizontally", () => {
+    const node = classify(
+      el("TabsList", "", [el("TabsTrigger"), el("TabsTrigger")]),
+    );
+    expect(node!.layout?.direction).toBe("row");
+  });
+
+  it("TabsTrigger resolves to a button", () => {
+    const node = classify(el("TabsTrigger"));
+    expect(node!.kind).toBe("button");
+    expect(node!.height).toBe(32);
+  });
+
+  it("Tabs wraps a TabsList + TabsContent in a vertical stack", () => {
+    const node = classify(
+      el("Tabs", "", [el("TabsList"), el("TabsContent")]),
+    );
+    expect(node!.layout?.direction).toBe("col");
+  });
+});
+
+describe("classify (shadcn Accordion)", () => {
+  it("AccordionTrigger with children renders as a horizontal row at 48px tall", () => {
+    const node = classify(
+      el("AccordionTrigger", "", [el("span", "", [], false, {}, true, "Q")]),
+    );
+    expect(node!.kind).toBe("container");
+    expect(node!.height).toBe(48);
+    expect(node!.layout?.direction).toBe("row");
+  });
+
+  it("AccordionContent renders as a paragraph block", () => {
+    const node = classify(el("AccordionContent"));
+    expect(node!.kind).toBe("paragraph");
+  });
+});
+
+describe("classify (shadcn Dialog / Sheet)", () => {
+  it("DialogTitle and SheetTitle resolve to tall text", () => {
+    expect(classify(el("DialogTitle"))!.kind).toBe("text");
+    expect(classify(el("DialogTitle"))!.height).toBe(24);
+    expect(classify(el("SheetTitle"))!.height).toBe(24);
+  });
+
+  it("DialogFooter lays out actions in a row", () => {
+    const node = classify(el("DialogFooter", "", [el("Button")]));
+    expect(node!.layout?.direction).toBe("row");
+  });
+});
+
+describe("classify (shadcn Form)", () => {
+  it("FormLabel resolves to a small caption-shaped text bar", () => {
+    const node = classify(el("FormLabel"));
+    expect(node!.kind).toBe("text");
+    expect(node!.height).toBe(14);
+    expect(node!.width).toBe(80);
+  });
+
+  it("FormItem stacks label + control + message vertically with tight gap", () => {
+    const node = classify(
+      el("FormItem", "", [el("FormLabel"), el("Input"), el("FormMessage")]),
+    );
+    expect(node!.layout?.direction).toBe("col");
+    expect(node!.layout?.gap).toBe(6);
+  });
+
+  it("FormDescription / FormMessage resolve to thin helper text", () => {
+    expect(classify(el("FormDescription"))!.height).toBe(12);
+    expect(classify(el("FormMessage"))!.height).toBe(12);
+  });
+});
+
+describe("classify (shadcn Select)", () => {
+  it("Select and SelectTrigger resolve to input shape", () => {
+    expect(classify(el("Select"))!.kind).toBe("input");
+    expect(classify(el("SelectTrigger"))!.kind).toBe("input");
+  });
+
+  it("SelectItem rows render as full-width text bars", () => {
+    const node = classify(el("SelectItem"));
+    expect(node!.kind).toBe("text");
+    expect(node!.width).toBe("full");
+  });
+});
+
+describe("classify (shadcn standalone primitives)", () => {
+  it("Badge resolves to a small pill", () => {
+    const node = classify(el("Badge"));
+    expect(node!.kind).toBe("button");
+    expect(node!.width).toBe(60);
+    expect(node!.height).toBe(22);
+    expect(node!.radius).toBe(9999);
+  });
+
+  it("Skeleton resolves to a placeholder strip", () => {
+    const node = classify(el("Skeleton"));
+    expect(node!.kind).toBe("card");
+    expect(node!.height).toBe(20);
+  });
+
+  it("Separator renders as a 1px-tall full-width strip", () => {
+    const node = classify(el("Separator"));
+    expect(node!.height).toBe(1);
+    expect(node!.width).toBe("full");
+  });
+
+  it("Switch resolves to a pill-shaped toggle", () => {
+    const node = classify(el("Switch"));
+    expect(node!.width).toBe(44);
+    expect(node!.height).toBe(24);
+    expect(node!.radius).toBe(9999);
+  });
+
+  it("Checkbox resolves to a tiny square", () => {
+    const node = classify(el("Checkbox"));
+    expect(node!.width).toBe(16);
+    expect(node!.height).toBe(16);
+    expect(node!.radius).toBe(4);
+  });
+
+  it("Progress renders as a thin full-width pill bar", () => {
+    const node = classify(el("Progress"));
+    expect(node!.width).toBe("full");
+    expect(node!.height).toBe(8);
+  });
+});
+
+describe("classify (shadcn Alert)", () => {
+  it("AlertTitle is a medium text bar; AlertDescription is paragraph", () => {
+    expect(classify(el("AlertTitle"))!.height).toBe(18);
+    expect(classify(el("AlertDescription"))!.kind).toBe("paragraph");
   });
 });
 

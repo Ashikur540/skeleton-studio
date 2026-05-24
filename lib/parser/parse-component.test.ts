@@ -30,7 +30,8 @@ describe("parseComponent (happy path)", () => {
         </div>
       );
     `);
-    expect(t.layout).toEqual({ direction: "col", gap: 16 });
+    expect(t.layout?.direction).toBe("col");
+    expect(t.layout?.gap).toBe(16);
     expect(t.children).toHaveLength(2);
     expect(t.children?.[0].kind).toBe("image");
     expect(t.children?.[0].width).toBe(48);

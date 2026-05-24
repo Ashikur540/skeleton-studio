@@ -19,6 +19,7 @@ import {
 } from "@babel/types";
 
 import type { ParseResult } from "@/lib/ir/types";
+import { detectArchetypes } from "./archetype-detector";
 import { toRawNode } from "./raw-node";
 import { classify } from "./semantic-classifier";
 
@@ -79,6 +80,7 @@ export function parseComponent(source: string): ParseResult {
       },
     };
   }
+  detectArchetypes(tree);
   return { ok: true, tree };
 }
 
