@@ -8,13 +8,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { PRESETS, findPreset } from "@/lib/presets";
 
 /**
  * Curated Tailwind background-color tokens presented in the base-color dropdown.
  * Limited to colors that look natural as skeleton placeholder fills across both
- * light and dark themes, avoiding visually jarring or uncommon values.
+ * light and dark themes. Preset colors are included so Tailwind v4's scanner
+ * can detect and generate their CSS.
  */
 const BASE_COLORS: { value: string; label: string }[] = [
+  { value: "bg-zinc-100", label: "Zinc 100" },
   { value: "bg-zinc-200", label: "Zinc 200" },
   { value: "bg-zinc-300", label: "Zinc 300" },
   { value: "bg-zinc-800", label: "Zinc 800" },
@@ -22,18 +25,36 @@ const BASE_COLORS: { value: string; label: string }[] = [
   { value: "bg-blue-900/40", label: "Blue 900/40" },
 ];
 
+const CUSTOM_SENTINEL = "__custom__";
+
 /**
- * Top control bar exposing the three global render settings: animation style,
- * animation speed, and base fill color. Editor light/dark is handled by the
- * separate ThemeToggle in the header, so this bar focuses purely on skeleton
- * appearance.
+ * Top control bar with a preset picker followed by three fine-tuning dropdowns.
+ * Picking a preset sets animation + speed + baseColor in one shot; tweaking any
+ * individual dropdown shifts the preset display to "Custom".
  */
 export function GlobalControls() {
   const settings = useSkeletonStore((s) => s.settings);
   const setSettings = useSkeletonStore((s) => s.setSettings);
 
+  const activePreset = findPreset(settings);
+  const presetValue = activePreset?.id ?? CUSTOM_SENTINEL;
+
+  const handlePreset = (id: string) => {
+    const preset = PRESETS.find((p) => p.id === id);
+    if (preset) setSettings({ ...preset.settings });
+  };
+
   return (
     <div className="flex flex-wrap items-center gap-4 px-4 py-3 border-b border-border text-sm">
+      <LabeledSelect
+        label="Preset"
+        value={presetValue}
+        options={[
+          ...PRESETS.map((p) => ({ value: p.id, label: p.name })),
+          ...(activePreset ? [] : [{ value: CUSTOM_SENTINEL, label: "Custom" }]),
+        ]}
+        onChange={handlePreset}
+      />
       <LabeledSelect
         label="Animation"
         value={settings.animation}
