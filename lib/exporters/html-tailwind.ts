@@ -1,4 +1,5 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
+import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
 import { SHIMMER_KEYFRAMES, blockClasses } from "./format-classes";
 
 /**
@@ -18,9 +19,8 @@ export function exportHTML(
 }
 
 /**
- * Render a node N times in sequence when `repeat > 1`. Matches the React
- * exporter's repeat handling so both flavours produce equivalent skeletons
- * for `.map()`-derived nodes.
+ * Render a node N times when `repeat > 1` with per-copy width variance
+ * matching the React exporter and live preview.
  */
 function renderNodeOrRepeat(
   node: SkeletonNode,
@@ -29,12 +29,10 @@ function renderNodeOrRepeat(
 ): string {
   const repeat = node.repeat ?? 1;
   if (repeat <= 1) return renderNode(node, settings, indent);
-  const single = renderNode(
-    { ...node, repeat: undefined },
-    settings,
-    indent,
-  );
-  return Array.from({ length: repeat }, () => single).join("\n");
+  const base = { ...node, repeat: undefined };
+  return Array.from({ length: repeat }, (_, i) =>
+    renderNode(applyRepeatVariance(base, i), settings, indent),
+  ).join("\n");
 }
 
 /**

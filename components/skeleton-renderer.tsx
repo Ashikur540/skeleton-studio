@@ -1,6 +1,7 @@
 "use client";
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
 import { blockStyles } from "@/lib/exporters/runtime-styles";
+import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
 
 /**
  * The data a parent component must supply to drive the renderer: the IR node
@@ -24,10 +25,11 @@ export function SkeletonRenderer({ node, settings, selectedId, onSelect }: Props
 }
 
 /**
- * Render a node N times in sequence when `node.repeat > 1` (e.g. a `.map()`
- * representative inside a TableBody). Each copy delegates to the single
- * renderer with repeat stripped so it doesn't recurse infinitely. All copies
- * share the source node's id so selecting any of them edits the prototype.
+ * Render a node N times when `node.repeat > 1` (e.g. a `.map()` row). Each
+ * copy gets deterministic width variance via `applyRepeatVariance` so repeated
+ * rows look naturally ragged instead of identical clones. Copy 0 (the
+ * prototype) renders unmodified; copies 1+ get staggered text widths and
+ * unique paragraph ids for last-line variance.
  */
 function Node(props: Props) {
   const repeat = props.node.repeat ?? 1;
@@ -36,7 +38,11 @@ function Node(props: Props) {
   return (
     <>
       {Array.from({ length: repeat }, (_, i) => (
-        <SingleNode key={i} {...props} node={singleNode} />
+        <SingleNode
+          key={i}
+          {...props}
+          node={applyRepeatVariance(singleNode, i)}
+        />
       ))}
     </>
   );

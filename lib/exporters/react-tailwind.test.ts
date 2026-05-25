@@ -79,7 +79,7 @@ describe("exportReact", () => {
     expect(out).toContain("animate-[shimmer_");
   });
 
-  it("repeats a node N times when repeat > 1", () => {
+  it("repeats a node N times when repeat > 1 with per-copy variance", () => {
     const tree: SkeletonNode = {
       id: "row",
       kind: "container",
@@ -90,8 +90,15 @@ describe("exportReact", () => {
       children: [leaf],
     };
     const out = exportReact(tree, settings);
+    // All 5 copies get flex-row (structural layout unchanged by variance)
     expect(out.match(/flex-row/g)?.length).toBe(5);
-    expect(out.match(/w-\[100px\]/g)?.length).toBe(5);
+    // Copy 0 keeps original width, copies 1-4 get staggered widths.
+    // Every copy still has a w-[...px] class — just not all 100px.
+    const widthMatches = out.match(/w-\[\d+px\]/g) ?? [];
+    expect(widthMatches.length).toBe(5);
+    expect(widthMatches[0]).toBe("w-[100px]");
+    const uniqueWidths = new Set(widthMatches);
+    expect(uniqueWidths.size).toBeGreaterThan(1);
   });
 
   it("emits ring-1 and rounded chrome for a card-with-children", () => {

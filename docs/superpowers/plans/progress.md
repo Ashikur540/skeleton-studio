@@ -89,18 +89,18 @@ Pure-function classifier. Renderer + exporter share three-path dispatch
 
 Parsed token families:
 
-| Family | Examples |
-|---|---|
-| Width / Height | `w-32`, `w-full`, `w-[240px]`, `h-12`, `h-[2rem]` |
-| Radius | `rounded`, `rounded-lg`, `rounded-full`, `rounded-[12px]` |
-| Flex | `flex`, `flex-row`, `flex-col`, `flex-wrap`, `flex-nowrap` |
-| Gap | `gap-4`, `gap-[8px]` |
-| Padding | `p-4`, `px-6`, `py-1`, `pt-`/`pr-`/`pb-`/`pl-*`, `p-[12px]` |
-| Margin | `m-2`, `mx-`/`my-`/`mt-`/`mr-`/`mb-`/`ml-*` (aggregated into parent gap) |
-| Alignment | `items-{start\|end\|center\|stretch\|baseline}` |
-| Justify | `justify-{start\|end\|center\|between\|around\|evenly}` |
-| Surface | `bg-*` (except gradients), `border`, `border-{color\|width}` (side-only excluded) |
-| Position | `absolute`, `fixed`, `relative`, `sticky` |
+| Family         | Examples                                                                          |
+| -------------- | --------------------------------------------------------------------------------- |
+| Width / Height | `w-32`, `w-full`, `w-[240px]`, `h-12`, `h-[2rem]`                                 |
+| Radius         | `rounded`, `rounded-lg`, `rounded-full`, `rounded-[12px]`                         |
+| Flex           | `flex`, `flex-row`, `flex-col`, `flex-wrap`, `flex-nowrap`                        |
+| Gap            | `gap-4`, `gap-[8px]`                                                              |
+| Padding        | `p-4`, `px-6`, `py-1`, `pt-`/`pr-`/`pb-`/`pl-*`, `p-[12px]`                       |
+| Margin         | `m-2`, `mx-`/`my-`/`mt-`/`mr-`/`mb-`/`ml-*` (aggregated into parent gap)          |
+| Alignment      | `items-{start\|end\|center\|stretch\|baseline}`                                   |
+| Justify        | `justify-{start\|end\|center\|between\|around\|evenly}`                           |
+| Surface        | `bg-*` (except gradients), `border`, `border-{color\|width}` (side-only excluded) |
+| Position       | `absolute`, `fixed`, `relative`, `sticky`                                         |
 
 Modifiers (`md:`, `dark:`, `hover:`) silently skipped.
 
@@ -142,8 +142,8 @@ Modifiers (`md:`, `dark:`, `hover:`) silently skipped.
 │                          │
 │ Kind          [ Container ▾ ]
 │ Appearance    [ Card ▾ ]      (containers only)
-│ Width  [ 320 ]                
-│ ☐ Full width                  
+│ Width  [ 320 ]
+│ ☐ Full width
 │ Height [ 200 ]
 │ Radius [ 12 ]
 │ Line count [ 3 ]             (paragraphs only)
@@ -191,6 +191,7 @@ Tests:       215 passed
 ```
 
 Coverage spread across:
+
 - Parser entry (`parse-component.test.ts`)
 - AST walker (`raw-node` via integration)
 - Classifier rules (`semantic-classifier.test.ts`)
@@ -259,7 +260,7 @@ store/
 
 ## 🏁 Known gaps (next candidates)
 
-- 📍 **Position offsets** (top-*/right-*/bottom-*/left-*) — would let absolute badges render in-place instead of normal flow.
+- 📍 **Position offsets** (top-_/right-_/bottom-_/left-_) — would let absolute badges render in-place instead of normal flow.
 - 📦 **Library registry** — MUI / Mantine / Chakra exact-match tables for friendlier defaults.
 - 🪶 **Format button** (lazy prettier) — clean up pasted code.
 - 🔔 **Confidence summary banner** — "5 of 12 blocks low-confidence — click to verify".
@@ -277,3 +278,112 @@ store/
 5. Mutations re-render preview live (Zustand store + immutable IR).
 6. Export modal generates clean React or HTML code matching the preview.
 7. Auto-save to localStorage; rehydrate parses on load.
+
+---
+
+Test snippets to verify improvements
+
+Commit first, then paste these into the editor to visually confirm:
+
+1. Grid table with mixed column widths:
+
+```
+export function InvoiceTable() {
+  return (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[100px]">Invoice</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Method</TableHead>
+          <TableHead className="w-[80px]">Amount</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {invoices.map((inv) => (
+          <TableRow key={inv.id}>
+            <TableCell>{inv.id}</TableCell>
+            <TableCell>{inv.status}</TableCell>
+            <TableCell>{inv.method}</TableCell>
+            <TableCell>{inv.amount}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  );
+}
+```
+
+Expected: first and last columns fixed at 100px and 80px. Middle two share remaining space equally. Body rows have staggered text widths.
+
+2. shadcn Card with subcomponents:
+
+```
+export function ProductCard() {
+ return (
+   <Card className="w-96">
+     <CardHeader>
+       <CardTitle>Premium Plan</CardTitle>
+       <CardDescription>Everything you need to scale your business</CardDescription>
+     </CardHeader>
+     <CardContent>
+       <div className="flex flex-col gap-2">
+         <span>Unlimited projects</span>
+         <span>Priority support</span>
+         <span>Custom domain</span>
+       </div>
+     </CardContent>
+     <CardFooter>
+       <Button className="w-full">Subscribe</Button>
+     </CardFooter>
+   </Card>
+ );
+}
+```
+
+Expected: CardTitle renders as 24px-tall text bar. CardDescription as paragraph. CardFooter lays out button in row. CardHeader uses tight 6px gap. Pricing-card
+archetype detected → 16px section gap.
+
+1. Form with label+input pairs:
+
+```
+export function LoginForm() {
+  return (
+    <Form>
+      <FormItem>
+        <FormLabel>Email</FormLabel>
+        <Input placeholder="you@example.com" />
+        <FormMessage>Please enter a valid email</FormMessage>
+      </FormItem>
+      <FormItem>
+        <FormLabel>Password</FormLabel>
+        <Input type="password" />
+      </FormItem>
+      <Button>Sign In</Button>
+    </Form>
+  );
+}
+```
+
+Expected: FormLabel is 14px-tall × 80px. FormMessage is 12px-tall × 160px. FormItem stacks with 6px gap. Form uses 16px gap between sections. Second FormItem
+detected as form-field archetype.
+
+1. Repeat variance (dynamic list):
+
+```
+export function UserList() {
+  return (
+    <ul className="flex flex-col gap-3 w-80">
+      {users.map((u) => (
+        <li className="flex gap-3 items-center">
+          <div className="w-10 h-10 rounded-full bg-gray-200" />
+          <div className="flex flex-col gap-1">
+            <span>User Name Here</span>
+            <span>user@email.com</span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+}
+```

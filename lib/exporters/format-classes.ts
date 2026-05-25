@@ -95,22 +95,30 @@ function surfaceClasses(node: SkeletonNode): string {
 }
 
 /**
- * Build class list for a structural container. Default vertical stack with
- * comfortable gap when children exist without explicit flex, otherwise honor
- * whatever layout the parser produced. No surface chrome.
+ * Build class list for a structural container. Uses CSS grid when the
+ * table-grid detector stamped a `gridCols` template; otherwise flex. Default
+ * vertical stack with comfortable gap when children exist without explicit
+ * layout. No surface chrome.
  */
 function containerClasses(node: SkeletonNode): string {
   const cls: string[] = [];
-  if (node.layout) {
+  if (node.layout?.gridCols) {
+    const colsValue = node.layout.gridCols.replace(/ /g, "_");
+    cls.push("grid", `grid-cols-[${colsValue}]`);
+    if (node.layout.gap !== undefined) {
+      cls.push(`gap-[${node.layout.gap}px]`);
+    }
+    cls.push(...alignmentClasses(node.layout));
+  } else if (node.layout) {
     cls.push("flex");
     cls.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
     if (node.layout.gap !== undefined) {
       cls.push(`gap-[${node.layout.gap}px]`);
     }
+    cls.push(...alignmentClasses(node.layout));
   } else if (node.children && node.children.length > 0) {
     cls.push("flex", "flex-col", `gap-[${DEFAULT_CONTAINER_GAP}px]`);
   }
-  cls.push(...alignmentClasses(node.layout));
   cls.push(...dimensionClasses(node));
   cls.push(...paddingClasses(node.padding));
   return cls.join(" ").trim();

@@ -89,6 +89,13 @@ export type SkeletonNode = {
     alignItems?: Alignment;
     justifyContent?: Justify;
     wrap?: boolean;
+    /**
+     * CSS `grid-template-columns` value pushed onto table rows by the
+     * table-grid detector. When present, the renderer and exporter emit
+     * `display: grid` instead of `flex flex-row` so column widths align
+     * across every row in the table.
+     */
+    gridCols?: string;
   };
   padding?: Padding;
   appearance?: Appearance;

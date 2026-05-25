@@ -115,9 +115,10 @@ function isSurfaceWrapper(node: SkeletonNode): boolean {
 }
 
 /**
- * Style a structural container. Honours explicit layout from class hints, and
- * falls back to a vertical stack with a comfortable gap when children exist
- * without any flex/gap directive — prevents children from stacking edge-to-edge.
+ * Style a structural container. Prefers CSS grid when the table-grid detector
+ * stamped a `gridCols` template on the layout; otherwise uses flex with
+ * explicit or default gap. Falls back to a vertical stack with a comfortable
+ * gap when children exist without any flex/gap directive.
  */
 function containerStyles(
   node: SkeletonNode,
@@ -125,15 +126,20 @@ function containerStyles(
   const classes: string[] = [];
   const style: CSSProperties = {};
 
-  if (node.layout) {
+  if (node.layout?.gridCols) {
+    classes.push("grid");
+    style.gridTemplateColumns = node.layout.gridCols;
+    if (node.layout.gap !== undefined) style.gap = node.layout.gap;
+    applyFlexLayout(style, node.layout);
+  } else if (node.layout) {
     classes.push("flex");
     classes.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
     if (node.layout.gap !== undefined) style.gap = node.layout.gap;
+    applyFlexLayout(style, node.layout);
   } else if (node.children && node.children.length > 0) {
     classes.push("flex", "flex-col");
     style.gap = DEFAULT_CONTAINER_GAP;
   }
-  applyFlexLayout(style, node.layout);
 
   if (node.width === "full") style.width = "100%";
   else if (typeof node.width === "number") style.width = node.width;
