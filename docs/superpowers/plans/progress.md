@@ -1,6 +1,6 @@
 # Skeleton Generator — Progress Log
 
-> Live status of features shipped. Updated 2026-05-25.
+> Live status of features shipped. Updated 2026-05-26.
 
 ---
 
@@ -15,15 +15,15 @@
 │ PASTE JSX                │ LIVE PREVIEW                      │ container · <div>│
 │ ┌──────────────────────┐ │ ┌───────────────────────────────┐ │                  │
 │ │ 1  export default …  │ │ │ ╭───────────────────────╮     │ │ Kind             │
-│ │ 2    return (        │ │ │ │ 🟦🟦🟦  (avatar bar)  │     │ │ [Container ▾]    │
+│ │ 2    return (        │ │ │ │ 🟦🟦🟦  (avatar bar)  │←──→│ │ [Container ▾]    │
 │ │ 3      <Card …>      │ │ │ │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓     │     │ │                  │
-│ │ 4        <CardHeader>│ │ │ │ ▓▓▓▓▓▓                │     │ │ Appearance       │
+│ │ 4        <CardHeader>│ │ │ │ ▓▓▓▓▓▓    ↕           │     │ │ Appearance       │
 │ │ 5  …                 │ │ │ │ [ Read More ]         │     │ │ [Card ▾]         │
 │ │ ⛳ line:col error     │ │ │ ╰───────────────────────╯     │ │                  │
-│ │                      │ │ │                               │ │ Width  [ 320 ]   │
+│ │                      │ │ │                               │ │ Width ↔ [ 320 ] │
 │ └──────────────────────┘ │ │  (selects highlight in green) │ │ ☐ Full width     │
-│ [ ✨ Generate Skeleton ] │ │                               │ │ Height [ ___ ]   │
-│                          │ └───────────────────────────────┘ │ Radius [ 12 ]    │
+│ [ ✨ Generate Skeleton ] │ │                               │ │ Height↔ [ ___ ] │
+│                          │ └───────────────────────────────┘ │ Radius↔[ 12 ]   │
 │                          │                                   │ Archetype        │
 │                          │                                   │ media-object     │
 │                          │                                   │ ──── Layout ──── │
@@ -267,11 +267,61 @@ Every IR field manually overridable. Mutations flow through `patchNode` →
 
 Preset picker sets animation + speed + baseColor in one click. Individual dropdowns still available for fine-tuning — shows "Custom" when settings diverge.
 
+### ↔️ Drag-to-resize handles (`components/resize-overlay.tsx`, `hooks/use-element-rect.ts`)
+
+Two invisible drag handles appear on hover over the selected skeleton element:
+
+- **Right edge** (↔ `ew-resize`) — drags width. Min 8px.
+- **Bottom edge** (↕ `ns-resize`) — drags height. Min 4px. Hidden for paragraph nodes (height = line count).
+
+How it works:
+
+1. `ResizeOverlay` subscribes to `selectedId` and renders an absolutely-positioned `<div>` over the selected element.
+2. `useElementRect` tracks the element's position relative to the scrollable container via `getBoundingClientRect` + `ResizeObserver` + scroll listener.
+3. Each `Handle` component uses **Pointer Events** (`onPointerDown`/`onPointerMove`/`onPointerUp`) with `setPointerCapture` for smooth tracking even when the cursor leaves the narrow 6px handle strip.
+4. **Drag start**: resolves the starting dimension (measures DOM if IR value is `"full"` or `undefined`), then calls `pushSnapshot()` once — the entire drag is one undoable action.
+5. **Drag move**: computes pixel delta from start, clamps to minimum, calls `patchNodeQuiet(id, { width/height })` — silent IR patch, no history push. Live preview updates immediately.
+6. **Drag end**: releases pointer capture, nulls drag ref.
+7. Dynamic dimensions flow through `blockStyles()` → inline CSS (Tailwind can't scan runtime-built `w-[42px]` class names).
+
+Handles are `opacity-0` by default, fade to `bg-primary/40` on hover with `transition-opacity`.
+
+### 🔢 Scrubbable number inputs (`components/properties-panel.tsx`)
+
+Width, Height, Radius, Gap, Padding, and Repeat fields support click-and-drag scrubbing:
+
+- Click and hold a number input label, then drag horizontally to increment/decrement.
+- Follows the same `pushSnapshot` + `patchNodeQuiet` pattern as resize handles — one undo entry per scrub gesture.
+- Step size adapts to context: ±1px per pixel dragged for most fields.
+- Works alongside direct keyboard input — click to type, click-and-drag to scrub.
+
+### ↩️ Undo/Redo (`store/use-skeleton-store.ts`)
+
+Full undo/redo with configurable history depth (`MAX_HISTORY = 50`):
+
+- **`pushSnapshot()`** — pushes current tree onto history stack (called at drag/scrub start).
+- **`patchNodeQuiet()`** — mutates tree without touching history (called during drag/scrub movement).
+- **`patchNode()`** — mutates tree AND pushes history (called for direct property panel edits like dropdown selects).
+- **`undo()`** / **`redo()`** — walk the history/future stacks, swapping the current tree.
+- `future` stack is cleared whenever a new mutation occurs (no branching history).
+- Bound to `Cmd+Z` / `Cmd+Shift+Z` via `hooks/use-keyboard-shortcuts.ts`.
+
+### 📝 Code documentation
+
+The drag-to-resize pipeline now carries flow comments across all involved files so a programmer can trace the data flow end-to-end:
+
+- `resize-overlay.tsx` — section headers for DRAG START/MOVE/END, comments on pointer capture, "full" → pixel anchoring, and why only one snapshot is pushed.
+- `use-element-rect.ts` — position calculation comment explaining `scrollLeft`/`scrollTop` offset.
+- `skeleton-renderer.tsx` — inline-style + `data-skeleton-id` bridge comment.
+- `preview-canvas.tsx` — overlay mounting comment.
+- `use-skeleton-store.ts` — `patchNode` (loud), `patchNodeQuiet` (silent), and `pushSnapshot` (drag start) distinguished with comments.
+- `runtime-styles.ts` — dynamic dimension path comment linking drag-to-resize → inline styles.
+
 ### 🧪 Tests
 
 ```
-Test Files:  13 passed
-Tests:       283 passed
+Test Files:  14 passed
+Tests:       300 passed
 ```
 
 Coverage spread across:
@@ -319,11 +369,16 @@ components/
 ├── global-controls.tsx        ← preset picker + animation/speed/baseColor selects
 ├── paste-input.tsx            ← CodeEditor + Generate button
 ├── preview-canvas.tsx
-├── properties-panel.tsx       ← Kind/Appearance/Layout/Padding controls
+├── properties-panel.tsx       ← Kind/Appearance/Layout/Padding controls + scrubbable inputs
+├── resize-overlay.tsx         ← Drag handles over selected element (Handle component)
 ├── skeleton-renderer.tsx      ← Node orchestrator + SingleNode + repeat variance
 ├── theme-provider.tsx
 ├── theme-toggle.tsx
 └── ui/                        ← shadcn primitives
+hooks/
+├── use-element-rect.ts        ← Tracks selected element position via ResizeObserver + scroll
+├── use-keyboard-shortcuts.ts  ← Cmd+Z / Cmd+Shift+Z undo/redo + arrow key dimension nudges
+└── use-scrubbable.ts          ← Click-and-drag number input scrubbing
 lib/
 ├── examples/snippets.ts       ← 3 curated JSX snippets
 ├── exporters/
@@ -368,8 +423,10 @@ store/
 2. Parser extracts AST → RawNode → SkeletonNode tree.
 3. Post-classify passes: archetype detection → table grid inference → repeat variance.
 4. Preview canvas renders tree via runtime-styles (flex or grid).
-5. User clicks any block → properties panel reveals all editable fields.
-6. Mutations re-render preview live (Zustand store + immutable IR).
-7. Export modal generates clean React or HTML code matching the preview (with variance).
-8. Preset picker applies named animation/speed/color bundles in one click.
-9. Auto-save to localStorage; rehydrate parses on load.
+5. User clicks any block → properties panel reveals all editable fields + resize handles appear on hover.
+6. **Drag handles** (right edge for width, bottom edge for height) or **scrub inputs** (click-and-drag number labels) for fine-grained dimension adjustment.
+7. Mutations re-render preview live (Zustand store + immutable IR).
+8. **Undo/Redo** (Cmd+Z / Cmd+Shift+Z) reverts edits — drag/scrub gestures count as one undo step.
+9. Export modal generates clean React or HTML code matching the preview (with variance).
+10. Preset picker applies named animation/speed/color bundles in one click.
+11. Auto-save to localStorage; rehydrate parses on load.

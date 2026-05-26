@@ -1,5 +1,4 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
-import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
 import { SHIMMER_KEYFRAMES, blockClasses } from "./format-classes";
 
 /**
@@ -19,9 +18,8 @@ export function exportReact(
 }
 
 /**
- * Render a node N times when `repeat > 1` with per-copy width variance so
- * exported skeletons mirror the preview's natural raggedness. Copy 0 is the
- * prototype; copies 1+ get staggered text widths.
+ * Emit `.map()` expression for repeated nodes, or a single node when
+ * repeat <= 1. Produces `{Array.from({ length: N }, (_, i) => (...))}`.
  */
 function renderNodeOrRepeat(
   node: SkeletonNode,
@@ -30,24 +28,32 @@ function renderNodeOrRepeat(
 ): string {
   const repeat = node.repeat ?? 1;
   if (repeat <= 1) return renderNode(node, settings, indent);
+
+  const pad = " ".repeat(indent);
   const base = { ...node, repeat: undefined };
-  return Array.from({ length: repeat }, (_, i) =>
-    renderNode(applyRepeatVariance(base, i), settings, indent),
-  ).join("\n");
+  const inner = renderNode(base, settings, indent + 2, "i");
+
+  return [
+    `${pad}{Array.from({ length: ${repeat} }, (_, i) => (`,
+    inner,
+    `${pad}))}`,
+  ].join("\n");
 }
 
 /**
  * Recursively emit JSX for one skeleton node. Hidden nodes drop out. Paragraph
  * nodes expand into stacked text lines; other nodes emit as div containers
- * with Tailwind classes from blockClasses.
+ * with Tailwind classes from blockClasses. Optional keyExpr adds key={expr}.
  */
 function renderNode(
   node: SkeletonNode,
   settings: GlobalSettings,
   indent: number,
+  keyExpr?: string,
 ): string {
   if (!node.visible) return "";
   const pad = " ".repeat(indent);
+  const keyAttr = keyExpr ? ` key={${keyExpr}}` : "";
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
@@ -56,7 +62,7 @@ function renderNode(
       { length: lines },
       () => `${pad}  <div className="${lineCls}" />`,
     ).join("\n");
-    return `${pad}<div className="flex flex-col gap-2">\n${linesJsx}\n${pad}</div>`;
+    return `${pad}<div${keyAttr} className="flex flex-col gap-2">\n${linesJsx}\n${pad}</div>`;
   }
 
   const cls = blockClasses(node, settings);
@@ -65,7 +71,7 @@ function renderNode(
     .filter(Boolean);
 
   if (childTags.length === 0) {
-    return `${pad}<div className="${cls}" />`;
+    return `${pad}<div${keyAttr} className="${cls}" />`;
   }
-  return `${pad}<div className="${cls}">\n${childTags.join("\n")}\n${pad}</div>`;
+  return `${pad}<div${keyAttr} className="${cls}">\n${childTags.join("\n")}\n${pad}</div>`;
 }
