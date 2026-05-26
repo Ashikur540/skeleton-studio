@@ -1,8 +1,10 @@
 "use client";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
+import { formatSource } from "@/lib/format-source";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { CodeEditor } from "./code-editor";
+import { useCallback, useState } from "react";
 
 /**
  * Left-pane code editor where the user pastes JSX source, plus the Generate
@@ -15,6 +17,15 @@ export function PasteInput() {
   const error = useSkeletonStore((s) => s.error);
   const setSource = useSkeletonStore((s) => s.setSource);
   const parseNow = useSkeletonStore((s) => s.parseNow);
+  const [formatting, setFormatting] = useState(false);
+
+  const handleFormat = useCallback(async () => {
+    if (!source.trim() || formatting) return;
+    setFormatting(true);
+    const formatted = await formatSource(source);
+    setSource(formatted);
+    setFormatting(false);
+  }, [source, formatting, setSource]);
 
   return (
     <div className="flex flex-col gap-2 h-full">
@@ -31,6 +42,9 @@ export function PasteInput() {
       </div>
       <div className="flex items-center gap-3">
         <Button onClick={() => parseNow()}>Generate Skeleton</Button>
+        <Button variant="outline" size="sm" onClick={handleFormat} disabled={formatting || !source.trim()}>
+          {formatting ? "Formatting…" : "Format"}
+        </Button>
         {error && (
           <span className="text-sm text-destructive">
             {error.kind === "syntax-error" && "Syntax error: "}
