@@ -1,5 +1,5 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
-import { SHIMMER_KEYFRAMES, blockClasses } from "./format-classes";
+import { SHIMMER_KEYFRAMES, blockClasses, paddingClasses } from "./format-classes";
 
 /**
  * Convert a skeleton IR tree + settings into a complete React function component
@@ -57,12 +57,13 @@ function renderNode(
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
-    const lineCls = blockClasses({ ...node, kind: "text" }, settings);
+    const lineCls = blockClasses({ ...node, kind: "text", padding: undefined }, settings);
+    const wrapCls = ["flex flex-col gap-2", ...paddingClasses(node.padding)].join(" ");
     const linesJsx = Array.from(
       { length: lines },
       () => `${pad}  <div className="${lineCls}" />`,
     ).join("\n");
-    return `${pad}<div${keyAttr} className="flex flex-col gap-2">\n${linesJsx}\n${pad}</div>`;
+    return `${pad}<div${keyAttr} className="${wrapCls}">\n${linesJsx}\n${pad}</div>`;
   }
 
   const cls = blockClasses(node, settings);

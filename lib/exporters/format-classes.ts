@@ -183,7 +183,7 @@ function fillClasses(node: SkeletonNode, settings: GlobalSettings): string {
  * produce classes; explicit zeros render as `pt-[0px]` so they can override
  * any wrapper default the consumer might be merging in.
  */
-function paddingClasses(p: Padding | undefined): string[] {
+export function paddingClasses(p: Padding | undefined): string[] {
   if (!p) return [];
   const out: string[] = [];
   if (p.top !== undefined) out.push(sp("pt", p.top));

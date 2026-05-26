@@ -90,11 +90,16 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
-    const base = blockStyles({ ...node, kind: "text" }, settings);
+    const base = blockStyles({ ...node, kind: "text", padding: undefined }, settings);
     const baseWidth =
       typeof node.width === "number" ? node.width : undefined;
+    const wrapperStyle: React.CSSProperties = {};
+    if (node.padding?.top !== undefined) wrapperStyle.paddingTop = node.padding.top;
+    if (node.padding?.right !== undefined) wrapperStyle.paddingRight = node.padding.right;
+    if (node.padding?.bottom !== undefined) wrapperStyle.paddingBottom = node.padding.bottom;
+    if (node.padding?.left !== undefined) wrapperStyle.paddingLeft = node.padding.left;
     return (
-      <div data-skeleton-id={selectId} className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
+      <div data-skeleton-id={selectId} className={`flex flex-col gap-2${ring}`} style={wrapperStyle} onClick={handleClick}>
         {Array.from({ length: lines }, (_, i) => {
           const isShortenedLast = i === lines - 1 && lines > 1;
           const lineStyle =

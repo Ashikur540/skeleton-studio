@@ -1,6 +1,6 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
 import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
-import { SHIMMER_KEYFRAMES, blockClasses } from "./format-classes";
+import { SHIMMER_KEYFRAMES, blockClasses, paddingClasses } from "./format-classes";
 
 /**
  * Convert a skeleton IR tree + settings into a complete HTML + Tailwind string.
@@ -50,12 +50,13 @@ function renderNode(
 
   if (node.kind === "paragraph") {
     const lines = node.lineCount ?? 1;
-    const lineCls = blockClasses({ ...node, kind: "text" }, settings);
+    const lineCls = blockClasses({ ...node, kind: "text", padding: undefined }, settings);
+    const wrapCls = ["flex flex-col gap-2", ...paddingClasses(node.padding)].join(" ");
     const linesHtml = Array.from(
       { length: lines },
       () => `${pad}  <div class="${lineCls}"></div>`,
     ).join("\n");
-    return `${pad}<div class="flex flex-col gap-2">\n${linesHtml}\n${pad}</div>`;
+    return `${pad}<div class="${wrapCls}">\n${linesHtml}\n${pad}</div>`;
   }
 
   const cls = blockClasses(node, settings);
