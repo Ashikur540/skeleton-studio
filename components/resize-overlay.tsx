@@ -27,9 +27,12 @@ export function ResizeOverlay({
 
   if (!rect || !node) return null;
 
+  // Paragraphs can only be resized horizontally — height is driven by line count.
   const isParagraph = node.kind === "paragraph";
 
   return (
+    /* Outer div sits exactly over the selected element but passes clicks through.
+       Only the child Handle components intercept pointer events. */
     <div
       style={{
         position: "absolute",
@@ -80,11 +83,16 @@ function Handle({
   const pushSnapshot = useSkeletonStore((s) => s.pushSnapshot);
   const patchNodeQuiet = useSkeletonStore((s) => s.patchNodeQuiet);
 
+  /* Local drag state: snapshot of the pointer position and node dimension
+     at the moment the user pressed down. Null means no active drag. */
   const dragRef = useRef<{
     startPos: number;
     startValue: number;
   } | null>(null);
 
+  /* ── DRAG START ──────────────────────────────────────────────────────
+     Captures the pointer, resolves the starting dimension (measuring the
+     DOM if the IR value is "full"/undefined), and pushes one undo snapshot. */
   const onPointerDown = useCallback(
     (e: PointerEvent) => {
       e.preventDefault();
@@ -93,8 +101,11 @@ function Handle({
 
       let startValue: number;
       if (typeof nodeValue === "number") {
+        // Already a concrete pixel value in the IR — use it directly.
         startValue = nodeValue;
       } else {
+        /* "full" or undefined — measure the actual rendered DOM element,
+           then anchor the value into the IR so future drags start from here. */
         const el = containerRef.current?.querySelector(
           `[data-skeleton-id="${nodeId}"]`,
         );
@@ -108,6 +119,7 @@ function Handle({
         });
       }
 
+      // One history entry for the entire drag gesture — undo reverts to pre-drag.
       pushSnapshot();
       dragRef.current = {
         startPos: axis === "x" ? e.clientX : e.clientY,
@@ -117,6 +129,10 @@ function Handle({
     [axis, nodeId, nodeValue, pushSnapshot, patchNodeQuiet, containerRef],
   );
 
+  /* ── DRAG MOVE ───────────────────────────────────────────────────────
+     Computes the pixel delta from drag start, clamps to minimum, then
+     silently patches the IR — no history push so intermediate values don't
+     clutter the undo stack. */
   const onPointerMove = useCallback(
     (e: PointerEvent) => {
       if (!dragRef.current) return;
@@ -131,6 +147,9 @@ function Handle({
     [axis, nodeId, patchNodeQuiet],
   );
 
+  /* ── DRAG END ────────────────────────────────────────────────────────
+     Releases pointer capture and clears the drag ref. No snapshot needed
+     here — it was already pushed at drag start. */
   const onPointerUp = useCallback(
     (e: PointerEvent) => {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);

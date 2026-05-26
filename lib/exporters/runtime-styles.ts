@@ -141,6 +141,9 @@ function containerStyles(
     style.gap = DEFAULT_CONTAINER_GAP;
   }
 
+  /* Dynamic dimension — bypasses Tailwind and lands as inline style.
+     This is the path drag-to-resize writes through: patchNodeQuiet sets
+     a numeric width, which blockStyles emits here. */
   if (node.width === "full") style.width = "100%";
   else if (typeof node.width === "number") style.width = node.width;
   if (typeof node.height === "number") style.height = node.height;

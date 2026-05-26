@@ -37,6 +37,8 @@ export function PreviewCanvas() {
           Paste a component to see its skeleton.
         </div>
       )}
+      {/* Resize handles are drawn as an overlay on top of the skeleton.
+          They are invisible until hovering near a selected element's edge. */}
       <ResizeOverlay containerRef={containerRef} />
     </div>
   );

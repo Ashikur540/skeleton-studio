@@ -73,6 +73,10 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   if (!node.visible) return null;
   const { className, style } = blockStyles(node, settings);
   const isSelected = selectedId === node.id;
+  /* Applies inline width/height from drag-to-resize (Tailwind can't scan
+     runtime-built class names like `w-[42px]`). The visual ring and
+     data-skeleton-id attribute on rendered elements bridge the DOM back
+     to ResizeOverlay for handle positioning. */
   const ring = isSelected ? " ring-2 ring-primary" : "";
   const lowConfidence =
     node.confidence === "fallback" && node.kind !== "container"

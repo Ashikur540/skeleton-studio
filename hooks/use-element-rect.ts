@@ -28,6 +28,8 @@ export function useElementRect(
     }
     const cRect = container.getBoundingClientRect();
     const eRect = el.getBoundingClientRect();
+    /* Compute position relative to the scrollable container so handles
+       stay glued during scroll — scrollLeft/Top account for offset. */
     setRect({
       x: eRect.left - cRect.left + container.scrollLeft,
       y: eRect.top - cRect.top + container.scrollTop,

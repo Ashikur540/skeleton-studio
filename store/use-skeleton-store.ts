@@ -84,6 +84,8 @@ export const useSkeletonStore = create<State & Actions>()(
 
       selectNode: (id) => set({ selectedId: id }),
 
+      /* Direct edits from the properties panel — each change pushes to
+         history so undo steps match individual field edits. */
       patchNode: (id, patch) => {
         const { tree, history } = get();
         if (!tree) return;
@@ -97,12 +99,16 @@ export const useSkeletonStore = create<State & Actions>()(
         });
       },
 
+      /* Called every frame during drag — mutates the IR without touching
+         history, so intermediate values don't clutter the undo stack. */
       patchNodeQuiet: (id, patch) => {
         const { tree } = get();
         if (!tree) return;
         set({ tree: mutateNode(tree, id, patch) });
       },
 
+      /* Called once at drag start. Pushes the current tree onto history so
+         the entire drag gesture can be undone in one step. */
       pushSnapshot: () => {
         const { tree, history } = get();
         if (!tree) return;
