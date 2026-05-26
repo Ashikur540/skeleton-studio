@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { exportHTML } from "@/lib/exporters/html-tailwind";
 import { exportReact } from "@/lib/exporters/react-tailwind";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 type Tab = "react" | "html";
 
@@ -37,10 +37,15 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
   }, [tree, settings]);
 
   const output = tab === "react" ? reactOutput : htmlOutput;
+  const [copied, setCopied] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const copy = async () => {
+  const copy = useCallback(async () => {
     await navigator.clipboard.writeText(output);
-  };
+    setCopied(true);
+    clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => setCopied(false), 2000);
+  }, [output]);
 
   return (
     <Dialog open={true} onOpenChange={(v) => !v && onClose()}>
@@ -90,7 +95,7 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
         </Tabs>
         <DialogFooter>
           <Button onClick={copy} disabled={!output}>
-            Copy
+            {copied ? "Copied!" : "Copy"}
           </Button>
         </DialogFooter>
       </DialogContent>

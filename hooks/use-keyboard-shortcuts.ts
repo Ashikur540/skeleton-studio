@@ -86,12 +86,17 @@ function isInsideCodeMirror(target: EventTarget | null): boolean {
 }
 
 /**
- * True when focus is inside an input, textarea, select, or CodeMirror.
- * Node shortcuts (delete, arrows) must not fire when user is typing values.
+ * True when focus is inside an input, textarea, select, CodeMirror, or an
+ * open Radix popover/listbox. Node shortcuts (delete, arrows) must not
+ * fire when user is interacting with form controls or dropdown menus.
  */
 function isInsideInput(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) return false;
   if (target.closest(".cm-editor")) return true;
   const tag = target.tagName.toLowerCase();
-  return tag === "input" || tag === "textarea" || tag === "select";
+  if (tag === "input" || tag === "textarea" || tag === "select") return true;
+  const role = target.getAttribute("role");
+  if (role === "combobox" || role === "listbox" || role === "option") return true;
+  if (target.closest("[role=listbox]") || target.closest("[role=dialog]")) return true;
+  return false;
 }
