@@ -24,7 +24,7 @@ describe("blockClasses", () => {
     expect(cls).toContain("bg-zinc-200");
     expect(cls).toContain("animate-pulse");
     expect(cls).toContain("w-[100px]");
-    expect(cls).toContain("h-[20px]");
+    expect(cls).toContain("h-5");
   });
 
   it("uses w-full when width === 'full'", () => {
@@ -40,7 +40,7 @@ describe("blockClasses", () => {
 
   it("emits arbitrary radius otherwise", () => {
     const cls = blockClasses(node({ width: 40, height: 40, radius: 12 }), settings);
-    expect(cls).toContain("rounded-[12px]");
+    expect(cls).toContain("rounded-xl");
   });
 
   it("emits shimmer classes when animation is shimmer", () => {
@@ -59,7 +59,7 @@ describe("blockClasses", () => {
     );
     expect(cls).toContain("flex");
     expect(cls).toContain("flex-row");
-    expect(cls).toContain("gap-[12px]");
+    expect(cls).toContain("gap-3");
     expect(cls).not.toContain("animate-pulse");
     expect(cls).not.toContain("bg-zinc-200");
   });
@@ -84,10 +84,10 @@ describe("blockClasses", () => {
       }),
       settings,
     );
-    expect(cls).toContain("pt-[12px]");
-    expect(cls).toContain("pl-[24px]");
-    expect(cls).toContain("pr-[24px]");
-    expect(cls).not.toContain("pb-[");
+    expect(cls).toContain("pt-3");
+    expect(cls).toContain("pl-6");
+    expect(cls).toContain("pr-6");
+    expect(cls).not.toContain("pb-");
   });
 
   it("emits per-side padding on container nodes", () => {
@@ -99,7 +99,7 @@ describe("blockClasses", () => {
       }),
       settings,
     );
-    expect(cls).toContain("pb-[16px]");
+    expect(cls).toContain("pb-4");
   });
 
   it("emits alignment + wrap classes from container layout", () => {
@@ -133,8 +133,8 @@ describe("blockClasses", () => {
     );
     expect(cls).toContain("ring-1");
     expect(cls).toContain("flex-col");
-    expect(cls).toContain("pt-[16px]");
-    expect(cls).toContain("rounded-[16px]");
+    expect(cls).toContain("pt-4");
+    expect(cls).toContain("rounded-2xl");
     expect(cls).not.toContain("animate-pulse");
   });
 
@@ -149,7 +149,7 @@ describe("blockClasses", () => {
       settings,
     );
     expect(cls).toContain("ring-1");
-    expect(cls).toContain("rounded-[12px]");
+    expect(cls).toContain("rounded-xl");
   });
 
   it("surface wrapper honors explicit per-side padding over default", () => {
@@ -161,7 +161,7 @@ describe("blockClasses", () => {
       }),
       settings,
     );
-    expect(cls).toContain("pb-[0px]");
-    expect(cls).toContain("pt-[16px]");
+    expect(cls).toContain("pb-0");
+    expect(cls).toContain("pt-4");
   });
 });

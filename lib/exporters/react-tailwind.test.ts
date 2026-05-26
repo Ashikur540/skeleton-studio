@@ -38,7 +38,7 @@ describe("exportReact", () => {
     };
     const out = exportReact(tree, settings);
     expect(out).toContain("flex-col");
-    expect(out).toContain("gap-[12px]");
+    expect(out).toContain("gap-3");
     // two leaves
     expect(out.match(/w-\[100px\]/g)?.length).toBe(2);
   });
@@ -70,7 +70,7 @@ describe("exportReact", () => {
       lineCount: 3,
     };
     const out = exportReact(para, settings);
-    expect(out.match(/h-\[12px\]/g)?.length).toBe(3);
+    expect(out.match(/h-3(?=[ "])/g)?.length).toBe(3);
   });
 
   it("prepends shimmer keyframes when animation is shimmer", () => {
@@ -109,6 +109,6 @@ describe("exportReact", () => {
     };
     const out = exportReact(tree, settings);
     expect(out).toContain("ring-1");
-    expect(out).toContain("rounded-[16px]");
+    expect(out).toContain("rounded-2xl");
   });
 });

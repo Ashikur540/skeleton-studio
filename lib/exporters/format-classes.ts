@@ -33,6 +33,33 @@ const CARD_WRAPPER_PADDING = 16;
 /** Default gap inside a card-like surface wrapper. */
 const CARD_WRAPPER_GAP = 12;
 
+/**
+ * Tailwind spacing scale: px value → class suffix. Values not in this map
+ * fall back to arbitrary `[Npx]` notation.
+ */
+const SPACING: Record<number, string> = {
+  0: "0", 1: "px", 2: "0.5", 4: "1", 6: "1.5", 8: "2", 10: "2.5",
+  12: "3", 14: "3.5", 16: "4", 20: "5", 24: "6", 28: "7", 32: "8",
+  36: "9", 40: "10", 44: "11", 48: "12", 56: "14", 64: "16", 80: "20",
+  96: "24", 112: "28", 128: "32", 144: "36", 160: "40", 176: "44",
+  192: "48", 208: "52", 224: "56", 240: "60", 256: "64", 288: "72",
+  320: "80", 384: "96",
+};
+
+/**
+ * Tailwind border-radius scale: px value → full class.
+ */
+const RADIUS: Record<number, string> = {
+  0: "rounded-none", 2: "rounded-sm", 4: "rounded", 6: "rounded-md",
+  8: "rounded-lg", 12: "rounded-xl", 16: "rounded-2xl", 24: "rounded-3xl",
+};
+
+/** Emit a spacing utility like `gap-2` or `gap-[7px]`. */
+function sp(prefix: string, px: number): string {
+  const native = SPACING[px];
+  return native !== undefined ? `${prefix}-${native}` : `${prefix}-[${px}px]`;
+}
+
 const ALIGN_CLS: Record<Alignment, string> = {
   start: "items-start",
   end: "items-end",
@@ -86,7 +113,7 @@ function isSurfaceWrapper(node: SkeletonNode): boolean {
 function surfaceClasses(node: SkeletonNode): string {
   const dir = node.layout?.direction === "row" ? "flex-row" : "flex-col";
   const gap = node.layout?.gap ?? CARD_WRAPPER_GAP;
-  const cls = ["flex", dir, "ring-1", "ring-foreground/10", `gap-[${gap}px]`];
+  const cls = ["flex", dir, "ring-1", "ring-foreground/10", sp("gap", gap)];
   pushSurfacePadding(cls, node.padding);
   cls.push(...dimensionClasses(node));
   pushRadius(cls, node);
@@ -106,18 +133,18 @@ function containerClasses(node: SkeletonNode): string {
     const colsValue = node.layout.gridCols.replace(/ /g, "_");
     cls.push("grid", `grid-cols-[${colsValue}]`);
     if (node.layout.gap !== undefined) {
-      cls.push(`gap-[${node.layout.gap}px]`);
+      cls.push(sp("gap", node.layout.gap));
     }
     cls.push(...alignmentClasses(node.layout));
   } else if (node.layout) {
     cls.push("flex");
     cls.push(node.layout.direction === "row" ? "flex-row" : "flex-col");
     if (node.layout.gap !== undefined) {
-      cls.push(`gap-[${node.layout.gap}px]`);
+      cls.push(sp("gap", node.layout.gap));
     }
     cls.push(...alignmentClasses(node.layout));
   } else if (node.children && node.children.length > 0) {
-    cls.push("flex", "flex-col", `gap-[${DEFAULT_CONTAINER_GAP}px]`);
+    cls.push("flex", "flex-col", sp("gap", DEFAULT_CONTAINER_GAP));
   }
   cls.push(...dimensionClasses(node));
   cls.push(...paddingClasses(node.padding));
@@ -159,10 +186,10 @@ function fillClasses(node: SkeletonNode, settings: GlobalSettings): string {
 function paddingClasses(p: Padding | undefined): string[] {
   if (!p) return [];
   const out: string[] = [];
-  if (p.top !== undefined) out.push(`pt-[${p.top}px]`);
-  if (p.right !== undefined) out.push(`pr-[${p.right}px]`);
-  if (p.bottom !== undefined) out.push(`pb-[${p.bottom}px]`);
-  if (p.left !== undefined) out.push(`pl-[${p.left}px]`);
+  if (p.top !== undefined) out.push(sp("pt", p.top));
+  if (p.right !== undefined) out.push(sp("pr", p.right));
+  if (p.bottom !== undefined) out.push(sp("pb", p.bottom));
+  if (p.left !== undefined) out.push(sp("pl", p.left));
   return out;
 }
 
@@ -173,10 +200,10 @@ function paddingClasses(p: Padding | undefined): string[] {
  * included), whereas plain containers/fills only emit explicitly-set sides.
  */
 function pushSurfacePadding(cls: string[], p: Padding | undefined): void {
-  cls.push(`pt-[${p?.top ?? CARD_WRAPPER_PADDING}px]`);
-  cls.push(`pr-[${p?.right ?? CARD_WRAPPER_PADDING}px]`);
-  cls.push(`pb-[${p?.bottom ?? CARD_WRAPPER_PADDING}px]`);
-  cls.push(`pl-[${p?.left ?? CARD_WRAPPER_PADDING}px]`);
+  cls.push(sp("pt", p?.top ?? CARD_WRAPPER_PADDING));
+  cls.push(sp("pr", p?.right ?? CARD_WRAPPER_PADDING));
+  cls.push(sp("pb", p?.bottom ?? CARD_WRAPPER_PADDING));
+  cls.push(sp("pl", p?.left ?? CARD_WRAPPER_PADDING));
 }
 
 /**
@@ -187,8 +214,8 @@ function pushSurfacePadding(cls: string[], p: Padding | undefined): void {
 function dimensionClasses(node: SkeletonNode): string[] {
   const out: string[] = [];
   if (node.width === "full") out.push("w-full");
-  else if (typeof node.width === "number") out.push(`w-[${node.width}px]`);
-  if (typeof node.height === "number") out.push(`h-[${node.height}px]`);
+  else if (typeof node.width === "number") out.push(sp("w", node.width));
+  if (typeof node.height === "number") out.push(sp("h", node.height));
   return out;
 }
 
@@ -198,9 +225,9 @@ function dimensionClasses(node: SkeletonNode): string[] {
  */
 function pushRadius(cls: string[], node: SkeletonNode): void {
   if (typeof node.radius !== "number") return;
-  cls.push(
-    node.radius >= 9999 ? "rounded-full" : `rounded-[${node.radius}px]`,
-  );
+  if (node.radius >= 9999) { cls.push("rounded-full"); return; }
+  const native = RADIUS[node.radius];
+  cls.push(native ?? `rounded-[${node.radius}px]`);
 }
 
 /**

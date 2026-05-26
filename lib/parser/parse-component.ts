@@ -22,6 +22,7 @@ import type { ParseResult } from "@/lib/ir/types";
 import { detectArchetypes } from "./archetype-detector";
 import { toRawNode } from "./raw-node";
 import { classify } from "./semantic-classifier";
+import { detectSiblingRepeat } from "./sibling-repeat";
 import { detectTableGrid } from "./table-grid";
 
 /**
@@ -83,6 +84,7 @@ export function parseComponent(source: string): ParseResult {
   }
   detectArchetypes(tree);
   detectTableGrid(tree);
+  detectSiblingRepeat(tree);
   return { ok: true, tree };
 }
 

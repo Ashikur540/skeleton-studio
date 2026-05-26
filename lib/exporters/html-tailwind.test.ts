@@ -35,7 +35,7 @@ describe("exportHTML", () => {
     };
     const out = exportHTML(tree, settings);
     expect(out).toContain("flex-row");
-    expect(out).toContain("gap-[8px]");
+    expect(out).toContain("gap-2");
     expect(out.match(/w-\[100px\]/g)?.length).toBe(2);
   });
 
@@ -58,7 +58,7 @@ describe("exportHTML", () => {
       width: "full", height: 12, lineCount: 4,
     };
     const out = exportHTML(para, settings);
-    expect(out.match(/h-\[12px\]/g)?.length).toBe(4);
+    expect(out.match(/h-3(?=[ "])/g)?.length).toBe(4);
   });
 
   it("prepends a <style> block when animation is shimmer", () => {
@@ -93,6 +93,6 @@ describe("exportHTML", () => {
     };
     const out = exportHTML(tree, settings);
     expect(out).toContain("ring-1");
-    expect(out).toContain("rounded-[12px]");
+    expect(out).toContain("rounded-xl");
   });
 });

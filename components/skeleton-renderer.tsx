@@ -72,11 +72,11 @@ function lastLineFactor(id: string): number {
 function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   if (!node.visible) return null;
   const { className, style } = blockStyles(node, settings);
-  const isSelected = selectedId === node.id;
-  /* Applies inline width/height from drag-to-resize (Tailwind can't scan
-     runtime-built class names like `w-[42px]`). The visual ring and
-     data-skeleton-id attribute on rendered elements bridge the DOM back
-     to ResizeOverlay for handle positioning. */
+  // Repeat-variance mangles paragraph IDs (e.g. "n_5_abc_r2") for visual
+  // diversity. Strip the suffix so selection always targets the original
+  // tree node, which is the only one findNode can locate.
+  const selectId = node.id.replace(/_r\d+$/, "");
+  const isSelected = selectedId === selectId;
   const ring = isSelected ? " ring-2 ring-primary" : "";
   const lowConfidence =
     node.confidence === "fallback" && node.kind !== "container"
@@ -85,7 +85,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
 
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
-    onSelect(node.id);
+    onSelect(selectId);
   };
 
   if (node.kind === "paragraph") {
@@ -94,7 +94,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     const baseWidth =
       typeof node.width === "number" ? node.width : undefined;
     return (
-      <div data-skeleton-id={node.id} className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
+      <div data-skeleton-id={selectId} className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
         {Array.from({ length: lines }, (_, i) => {
           const isShortenedLast = i === lines - 1 && lines > 1;
           const lineStyle =
@@ -119,7 +119,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   if (!node.children || node.children.length === 0) {
     return (
       <div
-        data-skeleton-id={node.id}
+        data-skeleton-id={selectId}
         className={className + ring + lowConfidence}
         style={style}
         onClick={handleClick}
@@ -127,7 +127,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     );
   }
   return (
-    <div data-skeleton-id={node.id} className={className + ring} style={style} onClick={handleClick}>
+    <div data-skeleton-id={selectId} className={className + ring} style={style} onClick={handleClick}>
       {node.children.map((c) => (
         <Node
           key={c.id}
