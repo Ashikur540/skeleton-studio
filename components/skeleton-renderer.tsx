@@ -90,7 +90,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     const baseWidth =
       typeof node.width === "number" ? node.width : undefined;
     return (
-      <div className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
+      <div data-skeleton-id={node.id} className={`flex flex-col gap-2${ring}`} onClick={handleClick}>
         {Array.from({ length: lines }, (_, i) => {
           const isShortenedLast = i === lines - 1 && lines > 1;
           const lineStyle =
@@ -115,6 +115,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   if (!node.children || node.children.length === 0) {
     return (
       <div
+        data-skeleton-id={node.id}
         className={className + ring + lowConfidence}
         style={style}
         onClick={handleClick}
@@ -122,7 +123,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     );
   }
   return (
-    <div className={className + ring} style={style} onClick={handleClick}>
+    <div data-skeleton-id={node.id} className={className + ring} style={style} onClick={handleClick}>
       {node.children.map((c) => (
         <Node
           key={c.id}

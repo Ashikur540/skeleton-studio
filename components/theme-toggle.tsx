@@ -70,16 +70,17 @@ export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useIsMounted();
 
-  const isDark = resolvedTheme === "dark";
+  const isDark = mounted ? resolvedTheme === "dark" : false;
   const next = isDark ? "light" : "dark";
+  const label = mounted ? `Switch to ${next} theme` : "Toggle theme";
 
   return (
     <Button
       variant="ghost"
       size="icon"
       onClick={() => setTheme(next)}
-      aria-label={`Switch to ${next} theme`}
-      title={`Switch to ${next} theme`}
+      aria-label={label}
+      title={label}
     >
       {mounted ? (isDark ? <SunIcon /> : <MoonIcon />) : <span className="w-4 h-4" />}
     </Button>

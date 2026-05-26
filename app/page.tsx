@@ -7,6 +7,7 @@ import { PreviewCanvas } from "@/components/preview-canvas";
 import { PropertiesPanel } from "@/components/properties-panel";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { useState } from "react";
 
@@ -17,6 +18,7 @@ import { useState } from "react";
  * pure composition.
  */
 export default function Home() {
+  useKeyboardShortcuts();
   const [exportOpen, setExportOpen] = useState(false);
   const tree = useSkeletonStore((s) => s.tree);
 

@@ -10,7 +10,6 @@ import type {
   SkeletonKind,
   SkeletonNode,
 } from "@/lib/ir/types";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -20,6 +19,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { ScrubbableField } from "@/components/scrubbable-field";
+import { useCallback, useRef } from "react";
 
 /**
  * Every available skeleton block kind, ordered for the manual-reclassify
@@ -60,16 +61,41 @@ const JUSTIFY_OPTIONS: { value: Justify | typeof UNSET; label: string }[] = [
 
 /**
  * Right-pane editor that surfaces editable properties for the currently selected
- * IR node. Renders a placeholder message when nothing is selected. When a node
- * is active, shows kind / appearance / layout / dims / padding / repeat /
- * visibility controls and a low-confidence warning banner.
+ * IR node. Numeric fields use ScrubbableField for Figma-style drag-to-adjust.
+ * During scrub drags, mutations route through `patchNodeQuiet` so only one
+ * history entry is created per drag gesture.
  */
 export function PropertiesPanel() {
   const tree = useSkeletonStore((s) => s.tree);
   const selectedId = useSkeletonStore((s) => s.selectedId);
   const patchNode = useSkeletonStore((s) => s.patchNode);
+  const patchNodeQuiet = useSkeletonStore((s) => s.patchNodeQuiet);
+  const pushSnapshot = useSkeletonStore((s) => s.pushSnapshot);
+
+  const isScrubbing = useRef(false);
 
   const node = tree && selectedId ? findNode(tree, selectedId) : null;
+
+  const update = useCallback(
+    (patch: Partial<SkeletonNode>) => {
+      if (!node) return;
+      if (isScrubbing.current) {
+        patchNodeQuiet(node.id, patch);
+      } else {
+        patchNode(node.id, patch);
+      }
+    },
+    [node, patchNode, patchNodeQuiet],
+  );
+
+  const onScrubStart = useCallback(() => {
+    pushSnapshot();
+    isScrubbing.current = true;
+  }, [pushSnapshot]);
+
+  const onScrubEnd = useCallback(() => {
+    isScrubbing.current = false;
+  }, []);
 
   if (!node) {
     return (
@@ -79,10 +105,11 @@ export function PropertiesPanel() {
     );
   }
 
-  const update = (patch: Partial<SkeletonNode>) => patchNode(node.id, patch);
   const showLayout =
     node.kind === "container" ||
     (node.kind === "card" && (node.children?.length ?? 0) > 0);
+
+  const widthIsFull = node.width === "full";
 
   return (
     <aside className="w-72 p-4 border-l border-border flex flex-col gap-4 overflow-y-auto">
@@ -134,48 +161,72 @@ export function PropertiesPanel() {
         </div>
       )}
 
-      <NumberField
+      <ScrubbableField
         label="Width (px, blank = auto)"
         value={typeof node.width === "number" ? node.width : undefined}
         onChange={(v) => update({ width: v })}
+        onScrubStart={onScrubStart}
+        onScrubEnd={onScrubEnd}
+        disabled={widthIsFull}
+        min={0}
       />
       <FullToggle
         label="Full width"
-        active={node.width === "full"}
+        active={widthIsFull}
         onChange={(on) => update({ width: on ? "full" : undefined })}
       />
-      <NumberField
+      <ScrubbableField
         label="Height (px)"
         value={node.height}
         onChange={(v) => update({ height: v })}
+        onScrubStart={onScrubStart}
+        onScrubEnd={onScrubEnd}
+        min={0}
       />
-      <NumberField
+      <ScrubbableField
         label="Radius (px)"
         value={node.radius}
         onChange={(v) => update({ radius: v })}
+        onScrubStart={onScrubStart}
+        onScrubEnd={onScrubEnd}
+        min={0}
       />
       {node.kind === "paragraph" && (
-        <NumberField
+        <ScrubbableField
           label="Line count"
           value={node.lineCount}
           onChange={(v) => update({ lineCount: v ?? 1 })}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
           min={1}
         />
       )}
       {node.repeat !== undefined && (
-        <NumberField
+        <ScrubbableField
           label="Repeat (rows from .map)"
           value={node.repeat}
           onChange={(v) => update({ repeat: v && v > 1 ? v : undefined })}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
           min={1}
         />
       )}
 
       {showLayout && (
-        <LayoutSection node={node} update={update} />
+        <LayoutSection
+          node={node}
+          update={update}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
+        />
       )}
 
-      <PaddingSection node={node} update={update} />
+      <PaddingSection
+        node={node}
+        update={update}
+        onScrubStart={onScrubStart}
+        onScrubEnd={onScrubEnd}
+      />
 
       <div className="flex items-center gap-2">
         <Checkbox
@@ -197,15 +248,17 @@ export function PropertiesPanel() {
 /**
  * Group of layout controls (direction, gap, align, justify, wrap) shown when
  * the selected node is a structural container (or a card wrapping children).
- * All writes go through `update` which forwards a partial layout patch so the
- * caller doesn't need to know how SkeletonNode stores flex state internally.
  */
 function LayoutSection({
   node,
   update,
+  onScrubStart,
+  onScrubEnd,
 }: {
   node: SkeletonNode;
   update: (patch: Partial<SkeletonNode>) => void;
+  onScrubStart: () => void;
+  onScrubEnd: () => void;
 }) {
   const layout = node.layout;
   const setLayout = (patch: Partial<NonNullable<SkeletonNode["layout"]>>) => {
@@ -232,10 +285,13 @@ function LayoutSection({
           </SelectContent>
         </Select>
       </div>
-      <NumberField
+      <ScrubbableField
         label="Gap (px)"
         value={layout?.gap}
         onChange={(v) => setLayout({ gap: v })}
+        onScrubStart={onScrubStart}
+        onScrubEnd={onScrubEnd}
+        min={0}
       />
       <div className="flex flex-col gap-1">
         <Label className="text-xs text-muted-foreground">Align items</Label>
@@ -299,15 +355,17 @@ function LayoutSection({
 
 /**
  * Four per-side padding inputs in a 2x2 grid (top/right above bottom/left).
- * Editing a side to blank clears it; setting all four to blank removes the
- * padding object entirely so the IR stays clean.
  */
 function PaddingSection({
   node,
   update,
+  onScrubStart,
+  onScrubEnd,
 }: {
   node: SkeletonNode;
   update: (patch: Partial<SkeletonNode>) => void;
+  onScrubStart: () => void;
+  onScrubEnd: () => void;
 }) {
   const padding = node.padding ?? {};
   const setSide = (side: keyof Padding, v: number | undefined) => {
@@ -327,25 +385,37 @@ function PaddingSection({
         Padding (px)
       </div>
       <div className="grid grid-cols-2 gap-2">
-        <NumberField
+        <ScrubbableField
           label="Top"
           value={padding.top}
           onChange={(v) => setSide("top", v)}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
+          min={0}
         />
-        <NumberField
+        <ScrubbableField
           label="Right"
           value={padding.right}
           onChange={(v) => setSide("right", v)}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
+          min={0}
         />
-        <NumberField
+        <ScrubbableField
           label="Bottom"
           value={padding.bottom}
           onChange={(v) => setSide("bottom", v)}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
+          min={0}
         />
-        <NumberField
+        <ScrubbableField
           label="Left"
           value={padding.left}
           onChange={(v) => setSide("left", v)}
+          onScrubStart={onScrubStart}
+          onScrubEnd={onScrubEnd}
+          min={0}
         />
       </div>
     </div>
@@ -353,46 +423,7 @@ function PaddingSection({
 }
 
 /**
- * Reusable number input that surfaces undefined for blank values, allowing
- * callers to distinguish "not set" from zero and avoid accidentally pinning
- * dimensions to 0 when a field is cleared.
- */
-function NumberField({
-  label,
-  value,
-  onChange,
-  min = 0,
-}: {
-  label: string;
-  value: number | undefined;
-  onChange: (v: number | undefined) => void;
-  min?: number;
-}) {
-  return (
-    <div className="flex flex-col gap-1">
-      <Label className="text-xs text-muted-foreground">{label}</Label>
-      <Input
-        type="number"
-        min={min}
-        value={value ?? ""}
-        className="h-8"
-        onChange={(e) => {
-          const raw = e.target.value;
-          if (raw === "") onChange(undefined);
-          else {
-            const n = Number(raw);
-            if (!Number.isNaN(n)) onChange(n);
-          }
-        }}
-      />
-    </div>
-  );
-}
-
-/**
- * Checkbox specialized for toggling between a numeric width and full-width
- * (w-full), letting users switch layout modes without clearing numeric fields
- * or typing "full" manually.
+ * Checkbox for toggling between numeric width and full-width (w-full).
  */
 function FullToggle({
   label,
