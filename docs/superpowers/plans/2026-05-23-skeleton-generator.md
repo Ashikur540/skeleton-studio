@@ -2038,6 +2038,75 @@ git commit -m "feat(store): add Zustand store with localStorage persistence"
 
 ---
 
+## Task 14b: Apply shadcn/ui preset
+
+**Files (touched by `shadcn` CLI):**
+- Modify: `app/globals.css`, `package.json`, `tsconfig.json` (maybe), `components.json` (new)
+- Create: `components/ui/*` (whatever the preset pulls in)
+- Create: `lib/utils.ts` (the standard `cn` helper)
+
+This task wires shadcn/ui into the project using the user's chosen preset. The preset (`b3STOksuh`) defines colors, fonts, radius, and base component set. UI tasks (15–22) lean on these tokens and primitives.
+
+- [ ] **Step 1: Apply the preset**
+
+Run:
+```bash
+npx shadcn@latest apply --preset b3STOksuh
+```
+
+If the CLI prompts for paths or framework, accept the defaults (App Router, `@/` alias, `app/globals.css` for tokens, `components/ui/` for component output).
+
+- [ ] **Step 2: Verify the install touched expected files**
+
+Run:
+```bash
+ls components/ui/ 2>/dev/null && cat components.json 2>/dev/null
+```
+
+Expected: `components.json` exists; `components/ui/` contains at least `button.tsx` (or whatever the preset includes).
+
+- [ ] **Step 3: Confirm `lib/utils.ts` exists with the `cn` helper**
+
+If missing (older shadcn flow), create it:
+```ts
+import { type ClassValue, clsx } from "clsx";
+import { twMerge } from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+```
+
+(The shadcn CLI usually creates this automatically — only add if absent.)
+
+- [ ] **Step 4: Smoke-check the dev server still boots**
+
+Run:
+```bash
+npm run dev
+```
+
+Open `http://localhost:3000`. The existing Next.js starter page should still render without runtime errors (visual change from preset tokens is fine). Kill the dev server with Ctrl-C.
+
+- [ ] **Step 5: Type-check**
+
+Run:
+```bash
+npx tsc --noEmit
+```
+
+Expected: PASS.
+
+- [ ] **Step 6: Stop and request commit**
+
+Per the project's commit policy, do **not** run `git commit`. Report back with the list of files the shadcn CLI created or modified, plus suggested commit message:
+
+```
+chore(ui): apply shadcn/ui preset b3STOksuh (lime accent, DM Sans, small radius)
+```
+
+---
+
 ## Task 15: SkeletonRenderer component (IR → live preview)
 
 **Files:**
