@@ -7,8 +7,9 @@ import { ShortcutsModal } from "@/components/shortcuts-modal";
 import { StarterBrowser } from "@/components/starter-browser";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
+import { ProjectVersion } from "@/lib/globalConstant";
+import { cn } from "@/lib/utils";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { useState } from "react";
 
@@ -41,14 +42,40 @@ export default function Home() {
           <div className="size-6 rounded-full bg-primary flex items-center justify-center">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <rect x="1" y="1" width="4" height="4" rx="0.5" fill="white" />
-              <rect x="7" y="1" width="4" height="4" rx="0.5" fill="white" opacity="0.5" />
-              <rect x="1" y="7" width="4" height="4" rx="0.5" fill="white" opacity="0.5" />
-              <rect x="7" y="7" width="4" height="4" rx="0.5" fill="white" opacity="0.3" />
+              <rect
+                x="7"
+                y="1"
+                width="4"
+                height="4"
+                rx="0.5"
+                fill="white"
+                opacity="0.5"
+              />
+              <rect
+                x="1"
+                y="7"
+                width="4"
+                height="4"
+                rx="0.5"
+                fill="white"
+                opacity="0.5"
+              />
+              <rect
+                x="7"
+                y="7"
+                width="4"
+                height="4"
+                rx="0.5"
+                fill="white"
+                opacity="0.3"
+              />
             </svg>
           </div>
-          <span className="text-sm font-semibold hidden sm:inline">Skeleton Studio</span>
+          <span className="text-sm font-semibold hidden sm:inline">
+            Skeleton Studio
+          </span>
           <span className="text-[11px] text-muted-foreground border border-border rounded px-1.5 py-0.5 font-mono">
-            1.4
+            {ProjectVersion}
           </span>
         </div>
         {componentName && (
@@ -64,7 +91,16 @@ export default function Home() {
             onClick={() => setShortcutsOpen(true)}
             title="Keyboard shortcuts"
           >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <rect x="2" y="4" width="20" height="16" rx="2" />
               <path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h.01M12 12h.01M16 12h.01M8 16h.01M6 12v.01M6 16v.01M10 16h.01M14 16h.01" />
             </svg>
@@ -137,7 +173,9 @@ export default function Home() {
         </section>
       </main>
       {exportOpen && <ExportModal onClose={() => setExportOpen(false)} />}
-      {shortcutsOpen && <ShortcutsModal onClose={() => setShortcutsOpen(false)} />}
+      {shortcutsOpen && (
+        <ShortcutsModal onClose={() => setShortcutsOpen(false)} />
+      )}
     </div>
   );
 }

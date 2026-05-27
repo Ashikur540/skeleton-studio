@@ -8,7 +8,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ ● Skeleton Studio [1.4]          ProfileCard            🌗  [Export]            │
+│ ● Skeleton Studio [0.1.0]          ProfileCard            🌗  [Export]            │
 ├──────────────────────────┬───────────────────────────────┬──────────────────────┤
 │ <> INPUT UI · JSX    ✨  │ ProfileCard · v3  320 × 400   │ [Design] [Animation] │
 │ ┌──────────────────────┐ │ ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ │ ▸ BLOCK             │
@@ -91,20 +91,20 @@ Renderer + exporter share three-path dispatch (`isSurfaceWrapper` / container / 
 
 60+ shadcn primitives with shape-correct defaults:
 
-| Family | Components |
-|---|---|
-| **Table** | `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption` |
-| **Card** | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction` |
-| **Tabs** | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` |
-| **Accordion** | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` |
-| **Dialog** | `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter` |
-| **Sheet** | `Sheet`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter` |
-| **Form** | `Form`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage` |
-| **Select** | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectLabel`, `SelectSeparator` |
-| **Alert** | `Alert`, `AlertTitle`, `AlertDescription` |
-| **Popover/Tooltip** | `Popover`, `PopoverTrigger`, `PopoverContent`, `Tooltip`, `TooltipTrigger`, `TooltipContent` |
-| **DropdownMenu** | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator` |
-| **Standalone** | `Avatar`, `Badge`, `Skeleton`, `Separator`, `Progress`, `Slider`, `Switch`, `Toggle`, `ToggleGroup`, `ToggleGroupItem`, `Checkbox`, `RadioGroup`, `RadioGroupItem` |
+| Family              | Components                                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Table**           | `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`                                                           |
+| **Card**            | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction`                                                                    |
+| **Tabs**            | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`                                                                                                                   |
+| **Accordion**       | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`                                                                                               |
+| **Dialog**          | `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`                                                                      |
+| **Sheet**           | `Sheet`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter`                                                                            |
+| **Form**            | `Form`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage`                                                                                   |
+| **Select**          | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectLabel`, `SelectSeparator`                                                          |
+| **Alert**           | `Alert`, `AlertTitle`, `AlertDescription`                                                                                                                          |
+| **Popover/Tooltip** | `Popover`, `PopoverTrigger`, `PopoverContent`, `Tooltip`, `TooltipTrigger`, `TooltipContent`                                                                       |
+| **DropdownMenu**    | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator`                                     |
+| **Standalone**      | `Avatar`, `Badge`, `Skeleton`, `Separator`, `Progress`, `Slider`, `Switch`, `Toggle`, `ToggleGroup`, `ToggleGroupItem`, `Checkbox`, `RadioGroup`, `RadioGroupItem` |
 
 Each primitive resolves to the correct kind (text / paragraph / button / input / container / card) with appropriate default dimensions so `<Badge />` renders as a 60×22 pill, `<Switch />` as a 44×24 toggle, etc.
 
@@ -148,15 +148,15 @@ Modifiers (`md:`, `dark:`, `hover:`) silently skipped.
 
 Post-classify pass that recognises 7 UI archetypes and tunes spacing/alignment defaults. Never overrides explicit Tailwind signals (`??=` everywhere).
 
-| Archetype | Pattern | Tuning |
-|---|---|---|
-| **media-object** | avatar/image + text siblings | `row`, `align: center`, `gap: 12` |
-| **form-field** | text label + input (exactly 2 children) | `col`, `gap: 6` |
-| **hero** | heading (h ≥ 24) + paragraph/button, depth ≤ 2, non-card | `col`, `gap: 24` |
-| **nav-bar** | row container at depth ≤ 1 with button child | `justify: between`, `align: center`, `gap: 24` |
-| **card-grid** | all children are card-like surfaces (≥ 2) | `row`, `wrap: true`, `gap: 16` |
-| **stat-tile** | card with small label (h ≤ 16) + big metric (h ≥ 24) | `col`, `gap: 4` |
-| **pricing-card** | card with title + CTA button + bullet list or 4+ children | `col`, `gap: 16` |
+| Archetype        | Pattern                                                   | Tuning                                         |
+| ---------------- | --------------------------------------------------------- | ---------------------------------------------- |
+| **media-object** | avatar/image + text siblings                              | `row`, `align: center`, `gap: 12`              |
+| **form-field**   | text label + input (exactly 2 children)                   | `col`, `gap: 6`                                |
+| **hero**         | heading (h ≥ 24) + paragraph/button, depth ≤ 2, non-card  | `col`, `gap: 24`                               |
+| **nav-bar**      | row container at depth ≤ 1 with button child              | `justify: between`, `align: center`, `gap: 24` |
+| **card-grid**    | all children are card-like surfaces (≥ 2)                 | `row`, `wrap: true`, `gap: 16`                 |
+| **stat-tile**    | card with small label (h ≤ 16) + big metric (h ≥ 24)      | `col`, `gap: 4`                                |
+| **pricing-card** | card with title + CTA button + bullet list or 4+ children | `col`, `gap: 16`                               |
 
 ### 🔲 CSS grid table engine (`lib/parser/table-grid.ts`)
 
@@ -226,6 +226,7 @@ Tabbed panel with **Design** and **Animation** tabs. Design tab has 5 collapsibl
 ```
 
 **Animation tab** (absorbs former GlobalControls):
+
 - Preset picker (Select)
 - Animation type (ToggleGroup: Pulse / Shimmer)
 - Speed (ToggleGroup: Slow / Normal / Fast)
@@ -300,13 +301,13 @@ Split-pane dialog with syntax-highlighted code:
 
 5 named preset bundles (now in Animation tab):
 
-| Preset | Animation | Speed | Base Color | Vibe |
-|---|---|---|---|---|
-| **Tailwind** | pulse | normal | bg-zinc-200 | Standard, universal |
-| **Shimmer** | shimmer | normal | bg-zinc-200 | Gradient sweep |
-| **Linear** | shimmer | slow | bg-zinc-100 | Subtle, premium |
-| **Vercel** | shimmer | fast | bg-zinc-800 | Dark-mode optimized |
-| **Notion** | pulse | slow | bg-zinc-300 | Warm, gentle breathe |
+| Preset       | Animation | Speed  | Base Color  | Vibe                 |
+| ------------ | --------- | ------ | ----------- | -------------------- |
+| **Tailwind** | pulse     | normal | bg-zinc-200 | Standard, universal  |
+| **Shimmer**  | shimmer   | normal | bg-zinc-200 | Gradient sweep       |
+| **Linear**   | shimmer   | slow   | bg-zinc-100 | Subtle, premium      |
+| **Vercel**   | shimmer   | fast   | bg-zinc-800 | Dark-mode optimized  |
+| **Notion**   | pulse     | slow   | bg-zinc-300 | Warm, gentle breathe |
 
 Preset picker sets animation + speed + baseColor in one click. Individual controls still available for fine-tuning — shows "Custom" when settings diverge.
 
