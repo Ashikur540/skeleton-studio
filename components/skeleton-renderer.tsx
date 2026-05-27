@@ -76,8 +76,7 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   // diversity. Strip the suffix so selection always targets the original
   // tree node, which is the only one findNode can locate.
   const selectId = node.id.replace(/_r\d+$/, "");
-  const isSelected = selectedId === selectId;
-  const ring = isSelected ? " ring-2 ring-primary" : "";
+  const ring = "";
   const lowConfidence =
     node.confidence === "fallback" && node.kind !== "container"
       ? " outline outline-1 outline-amber-400/50"

@@ -5,12 +5,9 @@ import { ResizeOverlay } from "./resize-overlay";
 import { SkeletonRenderer } from "./skeleton-renderer";
 
 /**
- * Center pane that renders the live skeleton preview. Background follows the
- * editor's light/dark mode via shadcn tokens, so the chrome theme toggle
- * flips the preview at the same time. Clicking the empty area deselects any
- * active block; the empty-state message guides first-time users. A
- * ResizeOverlay sits on top of the content to provide drag handles for the
- * currently selected node.
+ * Center pane: live skeleton preview with info bar and subtle dotted grid
+ * background. A ResizeOverlay sits on top to provide enhanced selection
+ * visuals (green border, handle dots, dimension badge) and drag handles.
  */
 export function PreviewCanvas() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -18,28 +15,51 @@ export function PreviewCanvas() {
   const settings = useSkeletonStore((s) => s.settings);
   const selectedId = useSkeletonStore((s) => s.selectedId);
   const selectNode = useSkeletonStore((s) => s.selectNode);
+  const componentName = useSkeletonStore((s) => s.componentName);
+  const parseVersion = useSkeletonStore((s) => s.parseVersion);
+
+  const rootWidth = tree?.width === "full" ? "100%" : tree?.width ?? "auto";
+  const rootHeight = tree?.height ?? "auto";
 
   return (
-    <div
-      ref={containerRef}
-      className="relative flex-1 h-full rounded-lg border border-border p-8 overflow-auto bg-background text-foreground"
-      onClick={() => selectNode(null)}
-    >
-      {tree ? (
-        <SkeletonRenderer
-          node={tree}
-          settings={settings}
-          selectedId={selectedId}
-          onSelect={selectNode}
-        />
-      ) : (
-        <div className="flex h-full items-center justify-center text-muted-foreground text-sm">
-          Paste a component to see its skeleton.
+    <div className="flex flex-col flex-1 min-h-0">
+      {/* Info bar */}
+      {tree && (
+        <div className="px-4 py-1.5 text-xs text-muted-foreground shrink-0">
+          {componentName ?? "Component"} · v{parseVersion}{" "}
+          <span className="ml-2 tabular-nums">
+            {rootWidth} × {rootHeight}
+          </span>
         </div>
       )}
-      {/* Resize handles are drawn as an overlay on top of the skeleton.
-          They are invisible until hovering near a selected element's edge. */}
-      <ResizeOverlay containerRef={containerRef} />
+
+      {/* Canvas */}
+      <div
+        ref={containerRef}
+        className="relative flex-1 overflow-auto bg-muted/30"
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, oklch(0.55 0 0 / 0.15) 0.75px, transparent 0.75px)",
+          backgroundSize: "20px 20px",
+        }}
+        onClick={() => selectNode(null)}
+      >
+        <div className="flex items-center justify-center min-h-full p-12">
+          {tree ? (
+            <SkeletonRenderer
+              node={tree}
+              settings={settings}
+              selectedId={selectedId}
+              onSelect={selectNode}
+            />
+          ) : (
+            <div className="text-muted-foreground text-sm">
+              Paste a component to see its skeleton.
+            </div>
+          )}
+        </div>
+        <ResizeOverlay containerRef={containerRef} />
+      </div>
     </div>
   );
 }

@@ -20,6 +20,9 @@ type State = {
   settings: GlobalSettings;
   history: SkeletonNode[];
   future: SkeletonNode[];
+  componentName: string | null;
+  lastEditedAt: number | null;
+  parseVersion: number;
 };
 
 /**
@@ -65,18 +68,29 @@ export const useSkeletonStore = create<State & Actions>()(
       settings: DEFAULT_SETTINGS,
       history: [],
       future: [],
+      componentName: null,
+      lastEditedAt: null,
+      parseVersion: 0,
 
       setSource: (s) => set({ source: s }),
 
       parseNow: (sourceOverride) => {
         const source = sourceOverride ?? get().source;
         if (!source.trim()) {
-          set({ tree: null, error: null, selectedId: null, history: [], future: [] });
+          set({ tree: null, error: null, selectedId: null, history: [], future: [], componentName: null });
           return;
         }
         const result = parseComponent(source);
         if (result.ok) {
-          set({ tree: result.tree, error: null, selectedId: null, history: [], future: [] });
+          set({
+            tree: result.tree,
+            error: null,
+            selectedId: null,
+            history: [],
+            future: [],
+            componentName: result.componentName ?? null,
+            parseVersion: get().parseVersion + 1,
+          });
         } else {
           set({ tree: null, error: result.error, selectedId: null, history: [], future: [] });
         }
@@ -96,6 +110,7 @@ export const useSkeletonStore = create<State & Actions>()(
           tree: mutateNode(tree, id, patch),
           history: next,
           future: [],
+          lastEditedAt: Date.now(),
         });
       },
 
@@ -104,7 +119,7 @@ export const useSkeletonStore = create<State & Actions>()(
       patchNodeQuiet: (id, patch) => {
         const { tree } = get();
         if (!tree) return;
-        set({ tree: mutateNode(tree, id, patch) });
+        set({ tree: mutateNode(tree, id, patch), lastEditedAt: Date.now() });
       },
 
       /* Called once at drag start. Pushes the current tree onto history so
@@ -152,6 +167,9 @@ export const useSkeletonStore = create<State & Actions>()(
           settings: DEFAULT_SETTINGS,
           history: [],
           future: [],
+          componentName: null,
+          lastEditedAt: null,
+          parseVersion: 0,
         });
       },
     }),
