@@ -1,13 +1,10 @@
 "use client";
-import { useMemo } from "react";
-import { useTheme } from "next-themes";
-import CodeMirror, {
-  EditorView,
-  type Extension,
-} from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { linter, lintGutter, type Diagnostic } from "@codemirror/lint";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
+import CodeMirror, { EditorView, type Extension } from "@uiw/react-codemirror";
+import { useTheme } from "next-themes";
+import { useMemo } from "react";
 
 type EditorError = {
   message: string;
@@ -51,7 +48,7 @@ export function CodeEditor({
   return (
     <div
       className={
-        "h-full overflow-hidden rounded-md border border-input bg-input/30 " +
+        "h-full overflow-hidden rounded-none border border-none bg-input/30 " +
         "focus-within:ring-2 focus-within:ring-ring/40 " +
         (className ?? "")
       }

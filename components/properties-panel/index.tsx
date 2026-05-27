@@ -17,8 +17,7 @@ import { AnimationTab } from "./animation-tab";
  */
 export function PropertiesPanel() {
   return (
-    <aside className="w-72 border-l border-border flex flex-col min-h-0">
-      <Tabs defaultValue="design" className="flex flex-col flex-1 min-h-0">
+    <Tabs defaultValue="design" className="flex flex-col flex-1 min-h-0">
         <TabsList variant="line" className="px-3 pt-2 shrink-0">
           <TabsTrigger value="design" className="text-xs gap-1.5">
             <HugeiconsIcon icon={WebDesign01Icon} size={14} strokeWidth={2} />
@@ -36,6 +35,5 @@ export function PropertiesPanel() {
           <AnimationTab />
         </TabsContent>
       </Tabs>
-    </aside>
   );
 }

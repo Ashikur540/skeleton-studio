@@ -11,7 +11,7 @@ export function LayersTab() {
       </svg>
       <div className="flex flex-col items-center gap-1">
         <span className="text-xs font-medium">Layer navigation</span>
-        <span className="text-[10px] text-muted-foreground/60">Coming soon</span>
+        <span className="text-[11px] text-muted-foreground/60">Coming soon</span>
       </div>
     </div>
   );

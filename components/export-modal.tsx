@@ -4,8 +4,6 @@ import {
   Dialog,
   DialogContent,
 } from "@/components/ui/dialog";
-import { Switch } from "@/components/ui/switch";
-import { Label } from "@/components/ui/label";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { exportHTML } from "@/lib/exporters/html-tailwind";
 import { exportReact } from "@/lib/exporters/react-tailwind";
@@ -108,7 +106,7 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Split content: code + sidebar */}
-        <div className="flex flex-1 min-h-0 gap-4">
+        <div className="flex flex-col-reverse sm:flex-row flex-1 min-h-0 gap-4">
           {/* Code area */}
           <div className="flex-1 min-w-0 flex flex-col relative">
             <Button
@@ -148,7 +146,7 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
           </div>
 
           {/* Sidebar */}
-          <div className="w-48 shrink-0 flex flex-col gap-4 text-xs">
+          <div className="sm:w-48 shrink-0 flex sm:flex-col gap-4 text-xs">
             {/* Summary */}
             <div className="flex flex-col gap-2">
               <span className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground">
@@ -173,16 +171,15 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
               <span className="text-[11px] uppercase tracking-wider font-medium text-muted-foreground">
                 Options
               </span>
-              <div className="flex items-center justify-between">
-                <Label className="text-xs">Tailwind v4</Label>
-                <Switch size="sm" checked={true} disabled />
-              </div>
+              <span className="text-xs text-muted-foreground">
+                All output uses Tailwind v4-compatible arbitrary value syntax.
+              </span>
             </div>
           </div>
         </div>
 
         {/* Footer */}
-        <div className="flex items-center justify-between border-t border-border pt-3 -mb-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:justify-between border-t border-border pt-3 -mb-2">
           <span className="text-xs text-muted-foreground">
             ✓ Validated · 0 errors
           </span>

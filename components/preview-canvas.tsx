@@ -44,7 +44,7 @@ export function PreviewCanvas() {
         }}
         onClick={() => selectNode(null)}
       >
-        <div className="flex items-center justify-center min-h-full p-12">
+        <div className="flex items-center justify-center min-h-full p-4 sm:p-8 lg:p-12">
           {tree ? (
             <SkeletonRenderer
               node={tree}

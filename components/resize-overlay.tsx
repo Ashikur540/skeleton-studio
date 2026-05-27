@@ -107,7 +107,7 @@ export function ResizeOverlay({
           pointerEvents: "none",
         }}
       >
-        <span className="bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded whitespace-nowrap font-mono tabular-nums">
+        <span className="bg-primary text-primary-foreground text-[11px] px-1.5 py-0.5 rounded whitespace-nowrap font-mono tabular-nums">
           {widthLabel} × {heightLabel}
         </span>
       </div>

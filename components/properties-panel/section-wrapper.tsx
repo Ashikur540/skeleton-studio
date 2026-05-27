@@ -54,7 +54,7 @@ export function SectionWrapper({
             {title}
           </span>
           {badge && (
-            <span className="text-[10px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono leading-none">
+            <span className="text-[11px] px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono leading-none">
               {badge}
             </span>
           )}

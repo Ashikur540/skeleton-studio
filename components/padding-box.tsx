@@ -31,7 +31,7 @@ export function PaddingBox({
           onChange={(v) => onChange("left", v)}
         />
         <div className="flex-1 mx-2 h-10 rounded-sm bg-muted/40 flex items-center justify-center">
-          <span className="text-[10px] text-muted-foreground/60 select-none">
+          <span className="text-[11px] text-muted-foreground/60 select-none">
             content
           </span>
         </div>

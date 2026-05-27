@@ -32,6 +32,13 @@ export function useKeyboardShortcuts(): void {
 
       const store = useSkeletonStore.getState();
       const { selectedId, tree } = store;
+
+      if (e.key === "Escape") {
+        e.preventDefault();
+        store.selectNode(null);
+        return;
+      }
+
       if (!selectedId || !tree) return;
 
       if (e.key === "Delete" || e.key === "Backspace") {

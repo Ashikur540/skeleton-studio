@@ -5,6 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Kbd } from "@/components/ui/kbd";
 
 const SHORTCUT_GROUPS = [
   {
@@ -61,9 +62,7 @@ export function ShortcutsModal({ onClose }: { onClose: () => void }) {
               {group.items.map((item) => (
                 <div key={item.keys} className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">{item.desc}</span>
-                  <kbd className="px-1.5 py-0.5 rounded border border-border bg-muted font-mono text-[10px]">
-                    {item.keys}
-                  </kbd>
+                  <Kbd>{item.keys}</Kbd>
                 </div>
               ))}
             </div>

@@ -91,9 +91,9 @@ export function StarterBrowser({ onClose }: { onClose: () => void }) {
   let flatIndex = -1;
 
   return (
-    <div className="absolute inset-0 z-50 flex">
+    <div className="absolute inset-0 z-50 flex flex-col sm:flex-row">
       {/* Side sheet */}
-      <div className="w-80 bg-background border-r border-border flex flex-col h-full shadow-lg">
+      <div className="w-full sm:w-80 bg-background sm:border-r border-b sm:border-b-0 border-border flex flex-col h-full shadow-lg">
         {/* Header */}
         <div className="flex items-center justify-between px-3 py-2.5 border-b border-border shrink-0">
           <div className="flex items-center gap-2">
@@ -120,7 +120,7 @@ export function StarterBrowser({ onClose }: { onClose: () => void }) {
         <div ref={listRef} className="flex-1 overflow-y-auto px-1">
           {Array.from(grouped.entries()).map(([cat, items]) => (
             <div key={cat} className="mb-2">
-              <div className="px-2 py-1.5 text-[10px] uppercase tracking-wider text-muted-foreground font-medium">
+              <div className="px-2 py-1.5 text-[11px] uppercase tracking-wider text-muted-foreground font-medium">
                 {cat} {items.length}
               </div>
               {items.map((snip) => {
@@ -148,11 +148,11 @@ export function StarterBrowser({ onClose }: { onClose: () => void }) {
                       <div className="text-xs font-medium truncate">
                         {snip.name}
                       </div>
-                      <div className="text-[10px] text-muted-foreground truncate">
+                      <div className="text-[11px] text-muted-foreground truncate">
                         {snip.description}
                       </div>
                     </div>
-                    <span className="text-[10px] px-1.5 py-0.5 rounded border border-border text-muted-foreground font-mono shrink-0">
+                    <span className="text-[11px] px-1.5 py-0.5 rounded border border-border text-muted-foreground font-mono shrink-0">
                       {snip.tag}
                     </span>
                   </div>
@@ -168,7 +168,7 @@ export function StarterBrowser({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Footer */}
-        <div className="px-3 py-2 text-[10px] text-muted-foreground border-t border-border shrink-0 flex items-center gap-3">
+        <div className="px-3 py-2 text-[11px] text-muted-foreground border-t border-border shrink-0 flex items-center gap-3">
           <span>↕ navigate</span>
           <span>↵ insert</span>
           <span>esc close</span>
@@ -176,7 +176,7 @@ export function StarterBrowser({ onClose }: { onClose: () => void }) {
       </div>
 
       {/* Backdrop */}
-      <div className="flex-1 bg-black/20" onClick={onClose} />
+      <div className="hidden sm:block flex-1 bg-black/20" onClick={onClose} />
     </div>
   );
 }

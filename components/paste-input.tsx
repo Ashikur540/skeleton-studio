@@ -57,7 +57,7 @@ export function PasteInput({
       </div>
 
       {/* Editor */}
-      <div className="flex-1 min-h-0 px-1">
+      <div className="flex-1 min-h-0">
         <CodeEditor
           value={source}
           onChange={setSource}
