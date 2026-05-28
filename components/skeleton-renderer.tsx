@@ -2,6 +2,7 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
 import { blockStyles } from "@/lib/exporters/runtime-styles";
 import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
+import { type KeyboardEvent, useCallback } from "react";
 
 /**
  * The data a parent component must supply to drive the renderer: the IR node
@@ -76,8 +77,6 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   // diversity. Strip the suffix so selection always targets the original
   // tree node, which is the only one findNode can locate.
   const selectId = node.id.replace(/_r\d+$/, "");
-  const isSelected = selectedId === selectId;
-  const ring = isSelected ? " ring-2 ring-primary" : "";
   const lowConfidence =
     node.confidence === "fallback" && node.kind !== "container"
       ? " outline outline-1 outline-amber-400/50"
@@ -86,6 +85,27 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
   const handleClick: React.MouseEventHandler = (e) => {
     e.stopPropagation();
     onSelect(selectId);
+  };
+
+  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      e.stopPropagation();
+      onSelect(selectId);
+    }
+  }, [selectId, onSelect]);
+
+  /*
+   * Shared set of keyboard/focus attributes applied to every interactive
+   * skeleton block so keyboard users can Tab through nodes and press Enter
+   * or Space to select them. Focus styling mirrors the selection ring.
+   */
+  const interactivity = {
+    tabIndex: 0 as const,
+    role: "button" as const,
+    "aria-label": node.kind,
+    "aria-pressed": selectedId === selectId,
+    onKeyDown: handleKeyDown,
   };
 
   if (node.kind === "paragraph") {
@@ -99,7 +119,13 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     if (node.padding?.bottom !== undefined) wrapperStyle.paddingBottom = node.padding.bottom;
     if (node.padding?.left !== undefined) wrapperStyle.paddingLeft = node.padding.left;
     return (
-      <div data-skeleton-id={selectId} className={`flex flex-col gap-2${ring}`} style={wrapperStyle} onClick={handleClick}>
+      <div
+        data-skeleton-id={selectId}
+        className={`flex flex-col gap-2 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring rounded-sm`}
+        style={wrapperStyle}
+        onClick={handleClick}
+        {...interactivity}
+      >
         {Array.from({ length: lines }, (_, i) => {
           const isShortenedLast = i === lines - 1 && lines > 1;
           const lineStyle =
@@ -125,14 +151,21 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     return (
       <div
         data-skeleton-id={selectId}
-        className={className + ring + lowConfidence}
+        className={className + lowConfidence + " cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring rounded-sm"}
         style={style}
         onClick={handleClick}
+        {...interactivity}
       />
     );
   }
   return (
-    <div data-skeleton-id={selectId} className={className + ring} style={style} onClick={handleClick}>
+    <div
+      data-skeleton-id={selectId}
+      className={className + " cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-1 focus-visible:outline-ring rounded-sm"}
+      style={style}
+      onClick={handleClick}
+      {...interactivity}
+    >
       {node.children.map((c) => (
         <Node
           key={c.id}

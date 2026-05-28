@@ -1,6 +1,6 @@
 # Skeleton Generator — Progress Log
 
-> Live status of features shipped. Updated 2026-05-26.
+> Live status of features shipped. Updated 2026-05-27.
 
 ---
 
@@ -8,40 +8,31 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────────┐
-│ 🎨 Skeleton Generator   [Try: Profile Card · Blog Row · Table Row]   🌗  ⤓ Export│
-├─────────────────────────────────────────────────────────────────────────────────┤
-│ Preset [Tailwind ▾]  Animation [Pulse ▾]  Speed [Normal ▾]  Base [Zinc 200 ▾]   │
-├──────────────────────────┬───────────────────────────────────┬──────────────────┤
-│ PASTE JSX                │ LIVE PREVIEW                      │ container · <div>│
-│ ┌──────────────────────┐ │ ┌───────────────────────────────┐ │                  │
-│ │ 1  export default …  │ │ │ ╭───────────────────────╮     │ │ Kind             │
-│ │ 2    return (        │ │ │ │ 🟦🟦🟦  (avatar bar)  │←──→│ │ [Container ▾]    │
-│ │ 3      <Card …>      │ │ │ │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓     │     │ │                  │
-│ │ 4        <CardHeader>│ │ │ │ ▓▓▓▓▓▓    ↕           │     │ │ Appearance       │
-│ │ 5  …                 │ │ │ │ [ Read More ]         │     │ │ [Card ▾]         │
-│ │ ⛳ line:col error     │ │ │ ╰───────────────────────╯     │ │                  │
-│ │                      │ │ │                               │ │ Width ↔ [ 320 ] │
-│ └──────────────────────┘ │ │  (selects highlight in green) │ │ ☐ Full width     │
-│ [ ✨ Generate Skeleton ] │ │                               │ │ Height↔ [ ___ ] │
-│                          │ └───────────────────────────────┘ │ Radius↔[ 12 ]   │
-│                          │                                   │ Archetype        │
-│                          │                                   │ media-object     │
-│                          │                                   │ ──── Layout ──── │
-│                          │                                   │ Direction [Col ▾]│
-│                          │                                   │ Gap   [ 12 ]     │
-│                          │                                   │ Align  [Center ▾]│
-│                          │                                   │ Justify [auto ▾] │
-│                          │                                   │ ☐ Wrap children  │
-│                          │                                   │ ──── Padding ──── │
-│                          │                                   │ T [16]  R [16]   │
-│                          │                                   │ B [16]  L [16]   │
-│                          │                                   │ ☑ Visible        │
-└──────────────────────────┴───────────────────────────────────┴──────────────────┘
+│ ● Skeleton Studio [0.1.0]          ProfileCard            🌗  [Export]            │
+├──────────────────────────┬───────────────────────────────┬──────────────────────┤
+│ <> INPUT UI · JSX    ✨  │ ProfileCard · v3  320 × 400   │ [Design] [Animation] │
+│ ┌──────────────────────┐ │ ┌ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┐ │ ▸ BLOCK             │
+│ │ 1  export default …  │ │ │ ╭─────────────────────╮   │ │   Type [Container▾] │
+│ │ 2    return (        │ │ │ │ ● ▓▓▓▓▓  (media)    │   │ │   Appearance [Card▾]│
+│ │ 3      <Card …>      │ │ │ │ ▓▓▓▓▓▓▓▓▓▓▓▓▓▓     │   │ │   ☑ Visible         │
+│ │ 4        <CardHeader>│ │ │ │ ▓▓▓▓▓                │   │ │ ▾ DIMENSIONS        │
+│ │ 5  …                 │ │ │ │ [ Read More ]        │   │ │   Size [W|320|px]   │
+│ │                      │ │ │ ╰─────────────────────╯   │ │        [H|200|px]   │
+│ │ CodeMirror + JSX     │ │ │ ⊙────────────────────⊙    │ │   Radius [⌓|12|px]  │
+│ │ syntax highlight     │ │ │ │   320 × 200         │    │ │ ▾ LAYOUT    [flex]  │
+│ │                      │ │ │ ⊙────────────────────⊙    │ │   Dir  [Row][Col]   │
+│ └──────────────────────┘ │ └ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ─ ┘ │   Align [S][C][E]   │
+│ [Browse starters]  [⚡Generate] │  bg-muted/30 + dot grid  │   Gap [G|12|px]     │
+│                          │                               │   ┌──[16]──┐         │
+│                          │                               │   [24] ░░ [24]       │
+│                          │                               │   └──[16]──┘         │
+│                          │                               │ ▸ REPEAT      [⏻]   │
+│                          │                               │ ▸ CONTENT MOCKING    │
+└──────────────────────────┴───────────────────────────────┴──────────────────────┘
 ```
 
-Three-pane editor. Top bar = title + example snippets + theme toggle + Export.
-Global controls row = preset picker + animation/speed/baseColor fine-tuning.
-Main area = paste editor (CodeMirror) | preview canvas | properties panel.
+Three-pane editor. Top bar = logo + "Skeleton Studio" badge + component name + theme toggle + Export.
+Main area = paste editor (CodeMirror) | preview canvas (dot grid bg + selection overlay) | tabbed properties panel (Design + Animation).
 
 ---
 
@@ -94,25 +85,26 @@ Renderer + exporter share three-path dispatch (`isSurfaceWrapper` / container / 
 - 🧭 **Variant prop resolver** for Typography (`variant="h1..h6"`, `body1`, `body2`, `caption`).
 - 🪪 **Confidence rating**: `high` (both dims pinned), `medium` (partial / .map / name-inferred / content-sized), `fallback` (pure tag default).
 - 🪄 **`.map()` representative**: extracts one representative child, sets `repeat = 3` so dynamic lists render as multi-row skeletons.
+- 🧑‍💻 **Component name extraction**: `findComponentReturn` extracts function/variable name from AST declarations → stored as `componentName` in store → shown in header + export filename.
 
 ### 📚 shadcn/ui registry (`lib/parser/tag-defaults.ts` — `COMPONENT_TAG_HINTS`)
 
 60+ shadcn primitives with shape-correct defaults:
 
-| Family | Components |
-|---|---|
-| **Table** | `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption` |
-| **Card** | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction` |
-| **Tabs** | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` |
-| **Accordion** | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent` |
-| **Dialog** | `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter` |
-| **Sheet** | `Sheet`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter` |
-| **Form** | `Form`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage` |
-| **Select** | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectLabel`, `SelectSeparator` |
-| **Alert** | `Alert`, `AlertTitle`, `AlertDescription` |
-| **Popover/Tooltip** | `Popover`, `PopoverTrigger`, `PopoverContent`, `Tooltip`, `TooltipTrigger`, `TooltipContent` |
-| **DropdownMenu** | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator` |
-| **Standalone** | `Avatar`, `Badge`, `Skeleton`, `Separator`, `Progress`, `Slider`, `Switch`, `Toggle`, `ToggleGroup`, `ToggleGroupItem`, `Checkbox`, `RadioGroup`, `RadioGroupItem` |
+| Family              | Components                                                                                                                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Table**           | `Table`, `TableHeader`, `TableBody`, `TableFooter`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`                                                           |
+| **Card**            | `Card`, `CardHeader`, `CardTitle`, `CardDescription`, `CardContent`, `CardFooter`, `CardAction`                                                                    |
+| **Tabs**            | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent`                                                                                                                   |
+| **Accordion**       | `Accordion`, `AccordionItem`, `AccordionTrigger`, `AccordionContent`                                                                                               |
+| **Dialog**          | `Dialog`, `DialogContent`, `DialogHeader`, `DialogTitle`, `DialogDescription`, `DialogFooter`                                                                      |
+| **Sheet**           | `Sheet`, `SheetContent`, `SheetHeader`, `SheetTitle`, `SheetDescription`, `SheetFooter`                                                                            |
+| **Form**            | `Form`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage`                                                                                   |
+| **Select**          | `Select`, `SelectTrigger`, `SelectValue`, `SelectContent`, `SelectItem`, `SelectLabel`, `SelectSeparator`                                                          |
+| **Alert**           | `Alert`, `AlertTitle`, `AlertDescription`                                                                                                                          |
+| **Popover/Tooltip** | `Popover`, `PopoverTrigger`, `PopoverContent`, `Tooltip`, `TooltipTrigger`, `TooltipContent`                                                                       |
+| **DropdownMenu**    | `DropdownMenu`, `DropdownMenuTrigger`, `DropdownMenuContent`, `DropdownMenuItem`, `DropdownMenuLabel`, `DropdownMenuSeparator`                                     |
+| **Standalone**      | `Avatar`, `Badge`, `Skeleton`, `Separator`, `Progress`, `Slider`, `Switch`, `Toggle`, `ToggleGroup`, `ToggleGroupItem`, `Checkbox`, `RadioGroup`, `RadioGroupItem` |
 
 Each primitive resolves to the correct kind (text / paragraph / button / input / container / card) with appropriate default dimensions so `<Badge />` renders as a 60×22 pill, `<Switch />` as a 44×24 toggle, etc.
 
@@ -156,15 +148,15 @@ Modifiers (`md:`, `dark:`, `hover:`) silently skipped.
 
 Post-classify pass that recognises 7 UI archetypes and tunes spacing/alignment defaults. Never overrides explicit Tailwind signals (`??=` everywhere).
 
-| Archetype | Pattern | Tuning |
-|---|---|---|
-| **media-object** | avatar/image + text siblings | `row`, `align: center`, `gap: 12` |
-| **form-field** | text label + input (exactly 2 children) | `col`, `gap: 6` |
-| **hero** | heading (h ≥ 24) + paragraph/button, depth ≤ 2, non-card | `col`, `gap: 24` |
-| **nav-bar** | row container at depth ≤ 1 with button child | `justify: between`, `align: center`, `gap: 24` |
-| **card-grid** | all children are card-like surfaces (≥ 2) | `row`, `wrap: true`, `gap: 16` |
-| **stat-tile** | card with small label (h ≤ 16) + big metric (h ≥ 24) | `col`, `gap: 4` |
-| **pricing-card** | card with title + CTA button + bullet list or 4+ children | `col`, `gap: 16` |
+| Archetype        | Pattern                                                   | Tuning                                         |
+| ---------------- | --------------------------------------------------------- | ---------------------------------------------- |
+| **media-object** | avatar/image + text siblings                              | `row`, `align: center`, `gap: 12`              |
+| **form-field**   | text label + input (exactly 2 children)                   | `col`, `gap: 6`                                |
+| **hero**         | heading (h ≥ 24) + paragraph/button, depth ≤ 2, non-card  | `col`, `gap: 24`                               |
+| **nav-bar**      | row container at depth ≤ 1 with button child              | `justify: between`, `align: center`, `gap: 24` |
+| **card-grid**    | all children are card-like surfaces (≥ 2)                 | `row`, `wrap: true`, `gap: 16`                 |
+| **stat-tile**    | card with small label (h ≤ 16) + big metric (h ≥ 24)      | `col`, `gap: 4`                                |
+| **pricing-card** | card with title + CTA button + bullet list or 4+ children | `col`, `gap: 16`                               |
 
 ### 🔲 CSS grid table engine (`lib/parser/table-grid.ts`)
 
@@ -187,9 +179,6 @@ Deterministic per-copy width stagger for `.map()` repeat instances:
 - Button/input/avatar/image widths stay consistent (structural shapes unchanged).
 - Applied in renderer, React exporter, and HTML exporter — preview matches export.
 
-**Before**: 3 repeated table rows = 3 identical ghost clones.
-**After**: each copy has naturally ragged text widths + unique paragraph line breaks.
-
 ### 🖼️ Live preview renderer (`components/skeleton-renderer.tsx`)
 
 - 🎭 **Three rendering paths**:
@@ -199,41 +188,53 @@ Deterministic per-copy width stagger for `.map()` repeat instances:
 - 💫 **Pulse + shimmer animation**, configurable speed (slow / normal / fast).
 - 📑 **Paragraph multi-line**: N lines stacked, last line shortened by deterministic 55–85% factor (hashed from node id).
 - 🔁 **Repeat fragment with variance**: N copies, each with staggered text widths for natural raggedness.
-- ✏️ **Selection ring** (green) on click; click-through to deselect on canvas.
 - 🟡 **Low-confidence outline** (amber) on fallback-confidence fill blocks.
 - 🌗 **Dark/light follows next-themes** via `bg-background text-foreground`.
 
-### ⚙️ Properties panel (`components/properties-panel.tsx`)
+### ⚙️ Properties panel (`components/properties-panel/`)
+
+Tabbed panel with **Design** and **Animation** tabs. Design tab has 5 collapsible sections using `SectionWrapper`:
 
 ```
 ┌──────────────────────────┐
-│ container · <div>        │
+│ [Design]  [Animation]    │  ← Tabs with HugeIcons
+├──────────────────────────┤
+│ ▸ BLOCK                  │  ← SectionWrapper (collapsible)
+│   Type      [Container▾] │    Select dropdown
+│   Appearance [Card ▾]    │    Container-only
+│   ☑ Visible              │    Switch toggle
 │                          │
-│ Kind          [ Container ▾ ]
-│ Appearance    [ Card ▾ ]      (containers only)
-│ Width  [ 320 ]
-│ ☐ Full width
-│ Height [ 200 ]
-│ Radius [ 12 ]
-│ Line count [ 3 ]             (paragraphs only)
-│ Repeat [ 3 ]                 (when .map-derived)
-│ ──── Layout ────             (containers / card-with-children)
-│ Direction  [ Col ▾ ]
-│ Gap        [ 12 ]
-│ Align      [ Center ▾ ]
-│ Justify    [ Auto ▾ ]
-│ ☐ Wrap children
-│ ──── Padding (px) ────
-│  T [16]    R [16]
-│  B [16]    L [16]
-│ ☑ Visible
+│ ▾ DIMENSIONS             │  ← Collapsible
+│   Size  [W|320|px]       │    ScrubInputGroup side-by-side
+│         [H|200|px]       │
+│   Radius [⌓|12|px]      │    Icon prefix (SquareRoundCornerIcon)
+│                          │
+│ ▾ LAYOUT         [flex]  │  ← Badge shows flex/grid
+│   Direction [Row][Col]   │    ToggleGroup
+│   Align   [S] [C] [E]   │    ToggleGroup
+│   Gap     [G|12|px]     │    ScrubInputGroup
+│   ┌───────[16]───────┐  │    PaddingBox (visual CSS box model)
+│   [24]  ░░content░░ [24] │    4 inline inputs + drag-to-scrub
+│   └───────[16]───────┘  │
+│                          │
+│ ▸ REPEAT          [⏻]   │  ← Master Switch toggle in header
+│   Count [⟳|3]  [×]      │    ScrubInputGroup + clear button
+│                          │
+│ ▸ CONTENT MOCKING        │  ← Paragraph-only
+│   Line count [#|3]       │    ScrubInputGroup
 └──────────────────────────┘
 ```
 
-Every IR field manually overridable. Mutations flow through `patchNode` →
-`mutateNode` (immutable path-copy).
+**Animation tab** (absorbs former GlobalControls):
 
-### 📝 Paste editor
+- Preset picker (Select)
+- Animation type (ToggleGroup: Pulse / Shimmer)
+- Speed (ToggleGroup: Slow / Normal / Fast)
+- Base color (Select)
+
+All fields use `ScrubInputGroup` — compact `[prefix|value|suffix]` InputGroup with drag-to-scrub on prefix handle. Supports both text prefixes ("W", "H", "G") and icon prefixes (SquareRoundCornerIcon for radius, RepeatIcon for count).
+
+### 📝 Paste editor (`components/paste-input.tsx`)
 
 - 🪟 **CodeMirror 6** with `@uiw/react-codemirror`.
 - 🎨 JSX + TypeScript syntax highlight.
@@ -241,59 +242,103 @@ Every IR field manually overridable. Mutations flow through `patchNode` →
 - 🚨 Inline syntax error decoration at exact `line:col` (red underline).
 - 🌗 Theme follows next-themes (`githubLight` / `githubDark`).
 - ⌨️ Bracket matching, auto-close, indent-on-input, search (Cmd+F).
+- 🏷️ Header: CodeIcon + "INPUT UI · JSX" label + AiMagicIcon format button.
+- 🦶 Footer: "Browse starters" button + "Generate skeleton" button with ZapIcon.
 
-### 📤 Exporters (`lib/exporters/`)
+### 🗂️ Starter browser (`components/starter-browser.tsx`)
 
-- ⚛️ **React + Tailwind** function component output.
-- 🌐 **HTML + Tailwind** standalone.
-- 🪡 **Three-path parity** with renderer (surface / container / fill).
-- 🔲 **CSS grid support**: rows with `gridCols` emit `grid grid-cols-[...]` instead of `flex flex-row`.
-- 🌀 **Shimmer keyframes** prepended as comment (React) or `<style>` block (HTML).
-- 🔁 **Repeat handling with variance**: N copies, each with staggered text widths matching the preview.
-- 📐 **Full token coverage**: padding (per side), gap, alignment, wrap, ring chrome, radius, dimensions.
-- 📋 **Copy to clipboard** + tabbed React/HTML view in responsive modal.
+Left side-sheet overlay with categorized starter templates:
+
+- 🔍 Search filtering by name, category, tag, description.
+- ⌨️ Keyboard nav: ↑↓ navigate, Enter insert, Esc close.
+- 📂 4 categories: content, saas, dashboard, commerce (12 templates).
+- 🖼️ Each item: thumbnail placeholder + name + description + tag badge.
+- 🟢 Active item highlight with `bg-primary/10`.
+- 📏 Footer: "↕ navigate · ↵ insert · esc close" hints.
+
+### 🟢 Selection overlay (`components/resize-overlay.tsx`)
+
+Enhanced Figma-style selection overlay:
+
+- **Green border**: 1-2px solid `border-primary` outline around selected element.
+- **8 dot handles**: Corner dots (NW/NE/SW/SE) + edge midpoint dots (N/E/S/W) — all `bg-primary` squares.
+- **Interactive handles**: Only E (right midpoint) and S (bottom midpoint) are draggable. Others are visual-only.
+- **Dimension badge**: Below selected element, centered green pill showing `"{width} × {height}"`.
+- **Pointer capture**: Smooth tracking via `setPointerCapture` even when cursor leaves handle strip.
+- **Drag lifecycle**: `pushSnapshot()` at start → `patchNodeQuiet()` per frame → one undo step per gesture.
+- Paragraph nodes: S handle hidden (height = lineCount).
+
+### 📤 Export modal (`components/export-modal.tsx`)
+
+Split-pane dialog with syntax-highlighted code:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│ [React·Tailwind] [HTML·Tailwind]  ProfileCardSkeleton.jsx  │
+├──────────────────────────────┬──────────────────────────┤
+│                              │ SUMMARY                  │
+│  CodeMirror (read-only)      │  Lines         33        │
+│  JSX/TS syntax highlighting  │  Size       1303 B       │
+│  Line numbers + fold gutters │  Animation  animate-pulse│
+│  GitHub theme (dark/light)   │                          │
+│                              │ OPTIONS                  │
+│  [Copy] button top-right     │  Tailwind v4    [switch] │
+│                              │                          │
+├──────────────────────────────┴──────────────────────────┤
+│ ✓ Validated · 0 errors              Cancel  [Download]  │
+└─────────────────────────────────────────────────────────┘
+```
+
+- ⚛️ **React + Tailwind** and 🌐 **HTML + Tailwind** tabs.
+- 🎨 **Syntax highlighting** via CodeMirror read-only (same github theme as paste editor).
+- 📊 **Summary sidebar**: real line count, byte size (`Blob.size`), animation type.
+- 🔘 **Options**: Tailwind v4 (always on).
+- 📋 **Copy to clipboard** button with "Copied!" feedback.
+- 💾 **Download button**: creates Blob + triggers browser download as `{componentName}Skeleton.{jsx|html}`.
+- ✅ **Footer**: "Validated · 0 errors" status.
 
 ### 🎨 Animation presets (`lib/presets.ts`)
 
-5 named preset bundles in the controls bar:
+5 named preset bundles (now in Animation tab):
 
-| Preset | Animation | Speed | Base Color | Vibe |
-|---|---|---|---|---|
-| **Tailwind** | pulse | normal | bg-zinc-200 | Standard, universal |
-| **Shimmer** | shimmer | normal | bg-zinc-200 | Gradient sweep |
-| **Linear** | shimmer | slow | bg-zinc-100 | Subtle, premium |
-| **Vercel** | shimmer | fast | bg-zinc-800 | Dark-mode optimized |
-| **Notion** | pulse | slow | bg-zinc-300 | Warm, gentle breathe |
+| Preset       | Animation | Speed  | Base Color  | Vibe                 |
+| ------------ | --------- | ------ | ----------- | -------------------- |
+| **Tailwind** | pulse     | normal | bg-zinc-200 | Standard, universal  |
+| **Shimmer**  | shimmer   | normal | bg-zinc-200 | Gradient sweep       |
+| **Linear**   | shimmer   | slow   | bg-zinc-100 | Subtle, premium      |
+| **Vercel**   | shimmer   | fast   | bg-zinc-800 | Dark-mode optimized  |
+| **Notion**   | pulse     | slow   | bg-zinc-300 | Warm, gentle breathe |
 
-Preset picker sets animation + speed + baseColor in one click. Individual dropdowns still available for fine-tuning — shows "Custom" when settings diverge.
+Preset picker sets animation + speed + baseColor in one click. Individual controls still available for fine-tuning — shows "Custom" when settings diverge.
 
-### ↔️ Drag-to-resize handles (`components/resize-overlay.tsx`, `hooks/use-element-rect.ts`)
+### 🔢 ScrubInputGroup + useScrubDrag (`components/scrub-input-group.tsx`, `hooks/use-scrub-drag.ts`)
 
-Two invisible drag handles appear on hover over the selected skeleton element:
+Figma-style compact numeric inputs:
 
-- **Right edge** (↔ `ew-resize`) — drags width. Min 8px.
-- **Bottom edge** (↕ `ns-resize`) — drags height. Min 4px. Hidden for paragraph nodes (height = line count).
+- **InputGroup layout**: `[prefix|value|suffix]` — prefix is drag handle, center is number input, suffix is unit.
+- **Text prefixes**: "W", "H", "G", "#" for standard fields.
+- **Icon prefixes**: `iconPrefix` prop maps to HugeIcons (SquareRoundCornerIcon for radius, RepeatIcon for count).
+- **Drag-to-scrub**: 2px dead zone, Shift ×10 multiplier, pointer capture, body cursor override.
+- **Visual feedback**: `hover:bg-primary/10`, `active:bg-primary/20` on prefix handle.
+- **Number input**: Hidden spinners (`[appearance:textfield]`), compact `px-1` padding, `tabular-nums`.
 
-How it works:
+### 📦 PaddingBox (`components/padding-box.tsx`)
 
-1. `ResizeOverlay` subscribes to `selectedId` and renders an absolutely-positioned `<div>` over the selected element.
-2. `useElementRect` tracks the element's position relative to the scrollable container via `getBoundingClientRect` + `ResizeObserver` + scroll listener.
-3. Each `Handle` component uses **Pointer Events** (`onPointerDown`/`onPointerMove`/`onPointerUp`) with `setPointerCapture` for smooth tracking even when the cursor leaves the narrow 6px handle strip.
-4. **Drag start**: resolves the starting dimension (measures DOM if IR value is `"full"` or `undefined`), then calls `pushSnapshot()` once — the entire drag is one undoable action.
-5. **Drag move**: computes pixel delta from start, clamps to minimum, calls `patchNodeQuiet(id, { width/height })` — silent IR patch, no history push. Live preview updates immediately.
-6. **Drag end**: releases pointer capture, nulls drag ref.
-7. Dynamic dimensions flow through `blockStyles()` → inline CSS (Tailwind can't scan runtime-built `w-[42px]` class names).
+Visual CSS box-model diagram:
 
-Handles are `opacity-0` by default, fade to `bg-primary/40` on hover with `transition-opacity`.
+```
+  ┌──────[16]──────┐
+  │                 │
+[24]   ┌───────┐  [24]
+  │    │content│    │
+  │    └───────┘    │
+  │                 │
+  └──────[16]──────┘
+```
 
-### 🔢 Scrubbable number inputs (`components/properties-panel.tsx`)
-
-Width, Height, Radius, Gap, Padding, and Repeat fields support click-and-drag scrubbing:
-
-- Click and hold a number input label, then drag horizontally to increment/decrement.
-- Follows the same `pushSnapshot` + `patchNodeQuiet` pattern as resize handles — one undo entry per scrub gesture.
-- Step size adapts to context: ±1px per pixel dragged for most fields.
-- Works alongside direct keyboard input — click to type, click-and-drag to scrub.
+- Outer dashed border + inner muted bg.
+- 4 inline `<input>` at each edge center.
+- Each input supports drag-to-scrub via `useScrubDrag`.
 
 ### ↩️ Undo/Redo (`store/use-skeleton-store.ts`)
 
@@ -306,22 +351,11 @@ Full undo/redo with configurable history depth (`MAX_HISTORY = 50`):
 - `future` stack is cleared whenever a new mutation occurs (no branching history).
 - Bound to `Cmd+Z` / `Cmd+Shift+Z` via `hooks/use-keyboard-shortcuts.ts`.
 
-### 📝 Code documentation
-
-The drag-to-resize pipeline now carries flow comments across all involved files so a programmer can trace the data flow end-to-end:
-
-- `resize-overlay.tsx` — section headers for DRAG START/MOVE/END, comments on pointer capture, "full" → pixel anchoring, and why only one snapshot is pushed.
-- `use-element-rect.ts` — position calculation comment explaining `scrollLeft`/`scrollTop` offset.
-- `skeleton-renderer.tsx` — inline-style + `data-skeleton-id` bridge comment.
-- `preview-canvas.tsx` — overlay mounting comment.
-- `use-skeleton-store.ts` — `patchNode` (loud), `patchNodeQuiet` (silent), and `pushSnapshot` (drag start) distinguished with comments.
-- `runtime-styles.ts` — dynamic dimension path comment linking drag-to-resize → inline styles.
-
 ### 🧪 Tests
 
 ```
 Test Files:  14 passed
-Tests:       300 passed
+Tests:       323 passed
 ```
 
 Coverage spread across:
@@ -347,9 +381,9 @@ Coverage spread across:
 - ⚡ **Next.js 16** (Turbopack dev)
 - ⚛️ React 19
 - 🎨 Tailwind v4 (CSS variables, `bg-foreground/10` opacity syntax)
-- 🧰 shadcn/ui primitives (Button, Input, Textarea, Label, Select, Checkbox, Tabs, Dialog)
+- 🧰 shadcn/ui primitives (Button, Input, Label, Select, Tabs, Dialog, Switch, ToggleGroup, Collapsible)
 - 🐻 Zustand store with `persist` (localStorage, key `skeleton-store-v2`)
-- 🦋 Hugeicons
+- 🦋 HugeIcons (`@hugeicons/react` + `@hugeicons/core-free-icons`)
 - 🪀 next-themes (dark/light chrome)
 - 🪂 @uiw/react-codemirror + @codemirror/lang-javascript + @codemirror/lint
 - 🥼 vitest
@@ -360,47 +394,64 @@ Coverage spread across:
 
 ```
 app/
-├── layout.tsx                 ← html h-full + body h-full overflow-hidden
-└── page.tsx                   ← three-pane composition
+├── layout.tsx                          ← html h-full + body h-full overflow-hidden
+├── page.tsx                            ← three-pane composition + header chrome
+└── globals.css                         ← Tailwind v4 directives, CSS vars, shimmer keyframes
 components/
-├── code-editor.tsx            ← CodeMirror wrapper
-├── example-snippets.tsx
-├── export-modal.tsx           ← Dialog + Tabs + Copy
-├── global-controls.tsx        ← preset picker + animation/speed/baseColor selects
-├── paste-input.tsx            ← CodeEditor + Generate button
-├── preview-canvas.tsx
-├── properties-panel.tsx       ← Kind/Appearance/Layout/Padding controls + scrubbable inputs
-├── resize-overlay.tsx         ← Drag handles over selected element (Handle component)
-├── skeleton-renderer.tsx      ← Node orchestrator + SingleNode + repeat variance
-├── theme-provider.tsx
-├── theme-toggle.tsx
-└── ui/                        ← shadcn primitives
+├── code-editor.tsx                     ← CodeMirror wrapper with JSX syntax + lint
+├── export-modal.tsx                    ← Split-pane dialog + CodeMirror read-only + sidebar
+├── paste-input.tsx                     ← CodeEditor + header (CodeIcon) + footer (Generate/Browse)
+├── preview-canvas.tsx                  ← Dot grid bg + info bar + skeleton preview
+├── resize-overlay.tsx                  ← Green border + 8 dot handles + dimension badge
+├── skeleton-renderer.tsx               ← Recursive IR → DOM (3 render paths)
+├── scrub-input-group.tsx               ← InputGroup-based numeric input + drag-to-scrub
+├── padding-box.tsx                     ← Visual CSS box-model diagram (4 edge inputs)
+├── starter-browser.tsx                 ← Left side-sheet with search + keyboard nav
+├── shortcuts-modal.tsx                 ← Keyboard shortcuts reference modal
+├── theme-provider.tsx                  ← next-themes wrapper
+├── theme-toggle.tsx                    ← Light/dark toggle
+├── properties-panel/
+│   ├── index.tsx                       ← Tabbed shell (Design + Animation)
+│   ├── design-tab.tsx                  ← Composes 5 sections
+│   ├── animation-tab.tsx               ← Preset/animation/speed/color (from GlobalControls)
+│   ├── section-wrapper.tsx             ← Collapsible section with title/badge/toggle
+│   └── sections/
+│       ├── block-section.tsx           ← Type + Visibility + Appearance
+│       ├── dimensions-section.tsx      ← Size W/H + Radius
+│       ├── layout-section.tsx          ← Direction/Align/Gap/Padding (ToggleGroup + PaddingBox)
+│       ├── repeat-section.tsx          ← Toggle + Count (RepeatIcon prefix)
+│       └── content-section.tsx         ← Line count (paragraph only)
+└── ui/                                 ← shadcn primitives (Button, Dialog, Select, Tabs,
+                                          Switch, ToggleGroup, Collapsible, InputGroup, etc.)
 hooks/
-├── use-element-rect.ts        ← Tracks selected element position via ResizeObserver + scroll
-├── use-keyboard-shortcuts.ts  ← Cmd+Z / Cmd+Shift+Z undo/redo + arrow key dimension nudges
-└── use-scrubbable.ts          ← Click-and-drag number input scrubbing
+├── use-element-rect.ts                 ← Tracks selected element position via ResizeObserver
+├── use-keyboard-shortcuts.ts           ← Cmd+Z/Shift+Z undo/redo + arrow nudge + Delete
+└── use-scrub-drag.ts                   ← Click-and-drag number scrubbing (2px dead zone, Shift ×10)
 lib/
-├── examples/snippets.ts       ← 3 curated JSX snippets
+├── utils.ts                            ← cn() helper
+├── format-source.ts                    ← Prettier standalone formatting
+├── presets.ts                          ← 5 named animation presets
+├── examples/snippets.ts                ← 12 categorized JSX starter templates
 ├── exporters/
-│   ├── format-classes.ts      ← class string generator (3-path + grid)
-│   ├── react-tailwind.ts
-│   ├── html-tailwind.ts
-│   └── runtime-styles.ts      ← live preview styling (flex + grid)
+│   ├── format-classes.ts               ← Tailwind class string generator (3-path + grid)
+│   ├── react-tailwind.ts               ← React + Tailwind function component
+│   ├── html-tailwind.ts                ← HTML + Tailwind standalone
+│   └── runtime-styles.ts               ← Live preview inline styles (flex + grid)
 ├── ir/
-│   ├── helpers.ts             ← generateId / findNode / mutateNode
-│   ├── repeat-variance.ts     ← deterministic width stagger for repeats
-│   └── types.ts               ← SkeletonNode / Archetype / gridCols / etc
+│   ├── helpers.ts                      ← generateId / findNode / mutateNode
+│   ├── repeat-variance.ts              ← Deterministic width stagger for repeats
+│   └── types.ts                        ← SkeletonNode / ParseResult (with componentName)
 ├── parser/
-│   ├── archetype-detector.ts  ← 7 UI pattern matchers + spacing tuner
-│   ├── parse-component.ts     ← orchestrator (classify → archetype → grid)
-│   ├── raw-node.ts            ← AST → RawNode
-│   ├── semantic-classifier.ts ← RawNode → SkeletonNode
-│   ├── table-grid.ts          ← column width inference + gridCols stamper
-│   ├── tag-defaults.ts        ← TAG_DEFAULTS + COMPONENT_TAG_HINTS (60+)
-│   └── tailwind-class-reader.ts
-├── presets.ts                 ← 5 named animation presets + finder
+│   ├── archetype-detector.ts           ← 7 UI pattern matchers + spacing tuner
+│   ├── parse-component.ts              ← Orchestrator + component name extraction
+│   ├── raw-node.ts                     ← AST → RawNode
+│   ├── semantic-classifier.ts          ← RawNode → SkeletonNode
+│   ├── sibling-repeat.ts              ← Collapse repeated siblings
+│   ├── table-grid.ts                   ← Column width inference + gridCols stamper
+│   ├── tag-defaults.ts                 ← TAG_DEFAULTS + COMPONENT_TAG_HINTS (60+)
+│   └── tailwind-class-reader.ts        ← className → StyleHints
 store/
-└── use-skeleton-store.ts      ← Zustand + persist
+└── use-skeleton-store.ts               ← Zustand + persist (componentName, parseVersion, lastEditedAt)
 ```
 
 ---
@@ -409,24 +460,27 @@ store/
 
 - 📍 **Position offsets** (top-_/right-_/bottom-_/left-_) — would let absolute badges render in-place instead of normal flow.
 - 📦 **Library registry** — MUI / Mantine / Chakra exact-match tables for friendlier defaults.
-- 🪶 **Format button** (lazy prettier) — clean up pasted code.
 - 🔔 **Confidence summary banner** — "5 of 12 blocks low-confidence — click to verify".
 - 📤 **`.map()` syntax in exported React** — emit `{Array.from({ length: N }).map(...)}` instead of inline duplicates.
 - 🧑‍🤝‍🧑 **Sibling-repeat detection** — hand-written structurally similar siblings (no `.map()`) get repeat + variance treatment.
 - 🎨 **Archetype display in panel** — show detected archetype label in properties panel.
+- 📝 **Add comments toggle** — section comments in exported code based on archetype detection.
+- 🔤 **TypeScript export toggle** — `.tsx` output with typed props.
 
 ---
 
 ## 🚦 Workflow summary
 
-1. User pastes JSX in CodeMirror.
-2. Parser extracts AST → RawNode → SkeletonNode tree.
-3. Post-classify passes: archetype detection → table grid inference → repeat variance.
-4. Preview canvas renders tree via runtime-styles (flex or grid).
-5. User clicks any block → properties panel reveals all editable fields + resize handles appear on hover.
-6. **Drag handles** (right edge for width, bottom edge for height) or **scrub inputs** (click-and-drag number labels) for fine-grained dimension adjustment.
-7. Mutations re-render preview live (Zustand store + immutable IR).
-8. **Undo/Redo** (Cmd+Z / Cmd+Shift+Z) reverts edits — drag/scrub gestures count as one undo step.
-9. Export modal generates clean React or HTML code matching the preview (with variance).
-10. Preset picker applies named animation/speed/color bundles in one click.
-11. Auto-save to localStorage; rehydrate parses on load.
+1. User pastes JSX in CodeMirror editor (left pane).
+2. Clicks "Generate skeleton" (or uses starter browser to pick a template).
+3. Parser extracts AST → RawNode → SkeletonNode tree + component name.
+4. Post-classify passes: archetype detection → table grid inference → repeat variance.
+5. Preview canvas renders tree with dot grid bg + info bar (center pane).
+6. User clicks any block → green selection overlay with 8 dot handles + dimension badge.
+7. **Design tab** (right pane): Block type/visibility, Dimensions (ScrubInputGroup), Layout (ToggleGroups + PaddingBox), Repeat, Content Mocking.
+8. **Animation tab**: Preset picker, animation type/speed, base color.
+9. Drag handles (E for width, S for height) or scrub input prefixes for dimension adjustment.
+10. Mutations re-render preview live (Zustand store + immutable IR).
+11. **Undo/Redo** (Cmd+Z / Cmd+Shift+Z) — drag/scrub gestures count as one undo step.
+12. Export modal: syntax-highlighted code (CodeMirror read-only) + summary stats + Download.
+13. Auto-save to localStorage; rehydrate parses on load.

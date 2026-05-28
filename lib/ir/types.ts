@@ -169,5 +169,5 @@ export type ParseError = {
  * read `tree`, on failure read `error`. Avoids throwing from a pure function.
  */
 export type ParseResult =
-  | { ok: true; tree: SkeletonNode }
+  | { ok: true; tree: SkeletonNode; componentName?: string }
   | { ok: false; error: ParseError };

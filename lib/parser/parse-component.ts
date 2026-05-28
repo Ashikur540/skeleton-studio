@@ -2,6 +2,7 @@ import { parse } from "@babel/parser";
 import type {
   ArrowFunctionExpression,
   FunctionDeclaration,
+  Identifier,
   JSXElement,
   JSXFragment,
   Node,
@@ -12,6 +13,7 @@ import {
   isExportDefaultDeclaration,
   isExportNamedDeclaration,
   isFunctionDeclaration,
+  isIdentifier,
   isJSXElement,
   isJSXFragment,
   isReturnStatement,
@@ -49,8 +51,8 @@ export function parseComponent(source: string): ParseResult {
     };
   }
 
-  const returnJsx = findComponentReturn(ast.program.body);
-  if (!returnJsx) {
+  const found = findComponentReturn(ast.program.body);
+  if (!found) {
     return {
       ok: false,
       error: {
@@ -61,7 +63,7 @@ export function parseComponent(source: string): ParseResult {
     };
   }
 
-  const raw = toRawNode(returnJsx, false);
+  const raw = toRawNode(found.jsx, false);
   if (!raw) {
     return {
       ok: false,
@@ -85,24 +87,29 @@ export function parseComponent(source: string): ParseResult {
   detectArchetypes(tree);
   detectTableGrid(tree);
   detectSiblingRepeat(tree);
-  return { ok: true, tree };
+  return { ok: true, tree, componentName: found.name };
 }
+
+type ComponentMatch = { jsx: JSXElement | JSXFragment; name?: string };
 
 /**
  * Walk top-level statements looking for the first function whose return
  * statement yields JSX. Handles function declarations, default/named exports,
- * and arrow-function variable declarations.
+ * and arrow-function variable declarations. Returns both the JSX node and the
+ * component's declared name (if one can be determined).
  */
-function findComponentReturn(body: Node[]): JSXElement | JSXFragment | null {
+function findComponentReturn(body: Node[]): ComponentMatch | null {
+  const nameOf = (id: Identifier | null | undefined) => id?.name;
+
   for (const node of body) {
     if (isExportDefaultDeclaration(node)) {
       const inner = node.declaration;
       if (isFunctionDeclaration(inner)) {
         const r = findReturnInFunction(inner);
-        if (r) return r;
+        if (r) return { jsx: r, name: nameOf(inner.id) };
       } else if (isArrowFunctionExpression(inner)) {
         const r = findReturnInArrow(inner);
-        if (r) return r;
+        if (r) return { jsx: r };
       }
       continue;
     }
@@ -110,12 +117,12 @@ function findComponentReturn(body: Node[]): JSXElement | JSXFragment | null {
       const inner = node.declaration;
       if (isFunctionDeclaration(inner)) {
         const r = findReturnInFunction(inner);
-        if (r) return r;
+        if (r) return { jsx: r, name: nameOf(inner.id) };
       } else if (isVariableDeclaration(inner)) {
         for (const decl of inner.declarations) {
           if (decl.init && isArrowFunctionExpression(decl.init)) {
             const r = findReturnInArrow(decl.init);
-            if (r) return r;
+            if (r) return { jsx: r, name: isIdentifier(decl.id) ? decl.id.name : undefined };
           }
         }
       }
@@ -123,13 +130,13 @@ function findComponentReturn(body: Node[]): JSXElement | JSXFragment | null {
     }
     if (isFunctionDeclaration(node)) {
       const r = findReturnInFunction(node);
-      if (r) return r;
+      if (r) return { jsx: r, name: nameOf(node.id) };
     }
     if (isVariableDeclaration(node)) {
       for (const decl of node.declarations) {
         if (decl.init && isArrowFunctionExpression(decl.init)) {
           const r = findReturnInArrow(decl.init);
-          if (r) return r;
+          if (r) return { jsx: r, name: isIdentifier(decl.id) ? decl.id.name : undefined };
         }
       }
     }

@@ -4,11 +4,16 @@ import { useElementRect } from "@/hooks/use-element-rect";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { useCallback, useRef, type PointerEvent, type RefObject } from "react";
 
+const MIN_WIDTH = 8;
+const MIN_HEIGHT = 4;
+const DOT_SIZE = 7;
+const HALF_DOT = Math.floor(DOT_SIZE / 2);
+
 /**
- * Absolutely-positioned resize handles drawn over the currently selected
- * skeleton node. Right handle controls width; bottom handle controls height.
- * Mounted inside the scrollable preview container so handles scroll with
- * content automatically.
+ * Enhanced selection overlay drawn over the currently selected skeleton node.
+ * Shows a green border, 8 handle dots (corners + edge midpoints), and a
+ * dimension badge below. Only the right (E) and bottom (S) midpoint handles
+ * are interactive for width/height resizing.
  */
 export function ResizeOverlay({
   containerRef,
@@ -27,12 +32,18 @@ export function ResizeOverlay({
 
   if (!rect || !node) return null;
 
-  // Paragraphs can only be resized horizontally — height is driven by line count.
   const isParagraph = node.kind === "paragraph";
 
+  const widthLabel =
+    node.width === "full"
+      ? "100%"
+      : typeof node.width === "number"
+        ? `${node.width}`
+        : "auto";
+  const heightLabel =
+    typeof node.height === "number" ? `${node.height}` : "auto";
+
   return (
-    /* Outer div sits exactly over the selected element but passes clicks through.
-       Only the child Handle components intercept pointer events. */
     <div
       style={{
         position: "absolute",
@@ -43,56 +54,105 @@ export function ResizeOverlay({
         pointerEvents: "none",
       }}
     >
-      <Handle
+      {/* Selection border */}
+      <div
+        className="absolute inset-0 border-[1.5px] border-primary rounded-sm"
+        style={{ pointerEvents: "none" }}
+      />
+
+      {/* Corner dots (visual only) */}
+      <Dot x={-HALF_DOT} y={-HALF_DOT} />
+      <Dot x={rect.width - HALF_DOT - 1} y={-HALF_DOT} />
+      <Dot x={-HALF_DOT} y={rect.height - HALF_DOT - 1} />
+      <Dot x={rect.width - HALF_DOT - 1} y={rect.height - HALF_DOT - 1} />
+
+      {/* Top midpoint (visual only) */}
+      <Dot x={rect.width / 2 - HALF_DOT} y={-HALF_DOT} />
+      {/* Left midpoint (visual only) */}
+      <Dot x={-HALF_DOT} y={rect.height / 2 - HALF_DOT} />
+
+      {/* Right midpoint — interactive width handle */}
+      <DragHandle
         axis="x"
         nodeId={selectedId!}
         nodeValue={node.width}
         containerRef={containerRef}
+        style={{
+          left: rect.width - HALF_DOT - 1,
+          top: rect.height / 2 - HALF_DOT,
+        }}
       />
+
+      {/* Bottom midpoint — interactive height handle */}
       {!isParagraph && (
-        <Handle
+        <DragHandle
           axis="y"
           nodeId={selectedId!}
           nodeValue={node.height}
           containerRef={containerRef}
+          style={{
+            left: rect.width / 2 - HALF_DOT,
+            top: rect.height - HALF_DOT - 1,
+          }}
         />
       )}
+
+      {/* Dimension badge */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: -22,
+          left: "50%",
+          transform: "translateX(-50%)",
+          pointerEvents: "none",
+        }}
+      >
+        <span className="bg-primary text-primary-foreground text-[11px] px-1.5 py-0.5 rounded whitespace-nowrap font-mono tabular-nums">
+          {widthLabel} × {heightLabel}
+        </span>
+      </div>
     </div>
   );
 }
 
-const MIN_WIDTH = 8;
-const MIN_HEIGHT = 4;
+/** Visual-only dot handle at a fixed position. */
+function Dot({ x, y }: { x: number; y: number }) {
+  return (
+    <div
+      className="absolute bg-primary border border-primary-foreground/50 rounded-[2px]"
+      style={{
+        width: DOT_SIZE,
+        height: DOT_SIZE,
+        left: x,
+        top: y,
+        pointerEvents: "none",
+      }}
+    />
+  );
+}
 
-/**
- * One drag handle — a thin strip on the right edge (axis=x, controls width)
- * or bottom edge (axis=y, controls height). Uses pointer capture for smooth
- * drag tracking even when the cursor leaves the handle element.
- */
-function Handle({
+/** Interactive drag handle for width (axis=x) or height (axis=y). */
+function DragHandle({
   axis,
   nodeId,
   nodeValue,
   containerRef,
+  style,
 }: {
   axis: "x" | "y";
   nodeId: string;
   nodeValue: number | "full" | undefined;
   containerRef: RefObject<HTMLDivElement | null>;
+  style: React.CSSProperties;
 }) {
   const pushSnapshot = useSkeletonStore((s) => s.pushSnapshot);
   const patchNodeQuiet = useSkeletonStore((s) => s.patchNodeQuiet);
 
-  /* Local drag state: snapshot of the pointer position and node dimension
-     at the moment the user pressed down. Null means no active drag. */
   const dragRef = useRef<{
     startPos: number;
     startValue: number;
   } | null>(null);
 
-  /* ── DRAG START ──────────────────────────────────────────────────────
-     Captures the pointer, resolves the starting dimension (measuring the
-     DOM if the IR value is "full"/undefined), and pushes one undo snapshot. */
   const onPointerDown = useCallback(
     (e: PointerEvent) => {
       e.preventDefault();
@@ -101,11 +161,8 @@ function Handle({
 
       let startValue: number;
       if (typeof nodeValue === "number") {
-        // Already a concrete pixel value in the IR — use it directly.
         startValue = nodeValue;
       } else {
-        /* "full" or undefined — measure the actual rendered DOM element,
-           then anchor the value into the IR so future drags start from here. */
         const el = containerRef.current?.querySelector(
           `[data-skeleton-id="${nodeId}"]`,
         );
@@ -119,7 +176,6 @@ function Handle({
         });
       }
 
-      // One history entry for the entire drag gesture — undo reverts to pre-drag.
       pushSnapshot();
       dragRef.current = {
         startPos: axis === "x" ? e.clientX : e.clientY,
@@ -129,10 +185,6 @@ function Handle({
     [axis, nodeId, nodeValue, pushSnapshot, patchNodeQuiet, containerRef],
   );
 
-  /* ── DRAG MOVE ───────────────────────────────────────────────────────
-     Computes the pixel delta from drag start, clamps to minimum, then
-     silently patches the IR — no history push so intermediate values don't
-     clutter the undo stack. */
   const onPointerMove = useCallback(
     (e: PointerEvent) => {
       if (!dragRef.current) return;
@@ -147,9 +199,6 @@ function Handle({
     [axis, nodeId, patchNodeQuiet],
   );
 
-  /* ── DRAG END ────────────────────────────────────────────────────────
-     Releases pointer capture and clears the drag ref. No snapshot needed
-     here — it was already pushed at drag start. */
   const onPointerUp = useCallback(
     (e: PointerEvent) => {
       (e.target as HTMLElement).releasePointerCapture(e.pointerId);
@@ -158,21 +207,19 @@ function Handle({
     [],
   );
 
-  const isX = axis === "x";
   return (
     <div
+      className="absolute bg-primary border border-primary-foreground/50 rounded-[2px] hover:scale-125 transition-transform"
+      style={{
+        width: DOT_SIZE,
+        height: DOT_SIZE,
+        cursor: axis === "x" ? "ew-resize" : "ns-resize",
+        pointerEvents: "auto",
+        ...style,
+      }}
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
-      style={{
-        position: "absolute",
-        ...(isX
-          ? { right: -3, top: 0, width: 6, height: "100%", cursor: "ew-resize" }
-          : { bottom: -3, left: 0, height: 6, width: "100%", cursor: "ns-resize" }),
-        pointerEvents: "auto",
-        borderRadius: 3,
-      }}
-      className="opacity-0 hover:opacity-100 bg-primary/40 transition-opacity"
     />
   );
 }
