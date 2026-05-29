@@ -112,7 +112,7 @@ export function Features() {
               </div>
             </div>
             <div className="relative z-[2] text-center pt-7 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
                 Paste · Parse · Preview
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">
@@ -169,7 +169,7 @@ export function Features() {
               </div>
             </div>
             <div className="relative z-[2] pt-6 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
                 Direct manipulation
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">
@@ -192,20 +192,20 @@ export function Features() {
                   <label className="text-xs text-foreground/80">Size</label>
                   <div className="grid grid-cols-2 gap-2">
                     <ScrubField focus>
-                      <span className="text-[10.5px] text-muted-foreground font-semibold">
+                      <span className="text-[11px] text-muted-foreground font-semibold">
                         W
                       </span>
                       <span className="text-foreground">60</span>
-                      <span className="text-muted-foreground text-[10.5px] ml-auto">
+                      <span className="text-muted-foreground text-[11px] ml-auto">
                         %
                       </span>
                     </ScrubField>
                     <ScrubField>
-                      <span className="text-[10.5px] text-muted-foreground font-semibold">
+                      <span className="text-[11px] text-muted-foreground font-semibold">
                         H
                       </span>
                       <span className="text-foreground">14</span>
-                      <span className="text-muted-foreground text-[10.5px] ml-auto">
+                      <span className="text-muted-foreground text-[11px] ml-auto">
                         px
                       </span>
                     </ScrubField>
@@ -215,20 +215,20 @@ export function Features() {
                   <label className="text-xs text-foreground/80">Position</label>
                   <div className="grid grid-cols-2 gap-2">
                     <ScrubField>
-                      <span className="text-[10.5px] text-muted-foreground font-semibold">
+                      <span className="text-[11px] text-muted-foreground font-semibold">
                         X
                       </span>
                       <span className="text-foreground">0</span>
-                      <span className="text-muted-foreground text-[10.5px] ml-auto">
+                      <span className="text-muted-foreground text-[11px] ml-auto">
                         px
                       </span>
                     </ScrubField>
                     <ScrubField>
-                      <span className="text-[10.5px] text-muted-foreground font-semibold">
+                      <span className="text-[11px] text-muted-foreground font-semibold">
                         Y
                       </span>
                       <span className="text-foreground">0</span>
-                      <span className="text-muted-foreground text-[10.5px] ml-auto">
+                      <span className="text-muted-foreground text-[11px] ml-auto">
                         px
                       </span>
                     </ScrubField>
@@ -237,22 +237,22 @@ export function Features() {
                 <div className="grid grid-cols-[48px_1fr] items-center gap-2.5">
                   <label className="text-xs text-foreground/80">Radius</label>
                   <ScrubField>
-                    <span className="text-[10.5px] text-muted-foreground font-semibold">
+                    <span className="text-[11px] text-muted-foreground font-semibold">
                       R
                     </span>
                     <span className="text-foreground">4</span>
-                    <span className="text-muted-foreground text-[10.5px] ml-auto">
+                    <span className="text-muted-foreground text-[11px] ml-auto">
                       px
                     </span>
                   </ScrubField>
                 </div>
-                <div className="scrub-hint flex items-center gap-1.5 mt-1 font-mono text-[10.5px] text-primary">
+                <div className="scrub-hint flex items-center gap-1.5 mt-1 font-mono text-[11px] text-primary">
                   drag W → to scrub
                 </div>
               </div>
             </div>
             <div className="relative z-[2] pt-6 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
                 Pixel control
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">
@@ -277,7 +277,7 @@ export function Features() {
                   boxShadow: "0 12px 36px rgba(0,0,0,0.4)",
                 }}
               >
-                <span className="absolute top-2.5 right-2.5 font-sans text-[10.5px] py-1 px-2 border border-white/[0.06] rounded-md bg-card text-muted-foreground inline-flex items-center gap-1.5">
+                <span className="absolute top-2.5 right-2.5 font-sans text-[11px] py-1 px-2 border border-white/[0.06] rounded-md bg-card text-muted-foreground inline-flex items-center gap-1.5">
                   <svg
                     width="9"
                     height="9"
@@ -320,7 +320,7 @@ export function Features() {
               </div>
             </div>
             <div className="relative z-[2] pt-6 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-[#7dd3fc] mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-[#7dd3fc] mb-2 inline-block">
                 Production output
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">
@@ -407,7 +407,7 @@ export function Features() {
               </span>
             </div>
             <div className="relative z-[2] pt-6 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
                 Starter library
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">
@@ -441,13 +441,13 @@ export function Features() {
                     }
                   >
                     <div className="anim-preview-shimmer relative h-6 mb-2 rounded-[3px] overflow-hidden bg-[#232428]" />
-                    <span className="text-[10.5px] font-mono">{a.label}</span>
+                    <span className="text-[11px] font-mono">{a.label}</span>
                   </div>
                 ))}
               </div>
             </div>
             <div className="relative z-[2] pt-6 pb-8 px-9">
-              <span className="font-mono text-[10.5px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
+              <span className="font-mono text-[11px] tracking-[0.1em] uppercase text-primary mb-2 inline-block">
                 Motion
               </span>
               <h3 className="text-xl font-semibold tracking-[-0.015em] m-0 mb-2 text-foreground">

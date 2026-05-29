@@ -134,7 +134,7 @@ export function HeroMockup() {
 function MockupEditor() {
   return (
     <div className="flex flex-col bg-card border-r border-white/[0.04] min-h-0">
-      <div className="flex items-center justify-between h-8 px-3.5 border-b border-white/[0.04] text-[10.5px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+      <div className="flex items-center justify-between h-8 px-3.5 border-b border-white/[0.04] text-[11px] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
         <span className="flex items-center gap-1.5">
           <svg
             width="10"
@@ -252,7 +252,7 @@ function MockupEditor() {
             <rect x="3" y="14" width="7" height="7" />
           </svg>
           <span className="flex-1 text-left">Browse starters</span>
-          <span className="font-mono text-[10.5px] py-px px-[5px] rounded-[3px] bg-black/25 text-white/40 border border-white/5">
+          <span className="font-mono text-[11px] py-px px-[5px] rounded-[3px] bg-black/25 text-white/40 border border-white/5">
             ⌘K
           </span>
         </button>
@@ -261,7 +261,7 @@ function MockupEditor() {
             <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
           </svg>
           <span className="flex-1 text-left">Generate skeleton</span>
-          <span className="font-mono text-[10.5px] py-px px-[5px] rounded-[3px] bg-black/25 text-[#03291e]/70 border border-black/20">
+          <span className="font-mono text-[11px] py-px px-[5px] rounded-[3px] bg-black/25 text-[#03291e]/70 border border-black/20">
             ⌘↵
           </span>
         </button>
@@ -283,7 +283,7 @@ function MockupCanvas() {
         className="w-80 bg-card border border-white/[0.14] rounded-xl p-5 flex flex-col gap-3.5 relative"
         style={{ boxShadow: "0 20px 60px rgba(0,0,0,0.5)" }}
       >
-        <div className="absolute -top-[22px] left-0 text-[10.5px] text-muted-foreground flex gap-2">
+        <div className="absolute -top-[22px] left-0 text-[11px] text-muted-foreground flex gap-2">
           ProfileCard · v3{" "}
           <span className="text-foreground/30 font-mono">560 × 312</span>
         </div>
@@ -294,7 +294,7 @@ function MockupCanvas() {
               <span className="absolute w-[7px] h-[7px] bg-primary rounded-[1.5px] z-[3] right-[-5px] top-1/2 -translate-y-1/2 border-2 border-card" />
               <span className="absolute w-[7px] h-[7px] bg-primary rounded-[1.5px] z-[3] bottom-[-5px] left-1/2 -translate-x-1/2 border-2 border-card" />
               <span className="absolute w-[7px] h-[7px] bg-primary rounded-[1.5px] z-[3] bottom-[-5px] right-[-5px] border-2 border-card" />
-              <span className="sel-dim absolute -bottom-[22px] left-1/2 -translate-x-1/2 py-0.5 px-[7px] text-[10.5px] font-semibold font-mono rounded-[3px] whitespace-nowrap bg-primary text-[#03291e]">
+              <span className="sel-dim absolute -bottom-[22px] left-1/2 -translate-x-1/2 py-0.5 px-[7px] text-[11px] font-semibold font-mono rounded-[3px] whitespace-nowrap bg-primary text-[#03291e]">
                 60% × 14
               </span>
             </div>
@@ -405,7 +405,7 @@ function MockupInspector() {
           ].map((a) => (
             <div
               key={a.label}
-              className={`py-2 px-1.5 border border-white/[0.06] rounded-md text-center text-[10.5px] ${a.active ? "bg-primary/10 border-primary text-primary" : "bg-muted text-muted-foreground"}`}
+              className={`py-2 px-1.5 border border-white/[0.06] rounded-md text-center text-[11px] ${a.active ? "bg-primary/10 border-primary text-primary" : "bg-muted text-muted-foreground"}`}
               style={
                 a.active
                   ? { boxShadow: "0 0 0 3px rgba(16,185,129,0.18)" }

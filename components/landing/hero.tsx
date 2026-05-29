@@ -83,7 +83,7 @@ export function Hero() {
           href="#changelog"
           className="inline-flex items-center gap-2 py-[5px] pr-3 pl-1.5 border border-white/[0.06] rounded-full bg-white/[0.025] text-[12.5px] text-muted-foreground mb-[26px] whitespace-nowrap"
         >
-          <span className="font-mono text-[10.5px] text-primary py-0.5 px-[7px] rounded-full tracking-[0.04em] bg-primary/10 border border-primary/20">
+          <span className="font-mono text-[11px] text-primary py-0.5 px-[7px] rounded-full tracking-[0.04em] bg-primary/10 border border-primary/20">
             NEW
           </span>
           {ProjectVersion} &mdash; Repeat &amp; archetype detection

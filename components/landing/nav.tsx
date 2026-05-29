@@ -46,7 +46,7 @@ export function Nav() {
             </svg>
           </span>
           Skeleton Studio
-          <span className="font-mono text-[10.5px] text-muted-foreground px-[7px] py-0.5 rounded border border-white/[0.06] bg-card ml-0.5">
+          <span className="font-mono text-[11px] text-muted-foreground px-[7px] py-0.5 rounded border border-white/[0.06] bg-card ml-0.5">
             {ProjectVersion}
           </span>
         </a>
@@ -57,7 +57,7 @@ export function Nav() {
             <a
               key={label}
               href={`#${label.toLowerCase()}`}
-              className="h-8 px-2.5 flex items-center text-[13.5px] font-medium text-muted-foreground hover:text-foreground rounded-md transition-colors"
+              className="h-8 px-2.5 flex items-center text-[13.5px] font-medium text-muted-foreground hover:text-foreground rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {label}
             </a>

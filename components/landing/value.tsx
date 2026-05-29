@@ -30,7 +30,7 @@ export function Value() {
         {/* Before/After */}
         <div className="grid grid-cols-2 rounded-2xl overflow-hidden border border-white/[0.06] bg-card mt-14 mx-auto max-w-[1080px] max-md:grid-cols-1">
           <div className="p-9 min-h-[380px] flex flex-col">
-            <span className="compare-tag-before inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full font-mono text-[10.5px] tracking-[0.08em] uppercase self-start mb-[18px] whitespace-nowrap">Before · By hand</span>
+            <span className="compare-tag-before inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full font-mono text-[11px] tracking-[0.08em] uppercase self-start mb-[18px] whitespace-nowrap">Before · By hand</span>
             <div className="text-xl font-semibold tracking-[-0.015em] text-foreground mb-2">An afternoon you&apos;ll never get back.</div>
             <p className="text-[13.5px] text-muted-foreground mb-5 leading-relaxed">Measuring divs in devtools, hardcoding pixel widths, hoping it matches the real UI.</p>
             <div className="bg-background border border-white/[0.06] rounded-lg p-3.5 font-mono text-[11.5px] leading-[1.7] text-muted-foreground mb-[18px] overflow-hidden whitespace-pre">
@@ -48,7 +48,7 @@ export function Value() {
           </div>
 
           <div className="p-9 min-h-[380px] flex flex-col border-l border-white/[0.04] max-md:border-l-0 max-md:border-t max-md:border-t-white/[0.04]">
-            <span className="compare-tag-after inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full font-mono text-[10.5px] tracking-[0.08em] uppercase self-start mb-[18px] whitespace-nowrap">After · Skeleton Studio</span>
+            <span className="compare-tag-after inline-flex items-center gap-1.5 py-1 px-2.5 rounded-full font-mono text-[11px] tracking-[0.08em] uppercase self-start mb-[18px] whitespace-nowrap">After · Skeleton Studio</span>
             <div className="text-xl font-semibold tracking-[-0.015em] text-foreground mb-2">A skeleton that <em className="text-primary not-italic">earns</em> its place.</div>
             <p className="text-[13.5px] text-muted-foreground mb-5 leading-relaxed">Inferred from your actual JSX, hand-tunable in the canvas, copy-paste straight to your file.</p>
             <div className="bg-background border border-white/[0.06] rounded-lg p-3.5 font-mono text-[11.5px] leading-[1.7] text-muted-foreground mb-[18px] overflow-hidden whitespace-pre">

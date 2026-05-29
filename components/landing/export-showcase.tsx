@@ -53,14 +53,14 @@ export function ExportShowcase() {
 
               {/* Sidebar */}
               <div className="relative z-[2] p-[18px] flex flex-col gap-3.5">
-                <h5 className="m-0 text-[10.5px] tracking-[0.1em] uppercase text-muted-foreground font-semibold">Summary</h5>
+                <h5 className="m-0 text-[11px] tracking-[0.1em] uppercase text-muted-foreground font-semibold">Summary</h5>
                 {[["Nodes", "12"], ["Lines", "34"], ["Size", "1.2 KB"], ["Animation", "pulse"]].map(([label, val]) => (
                   <div key={label as string} className="flex justify-between items-center gap-3 text-[12.5px] text-muted-foreground whitespace-nowrap">
                     <span>{label}</span> <strong className="text-foreground font-mono font-medium">{val}</strong>
                   </div>
                 ))}
                 <div className="h-px bg-white/[0.06] my-1" />
-                <h5 className="m-0 text-[10.5px] tracking-[0.1em] uppercase text-muted-foreground font-semibold">Options</h5>
+                <h5 className="m-0 text-[11px] tracking-[0.1em] uppercase text-muted-foreground font-semibold">Options</h5>
                 {[
                   ["Tailwind v4", true],
                   ["Inline styles", false],

@@ -147,8 +147,8 @@ export function Editing() {
                     BLOCK
                   </div>
                   <div className="flex items-center justify-between gap-2 mb-[7px]">
-                    <span className="text-[10.5px] text-[#71717a]">Type</span>
-                    <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[10.5px] text-[#d4d4d8]">
+                    <span className="text-[11px] text-[#71717a]">Type</span>
+                    <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[11px] text-[#d4d4d8]">
                       Text
                       <svg width="8" height="8" viewBox="0 0 8 8" fill="none">
                         <path
@@ -161,7 +161,7 @@ export function Editing() {
                     </span>
                   </div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10.5px] text-[#71717a]">
+                    <span className="text-[11px] text-[#71717a]">
                       Visibility
                     </span>
                     <span className="relative w-[26px] h-[14px] rounded-full bg-[#22c55e] shrink-0">
@@ -189,16 +189,16 @@ export function Editing() {
                     DIMENSIONS
                   </div>
                   <div className="flex items-center justify-between gap-2 mb-[7px]">
-                    <span className="text-[10.5px] text-[#71717a]">Size</span>
+                    <span className="text-[11px] text-[#71717a]">Size</span>
                     <div className="flex gap-1">
-                      <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[10.5px] text-[#d4d4d8]">
+                      <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[11px] text-[#d4d4d8]">
                         <span className="text-[8.5px] text-[#52525b] font-semibold">
                           W
                         </span>
                         100
                         <span className="text-[8.5px] text-[#52525b]">%</span>
                       </span>
-                      <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[10.5px] text-[#d4d4d8]">
+                      <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[11px] text-[#d4d4d8]">
                         <span className="text-[8.5px] text-[#52525b] font-semibold">
                           H
                         </span>
@@ -208,8 +208,8 @@ export function Editing() {
                     </div>
                   </div>
                   <div className="flex items-center justify-between gap-2">
-                    <span className="text-[10.5px] text-[#71717a]">Radius</span>
-                    <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[10.5px] text-[#d4d4d8]">
+                    <span className="text-[11px] text-[#71717a]">Radius</span>
+                    <span className="inline-flex items-center gap-1 py-[2px] px-1.5 rounded-md bg-[#1e1e22] border border-[#2a2a2e] text-[11px] text-[#d4d4d8]">
                       <svg
                         width="10"
                         height="10"

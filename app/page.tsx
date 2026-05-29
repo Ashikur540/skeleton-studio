@@ -13,9 +13,15 @@ import "./landing.css";
 export default function LandingPage() {
   return (
     <div
-      className="dark text-foreground text-[15px] leading-[1.55] tracking-[-0.005em]"
+      className="dark landing text-foreground text-[15px] leading-[1.55] tracking-[-0.005em]"
       style={{ background: "#010d16" }}
     >
+      <a
+        href="#features"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-2 focus:outline-ring"
+      >
+        Skip to content
+      </a>
       <Nav />
       <Hero />
       <div className="bg-background">
