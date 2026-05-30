@@ -110,13 +110,14 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 mb-9 mx-auto text-[18.5px] leading-relaxed text-[#d4d4d8] max-w-[600px]">
-          A free loading skeleton generator that turns your React components into
-          production-ready Tailwind CSS skeleton loaders. Paste JSX, fine-tune
-          every block visually, and export clean React or HTML code in seconds.
+          A free loading skeleton generator that turns your React components
+          into production-ready Tailwind CSS skeleton loaders. Paste JSX,
+          fine-tune every block visually, and export clean React or HTML code in
+          seconds.
         </p>
 
         <div className="flex items-center justify-center gap-3">
-          <PrimaryButton href="/app">
+          <PrimaryButton href="/builder">
             Open Studio
             <svg
               width="12"

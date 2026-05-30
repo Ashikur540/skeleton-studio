@@ -19,10 +19,12 @@ export function FinalCTA() {
           loaders by hand.
         </h2>
         <p className="mt-[22px] mb-9 mx-auto text-[17px] text-muted-foreground max-w-[540px]">
-          The free skeleton generator for React developers. Paste your JSX, tweak the blocks, copy the Tailwind CSS code — ship better loading states in minutes.
+          The free skeleton generator for React developers. Paste your JSX,
+          tweak the blocks, copy the Tailwind CSS code — ship better loading
+          states in minutes.
         </p>
         <div className="flex items-center justify-center gap-3">
-          <PrimaryButton href="/app">
+          <PrimaryButton href="/builder">
             Open Studio
             <svg
               width="12"
