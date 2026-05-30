@@ -36,7 +36,6 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/babel__parser": "^7.0.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
