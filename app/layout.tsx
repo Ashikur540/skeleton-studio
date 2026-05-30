@@ -1,6 +1,7 @@
 import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
+import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
 import { DM_Sans, Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -106,6 +107,7 @@ export default function RootLayout({
           {children}
         </ThemeProvider>
         <JsonLd />
+        <Analytics />
       </body>
     </html>
   );
