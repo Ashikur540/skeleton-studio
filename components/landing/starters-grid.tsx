@@ -50,8 +50,8 @@ export function StartersGrid() {
       <div className="max-w-[1240px] mx-auto px-8">
         <div className="text-center mb-16">
           <SectionEyebrow centered>Starter Library</SectionEyebrow>
-          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">Start from real UI patterns.</h2>
-          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">Curated archetypes for the layouts you actually build. Pick one, tweak, ship.</p>
+          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">Skip manual skeleton loaders. Start from real UI patterns.</h2>
+          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">Production-ready skeleton screen templates for common layouts. Pick one, tweak dimensions, copy the Tailwind CSS code — no manual drawing required.</p>
         </div>
         <div className="grid grid-cols-4 gap-4 mb-4 max-md:grid-cols-2">
           {starters.slice(0, 4).map((s) => (

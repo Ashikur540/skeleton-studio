@@ -14,16 +14,17 @@ export function FinalCTA() {
           Public beta · {process.env.NEXT_PUBLIC_PROJECT_VERSION}
         </span>
         <h2 className="gradient-heading text-[40px] md:text-[60px] font-semibold leading-[1.05] tracking-[-0.035em] m-0 mx-auto max-w-[820px]">
-          Stop designing
+          Stop building skeleton
           <br />
-          skeletons manually.
+          loaders by hand.
         </h2>
         <p className="mt-[22px] mb-9 mx-auto text-[17px] text-muted-foreground max-w-[540px]">
-          Paste your JSX, tweak the blocks, copy the code. The loop everyone
-          secretly wants.
+          The free skeleton generator for React developers. Paste your JSX,
+          tweak the blocks, copy the Tailwind CSS code — ship better loading
+          states in minutes.
         </p>
         <div className="flex items-center justify-center gap-3">
-          <PrimaryButton href="/app">
+          <PrimaryButton href="/builder">
             Open Studio
             <svg
               width="12"

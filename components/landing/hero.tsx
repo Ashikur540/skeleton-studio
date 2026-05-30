@@ -103,20 +103,19 @@ export function Hero() {
           </svg>
         </a>
 
-        <h1 className="gradient-heading text-[56px] md:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] m-0">
-          Turn real UI into
-          <br />
-          production-ready skeletons.
+        <h1 className="gradient-heading text-[56px]  font-semibold leading-[1.02] tracking-[-0.035em] m-0">
+          Turn real UI into <br />
+          production grade loading skeletons.
         </h1>
 
         <p className="mt-6 mb-9 mx-auto text-[18.5px] leading-relaxed text-[#d4d4d8] max-w-[600px]">
-          Paste any React component. Skeleton Studio parses your JSX into an
-          editable skeleton tree, lets you fine-tune every block visually, and
-          exports clean React or HTML with Tailwind.
+          Skeleton Studio is a free loading skeleton generator parses your JSX
+          into an editable skeleton tree, lets you fine-tune every block
+          visually, and exports clean React or HTML with Tailwind CSS.
         </p>
 
         <div className="flex items-center justify-center gap-3">
-          <PrimaryButton href="/app">
+          <PrimaryButton href="/builder">
             Open Studio
             <svg
               width="12"

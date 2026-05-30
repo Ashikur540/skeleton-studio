@@ -260,12 +260,12 @@ export function Editing() {
           <div>
             <SectionEyebrow>Interactive editing</SectionEyebrow>
             <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0 mb-4">
-              Every block is yours to shape.
+              Every skeleton block is yours to shape.
             </h2>
             <p className="text-[18px] leading-relaxed text-muted-foreground mb-8 max-w-[620px]">
-              Selection isn&apos;t a popup or a sidebar. It&apos;s a real
-              overlay rendered on the block, with handles you can drag and a
-              dimension badge that updates as you go.
+              This skeleton generator lets you select any block with a real
+              overlay. Drag handles to resize, adjust dimensions with precision,
+              and watch the skeleton loader update live as you go.
             </p>
             <div className="flex flex-col gap-[22px]">
               {editingFeatures.map((f) => (

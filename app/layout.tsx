@@ -1,3 +1,4 @@
+import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
@@ -12,9 +13,73 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Skeleton Generator",
+  title: {
+    default:
+      "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
+    template: "%s — Skeleton Studio",
+  },
   description:
-    "Paste your component. Get a realistic skeleton loader instantly.",
+    "Free online skeleton generator & loading skeleton generator. Paste React/JSX components and get production-ready Tailwind CSS skeleton loaders instantly. Export React+Tailwind or HTML+Tailwind code.",
+  keywords: [
+    "skeleton generator",
+    "skeleton generator tailwind css",
+    "tailwind loading skeleton generator",
+    "loading skeleton generator",
+    "React tailwind skeleton generator",
+    "code to loading skeleton",
+    "skeleton loader",
+    "skeleton screen generator",
+    "tailwind skeleton",
+    "react skeleton loader",
+    "jsx to skeleton",
+    "loading placeholder generator",
+  ],
+  authors: [{ name: "Skeleton Studio" }],
+  creator: "Skeleton Studio",
+  publisher: "Skeleton Studio",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://skeletons-studio.vercel.app",
+  ),
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title:
+      "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
+    description:
+      "Free online skeleton generator. Paste React components, get production-ready Tailwind CSS skeleton loaders. Edit dimensions, animations, colors — export React+Tailwind or HTML+Tailwind code.",
+    url: "/",
+    siteName: "Skeleton Studio",
+    locale: "en_US",
+    type: "website",
+    images: [
+      {
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Skeleton Studio — Turn real UI into production-ready skeletons",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Skeleton Generator — Tailwind CSS Loading Skeleton Generator",
+    description:
+      "Free skeleton generator. Paste JSX → get realistic Tailwind CSS skeleton loaders. Export React or HTML instantly.",
+    images: ["/og-image.png"],
+    creator: "@skeletonstudio",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
 };
 
 export default function RootLayout({
@@ -40,6 +105,7 @@ export default function RootLayout({
         >
           {children}
         </ThemeProvider>
+        <JsonLd />
       </body>
     </html>
   );

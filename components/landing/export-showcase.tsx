@@ -8,8 +8,8 @@ export function ExportShowcase() {
       <div className="max-w-[1240px] mx-auto px-8 relative z-[1]">
         <div className="text-center mb-16">
           <SectionEyebrow centered>Export</SectionEyebrow>
-          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">Ship the code, not the screenshot.</h2>
-          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">React + Tailwind, plain HTML, or both — syntax-highlighted, validated, ready to commit.</p>
+          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">Export React + Tailwind CSS skeleton code.</h2>
+          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">Copy production-ready skeleton loader code — React with Tailwind CSS or plain HTML with Tailwind. Syntax-highlighted, validated, ready to paste into your project.</p>
         </div>
 
         <div className="max-w-[940px] mx-auto">
