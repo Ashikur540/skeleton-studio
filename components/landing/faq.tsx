@@ -29,11 +29,11 @@ const faqs = [
   },
   {
     q: "What export formats does the skeleton generator support?",
-    a: "The skeleton generator exports two formats: React components with Tailwind CSS classes (JSX), and plain HTML with Tailwind CSS classes. Both include shimmer animation keyframes, proper ARIA attributes for accessibility, and pre-formatted code ready to paste into your project.",
+    a: "The skeleton generator exports two formats: React components with Tailwind CSS classes (JSX), and plain HTML with Tailwind CSS classes. Both include shimmer animation keyframes and pre-formatted code ready to paste into your project.",
   },
   {
     q: "Does it work with complex nested components?",
-    a: "Yes. The skeleton generator handles deeply nested JSX, flex and grid layouts, conditional rendering, and even repeated elements from .map() calls. It automatically detects repeated children and applies deterministic width variance so each skeleton row looks natural.",
+    a: "Yes. The skeleton generator handles deeply nested JSX, flex and grid layouts, and repeated elements from .map() calls. It automatically detects repeated children and applies deterministic width variance so each skeleton row looks natural.",
   },
 ];
 

@@ -23,3 +23,6 @@
 - Skeleton bar elements inside card previews (starter cards, bento starters, mini canvas, animation tiles, hero mockup inspector tiles) should have shimmer animation via ::after pseudo-element, matching the inspiration design. Apply shimmer to specific selectors (`.sk::after`, `.starter-card__bar::after`, `.mini-canvas .b::after`, `.bento-starter__bar::after`, `.bento-anim__preview::after`, `.mockup__anim-tile .preview::after`) — not as a blanket `.sk-block::after` rule. Confidence: 0.80
 - The landing page is always dark mode — do not apply light mode styles to it. Confidence: 0.85
 - SEO optimize the landing page to rank for skeleton generator keywords: "skeleton generator", "skeleton generator tailwind css", "tailwind loading skeleton generator", "loading skeleton generator", "React tailwind skeleton generator", "code to loading skeleton". Confidence: 0.70
+
+# content-accuracy
+- Public-facing content (FAQ, landing page, marketing copy) must not claim features the code doesn't actually implement — verify claims against the actual codebase before publishing. Confidence: 0.75
