@@ -1,6 +1,8 @@
+import type { Metadata } from "next";
 import { DevDetailsSection } from "@/components/landing/details";
 import { Editing } from "@/components/landing/editing";
 import { ExportShowcase } from "@/components/landing/export-showcase";
+import { Faq } from "@/components/landing/faq";
 import { Features } from "@/components/landing/features";
 import { FinalCTA } from "@/components/landing/final-cta";
 import { FooterSimplified } from "@/components/landing/footer-simple";
@@ -9,6 +11,17 @@ import { Nav } from "@/components/landing/nav";
 import { Pipeline } from "@/components/landing/pipeline";
 import { StartersGrid } from "@/components/landing/starters-grid";
 import "./landing.css";
+
+export const metadata: Metadata = {
+  title: "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
+  description:
+    "Free online skeleton generator & loading skeleton generator. Paste React/JSX components and get production-ready Tailwind CSS skeleton loaders instantly. Export React+Tailwind or HTML+Tailwind code.",
+  openGraph: {
+    title: "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
+    description:
+      "Free online skeleton generator. Paste React components, get production-ready Tailwind CSS skeleton loaders. Edit dimensions, animations, colors — export React+Tailwind or HTML+Tailwind code.",
+  },
+};
 
 export default function LandingPage() {
   return (
@@ -23,19 +36,20 @@ export default function LandingPage() {
         Skip to content
       </a>
       <Nav />
-      <Hero />
-      <div className="bg-background">
-        {/* <ProofBar /> */}
-        <Features />
-        <StartersGrid />
-        <Pipeline />
-        <Editing />
-        <ExportShowcase />
-        <DevDetailsSection />
-        {/* <Value /> */}
-        <FinalCTA />
-        <FooterSimplified />
-      </div>
+      <main id="content">
+        <Hero />
+        <div className="bg-background">
+          <Features />
+          <StartersGrid />
+          <Pipeline />
+          <Editing />
+          <ExportShowcase />
+          <DevDetailsSection />
+          <Faq />
+          <FinalCTA />
+          <FooterSimplified />
+        </div>
+      </main>
     </div>
   );
 }

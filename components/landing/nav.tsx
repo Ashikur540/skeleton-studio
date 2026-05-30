@@ -1,9 +1,10 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { PrimaryButton } from "./buttons";
 
-const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export"];
+const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export", "FAQ"];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -27,14 +28,14 @@ export function Nav() {
     >
       <div className="max-w-[1240px] mx-auto px-8 flex items-center justify-between h-[60px]">
         {/* Brand */}
-        <a href="#" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center">
           <svg
             width="168"
             height="32"
             viewBox="0 0 420 80"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-8 w-auto"
+            className="h-10 w-auto"
           >
             <path
               d="M40 72C57.6731 72 72 57.6731 72 40C72 22.3269 57.6731 8 40 8C22.3269 8 8 22.3269 8 40C8 57.6731 22.3269 72 40 72Z"
@@ -55,22 +56,22 @@ export function Nav() {
             <path
               d="M35.5455 26H28.5455C27.1396 26 26 27.1396 26 28.5455V35.5455C26 36.9513 27.1396 38.0909 28.5455 38.0909H35.5455C36.9513 38.0909 38.0909 36.9513 38.0909 35.5455V28.5455C38.0909 27.1396 36.9513 26 35.5455 26Z"
               fill="white"
-              fill-opacity="0.9"
+              fillOpacity="0.9"
             />
             <path
               d="M51.4546 26H44.4546C43.0488 26 41.9092 27.1396 41.9092 28.5455V35.5455C41.9092 36.9513 43.0488 38.0909 44.4546 38.0909H51.4546C52.8604 38.0909 54.0001 36.9513 54.0001 35.5455V28.5455C54.0001 27.1396 52.8604 26 51.4546 26Z"
               fill="white"
-              fill-opacity="0.9"
+              fillOpacity="0.9"
             />
             <path
               d="M35.5455 41.9092H28.5455C27.1396 41.9092 26 43.0488 26 44.4546V51.4546C26 52.8604 27.1396 54.0001 28.5455 54.0001H35.5455C36.9513 54.0001 38.0909 52.8604 38.0909 51.4546V44.4546C38.0909 43.0488 36.9513 41.9092 35.5455 41.9092Z"
               fill="white"
-              fill-opacity="0.8"
+              fillOpacity="0.8"
             />
             <path
               d="M51.4546 41.9092H44.4546C43.0488 41.9092 41.9092 43.0488 41.9092 44.4546V51.4546C41.9092 52.8604 43.0488 54.0001 44.4546 54.0001H51.4546C52.8604 54.0001 54.0001 52.8604 54.0001 51.4546V44.4546C54.0001 43.0488 52.8604 41.9092 51.4546 41.9092Z"
               fill="white"
-              fill-opacity="0.7"
+              fillOpacity="0.7"
             />
             <defs>
               <radialGradient
@@ -101,7 +102,7 @@ export function Nav() {
           <span className="font-mono text-[11px] text-muted-foreground px-[7px] py-0.5 rounded border border-white/[0.06] bg-card">
             {process.env.NEXT_PUBLIC_PROJECT_VERSION}
           </span>
-        </a>
+        </Link>
 
         {/* Links */}
         <div className="nav-links absolute left-1/2 -translate-x-1/2 flex items-center gap-1 max-[1100px]:hidden">

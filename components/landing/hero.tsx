@@ -104,15 +104,15 @@ export function Hero() {
         </a>
 
         <h1 className="gradient-heading text-[56px] md:text-[76px] font-semibold leading-[1.02] tracking-[-0.035em] m-0">
-          Turn real UI into
+          The Skeleton Generator
           <br />
-          production-ready skeletons.
+          for Tailwind CSS.
         </h1>
 
         <p className="mt-6 mb-9 mx-auto text-[18.5px] leading-relaxed text-[#d4d4d8] max-w-[600px]">
-          Paste any React component. Skeleton Studio parses your JSX into an
-          editable skeleton tree, lets you fine-tune every block visually, and
-          exports clean React or HTML with Tailwind.
+          A free loading skeleton generator that turns your React components into
+          production-ready Tailwind CSS skeleton loaders. Paste JSX, fine-tune
+          every block visually, and export clean React or HTML code in seconds.
         </p>
 
         <div className="flex items-center justify-center gap-3">

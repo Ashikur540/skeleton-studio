@@ -8,9 +8,9 @@ export function Features() {
         <div className="text-center mb-16">
           <SectionEyebrow centered>Workflow</SectionEyebrow>
           <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">
-            Designed around how you
+            A Tailwind skeleton generator
             <br />
-            actually build.
+            built for your workflow.
           </h2>
           <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">
             Every interaction Skeleton Studio gives you is something you&apos;d

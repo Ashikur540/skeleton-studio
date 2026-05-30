@@ -20,8 +20,8 @@ export function Pipeline() {
       <div className="max-w-[1240px] mx-auto px-8 relative z-[1]">
         <div className="text-center mb-16">
           <SectionEyebrow centered>Pipeline</SectionEyebrow>
-          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">From JSX to skeleton in seconds.</h2>
-          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">The compiler that powers it all — parse, infer, render, export. No round-trip through your IDE.</p>
+          <h2 className="gradient-heading-sm text-[48px] font-semibold leading-[1.08] tracking-[-0.028em] m-0">From JSX to Tailwind skeleton in seconds.</h2>
+          <p className="mt-[18px] mx-auto text-[18px] leading-relaxed text-muted-foreground max-w-[620px]">The compiler that powers this loading skeleton generator — parse JSX, infer dimensions, render skeletons, export code. No round-trip through your IDE.</p>
         </div>
 
         <div className="pipeline-card aurora-card relative rounded-2xl p-10 md:p-12 isolate">
