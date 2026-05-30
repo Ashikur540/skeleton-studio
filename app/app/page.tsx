@@ -16,7 +16,7 @@ const PANE_TABS: { id: MobilePane; label: string }[] = [
 ];
 
 export default function AppPage() {
-  useKeyboardShortcuts();
+  useKeyboardShortcuts({ onBrowseStarters: () => setStartersOpen(true) });
   const [startersOpen, setStartersOpen] = useState(false);
   const [mobilePane, setMobilePane] = useState<MobilePane>("preview");
 

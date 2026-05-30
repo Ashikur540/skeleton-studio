@@ -11,10 +11,16 @@ import { useEffect } from "react";
  * Shortcuts:
  * - Cmd/Ctrl+Z → undo (skipped inside CodeMirror)
  * - Cmd/Ctrl+Shift+Z → redo (skipped inside CodeMirror)
+ * - Cmd/Ctrl+K → browse starters/templates
+ * - Cmd/Ctrl+Enter → generate skeleton
  * - Delete/Backspace → hide selected node (skipped in inputs)
  * - Arrow keys → nudge width/height ±1 (Shift ±10, skipped in inputs)
  */
-export function useKeyboardShortcuts(): void {
+export function useKeyboardShortcuts({
+  onBrowseStarters,
+}: {
+  onBrowseStarters?: () => void;
+} = {}): void {
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       const mod = e.metaKey || e.ctrlKey;
@@ -25,6 +31,18 @@ export function useKeyboardShortcuts(): void {
         const store = useSkeletonStore.getState();
         if (e.shiftKey) store.redo();
         else store.undo();
+        return;
+      }
+
+      if (mod && e.key === "k") {
+        e.preventDefault();
+        onBrowseStarters?.();
+        return;
+      }
+
+      if (mod && e.key === "Enter") {
+        e.preventDefault();
+        useSkeletonStore.getState().parseNow();
         return;
       }
 

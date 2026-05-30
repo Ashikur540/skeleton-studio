@@ -6,15 +6,18 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Kbd } from "@/components/ui/kbd";
+import { useMemo } from "react";
 
-const SHORTCUT_GROUPS = [
+type ShortcutItem = { desc: string } & ({ mac: string; win: string } | { keys: string });
+
+const SHORTCUT_GROUPS: { title: string; items: ShortcutItem[] }[] = [
   {
     title: "General",
     items: [
-      { keys: "⌘ K", desc: "Browse starters" },
-      { keys: "⌘ ↵", desc: "Generate skeleton" },
-      { keys: "⌘ Z", desc: "Undo" },
-      { keys: "⌘ ⇧ Z", desc: "Redo" },
+      { mac: "⌘ K", win: "Ctrl+K", desc: "Browse starters" },
+      { mac: "⌘ ↵", win: "Ctrl+Enter", desc: "Generate skeleton" },
+      { mac: "⌘ Z", win: "Ctrl+Z", desc: "Undo" },
+      { mac: "⌘ ⇧ Z", win: "Ctrl+Shift+Z", desc: "Redo" },
     ],
   },
   {
@@ -30,23 +33,35 @@ const SHORTCUT_GROUPS = [
     items: [
       { keys: "← →", desc: "Width ±1px" },
       { keys: "↑ ↓", desc: "Height ±1px" },
-      { keys: "⇧ Arrow", desc: "Nudge ±10px" },
+      { mac: "⇧ Arrow", win: "Shift+Arrow", desc: "Nudge ±10px" },
     ],
   },
   {
     title: "Scrub",
     items: [
       { keys: "Drag prefix", desc: "Adjust value ±1" },
-      { keys: "⇧ Drag", desc: "Adjust value ±10" },
+      { mac: "⇧ Drag", win: "Shift+Drag", desc: "Adjust value ±10" },
     ],
   },
 ];
 
+function isMac(): boolean {
+  return /Mac|iPod|iPhone|iPad/.test(navigator.platform);
+}
+
+function getKey(item: ShortcutItem, mac: boolean): string {
+  if ("keys" in item) return item.keys;
+  return mac ? item.mac : item.win;
+}
+
 /**
- * Modal overlay listing all keyboard shortcuts organized by category. Opened
- * by the keyboard icon button at the bottom-right of the properties panel.
+ * Modal overlay listing all keyboard shortcuts organized by category. Detects
+ * the user's platform and shows the correct modifier keys (⌘ on macOS,
+ * Ctrl on Windows/Linux).
  */
 export function ShortcutsModal({ onClose }: { onClose: () => void }) {
+  const mac = useMemo(() => isMac(), []);
+
   return (
     <Dialog open={true} onOpenChange={(v) => !v && onClose()}>
       <DialogContent className="sm:max-w-lg!">
@@ -60,9 +75,9 @@ export function ShortcutsModal({ onClose }: { onClose: () => void }) {
                 {group.title}
               </span>
               {group.items.map((item) => (
-                <div key={item.keys} className="flex items-center justify-between text-xs">
+                <div key={item.desc} className="flex items-center justify-between text-xs">
                   <span className="text-muted-foreground">{item.desc}</span>
-                  <Kbd>{item.keys}</Kbd>
+                  <Kbd>{getKey(item, mac)}</Kbd>
                 </div>
               ))}
             </div>

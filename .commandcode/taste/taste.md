@@ -16,6 +16,9 @@
 - Use the project's own color/design tokens instead of copying tokens from inspiration/vendor sources. Confidence: 0.70
 - The landing page is always dark mode — do not apply light mode styles to it. Confidence: 0.85
 
+# ui
+- Detect device/platform (Mac vs Windows) and show appropriate keyboard shortcut keys dynamically instead of hardcoding both variants. Confidence: 0.65
+
 # landing
 - Skeleton bar elements inside card previews (starter cards, bento starters, mini canvas, animation tiles, hero mockup inspector tiles) should have shimmer animation via ::after pseudo-element, matching the inspiration design. Apply shimmer to specific selectors (`.sk::after`, `.starter-card__bar::after`, `.mini-canvas .b::after`, `.bento-starter__bar::after`, `.bento-anim__preview::after`, `.mockup__anim-tile .preview::after`) — not as a blanket `.sk-block::after` rule. Confidence: 0.80
 - The landing page is always dark mode — do not apply light mode styles to it. Confidence: 0.85
