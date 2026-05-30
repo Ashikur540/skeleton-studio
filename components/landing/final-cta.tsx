@@ -1,4 +1,3 @@
-import { ProjectVersion } from "@/lib/globalConstant";
 import { GhostButton, PrimaryButton } from "./buttons";
 
 export function FinalCTA() {
@@ -12,7 +11,7 @@ export function FinalCTA() {
             className="w-1.5 h-1.5 rounded-full bg-primary"
             style={{ boxShadow: "0 0 0 2px rgba(16,185,129,0.18)" }}
           />
-          Public beta · {ProjectVersion}
+          Public beta · {process.env.NEXT_PUBLIC_PROJECT_VERSION}
         </span>
         <h2 className="gradient-heading text-[40px] md:text-[60px] font-semibold leading-[1.05] tracking-[-0.035em] m-0 mx-auto max-w-[820px]">
           Stop designing

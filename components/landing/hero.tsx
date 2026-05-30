@@ -1,7 +1,7 @@
 "use client";
-import { ProjectVersion } from "@/lib/globalConstant";
+
 import { useEffect, useRef } from "react";
-import { GhostButton, PrimaryButton } from "./buttons";
+import { PrimaryButton } from "./buttons";
 import { HeroMockup } from "./hero-mockup";
 
 export function Hero() {
@@ -86,7 +86,8 @@ export function Hero() {
           <span className="font-mono text-[11px] text-primary py-0.5 px-[7px] rounded-full tracking-[0.04em] bg-primary/10 border border-primary/20">
             NEW
           </span>
-          {ProjectVersion} &mdash; Repeat &amp; archetype detection
+          {process.env.NEXT_PUBLIC_PROJECT_VERSION} &mdash; Repeat &amp;
+          archetype detection
           <svg
             width="12"
             height="12"
@@ -130,7 +131,7 @@ export function Hero() {
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </PrimaryButton>
-          <GhostButton href="#starters">
+          {/* <GhostButton href="#starters">
             <svg
               width="13"
               height="13"
@@ -147,7 +148,7 @@ export function Hero() {
               <rect x="3" y="14" width="7" height="7" />
             </svg>
             Browse starters
-          </GhostButton>
+          </GhostButton> */}
         </div>
 
         <div className="mt-7 inline-flex items-center gap-4 text-[12.5px] text-muted-foreground whitespace-nowrap">

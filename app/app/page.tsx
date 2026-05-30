@@ -4,7 +4,6 @@ import { PreviewCanvas } from "@/components/preview-canvas";
 import { PropertiesPanel } from "@/components/properties-panel";
 import { StarterBrowser } from "@/components/starter-browser";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { useSkeletonStore } from "@/store/use-skeleton-store";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 
