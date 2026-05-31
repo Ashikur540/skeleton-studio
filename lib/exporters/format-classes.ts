@@ -5,6 +5,7 @@ import type {
   Padding,
   SkeletonNode,
 } from "@/lib/ir/types";
+import { CARD_BACKGROUND_CLASS } from "@/lib/exporters/card-background";
 
 /**
  * Maps the user-facing speed setting to an arbitrary animation-duration
@@ -87,7 +88,7 @@ export function blockClasses(
   node: SkeletonNode,
   settings: GlobalSettings,
 ): string {
-  if (isSurfaceWrapper(node)) return surfaceClasses(node);
+  if (isSurfaceWrapper(node)) return surfaceClasses(node, settings);
   if (node.kind === "container") return containerClasses(node);
   return fillClasses(node, settings);
 }
@@ -110,10 +111,12 @@ function isSurfaceWrapper(node: SkeletonNode): boolean {
  * padding (overridable per side), default gap, optional explicit dims +
  * radius, plus alignment carried from layout.
  */
-function surfaceClasses(node: SkeletonNode): string {
+function surfaceClasses(node: SkeletonNode, settings: GlobalSettings): string {
   const dir = node.layout?.direction === "row" ? "flex-row" : "flex-col";
   const gap = node.layout?.gap ?? CARD_WRAPPER_GAP;
   const cls = ["flex", dir, "ring-1", "ring-foreground/10", sp("gap", gap)];
+  const cardBg = CARD_BACKGROUND_CLASS[settings.cardBackground];
+  if (cardBg) cls.push(cardBg);
   pushSurfacePadding(cls, node.padding);
   cls.push(...dimensionClasses(node));
   pushRadius(cls, node);

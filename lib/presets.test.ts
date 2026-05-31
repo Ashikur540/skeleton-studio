@@ -36,6 +36,7 @@ describe("findPreset", () => {
       animation: "pulse",
       speed: "normal",
       baseColor: "bg-zinc-200",
+      cardBackground: "transparent",
     });
     expect(result?.id).toBe("tailwind");
   });
@@ -45,6 +46,7 @@ describe("findPreset", () => {
       animation: "shimmer",
       speed: "fast",
       baseColor: "bg-zinc-800",
+      cardBackground: "transparent",
     });
     expect(result?.id).toBe("vercel");
   });
@@ -54,6 +56,7 @@ describe("findPreset", () => {
       animation: "pulse",
       speed: "fast",
       baseColor: "bg-blue-200",
+      cardBackground: "transparent",
     });
     expect(result).toBeUndefined();
   });

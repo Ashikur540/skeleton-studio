@@ -10,6 +10,11 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PRESETS, findPreset } from "@/lib/presets";
+import {
+  CARD_BACKGROUND_LABEL,
+  CARD_BACKGROUND_VALUES,
+} from "@/lib/exporters/card-background";
+import type { CardBackground } from "@/lib/ir/types";
 import { cn } from "@/lib/utils";
 
 const BASE_COLORS: { value: string; label: string }[] = [
@@ -33,9 +38,17 @@ export function AnimationTab() {
 
   const activePreset = findPreset(settings);
 
+  /* Preset = motion bundle only. Switching presets preserves the user's
+     baseColor and cardBackground so an explicit color choice survives a
+     preset change. */
   const handlePreset = (id: string) => {
     const preset = PRESETS.find((p) => p.id === id);
-    if (preset) setSettings({ ...preset.settings });
+    if (preset) {
+      setSettings({
+        animation: preset.settings.animation,
+        speed: preset.settings.speed,
+      });
+    }
   };
 
   return (
@@ -73,7 +86,7 @@ export function AnimationTab() {
                 <div
                   className={cn(
                     "h-3 w-12 rounded-sm",
-                    p.settings.baseColor,
+                    settings.baseColor,
                     isShimmer
                       ? "bg-gradient-to-r from-transparent via-white/40 to-transparent"
                       : "animate-pulse",
@@ -165,6 +178,26 @@ export function AnimationTab() {
               {BASE_COLORS.map((c) => (
                 <SelectItem key={c.value} value={c.value}>
                   {c.label}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="flex items-center justify-between">
+          <Label className="text-xs text-muted-foreground">Card background</Label>
+          <Select
+            value={settings.cardBackground}
+            onValueChange={(v) =>
+              setSettings({ cardBackground: v as CardBackground })
+            }
+          >
+            <SelectTrigger className="w-36 h-8">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              {CARD_BACKGROUND_VALUES.map((v) => (
+                <SelectItem key={v} value={v}>
+                  {CARD_BACKGROUND_LABEL[v]}
                 </SelectItem>
               ))}
             </SelectContent>

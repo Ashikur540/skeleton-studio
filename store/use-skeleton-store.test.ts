@@ -25,7 +25,7 @@ beforeEach(() => {
     tree: null,
     error: null,
     selectedId: null,
-    settings: { animation: "pulse", speed: "normal", baseColor: "bg-zinc-200" },
+    settings: { animation: "pulse", speed: "normal", baseColor: "bg-zinc-200", cardBackground: "transparent" },
     history: [],
     future: [],
   });

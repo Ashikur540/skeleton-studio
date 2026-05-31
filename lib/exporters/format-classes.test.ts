@@ -6,6 +6,7 @@ const settings: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
+  cardBackground: "transparent",
 };
 
 function node(partial: Partial<SkeletonNode> = {}): SkeletonNode {
@@ -73,6 +74,44 @@ describe("blockClasses", () => {
 
   it("exposes shimmer keyframes for exporters to inline", () => {
     expect(SHIMMER_KEYFRAMES).toContain("@keyframes shimmer");
+  });
+
+  it("appends cardBackground class on surface wrappers when not transparent", () => {
+    const tinted: GlobalSettings = { ...settings, cardBackground: "soft" };
+    const cls = blockClasses(
+      node({
+        kind: "card",
+        children: [node({ id: "a" })],
+      }),
+      tinted,
+    );
+    expect(cls).toContain("bg-muted/40");
+  });
+
+  it("omits cardBackground class when set to transparent", () => {
+    const cls = blockClasses(
+      node({
+        kind: "card",
+        children: [node({ id: "a" })],
+      }),
+      settings,
+    );
+    expect(cls).not.toContain("bg-muted");
+    expect(cls).not.toContain("bg-card");
+  });
+
+  it("does not apply cardBackground to plain containers or fill blocks", () => {
+    const tinted: GlobalSettings = { ...settings, cardBackground: "elevated" };
+    const container = blockClasses(
+      node({
+        kind: "container",
+        children: [node({ id: "a" })],
+      }),
+      tinted,
+    );
+    expect(container).not.toContain("bg-card");
+    const fill = blockClasses(node({ width: 100, height: 20 }), tinted);
+    expect(fill).not.toContain("bg-card");
   });
 
   it("emits per-side padding classes on fill nodes", () => {

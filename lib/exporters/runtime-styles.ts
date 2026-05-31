@@ -7,6 +7,7 @@ import type {
   Padding,
   SkeletonNode,
 } from "@/lib/ir/types";
+import { CARD_BACKGROUND_CLASS } from "@/lib/exporters/card-background";
 
 /** Map IR alignment tokens to CSS `align-items` values. */
 const ALIGN_CSS: Record<Alignment, CSSProperties["alignItems"]> = {
@@ -90,7 +91,7 @@ export function blockStyles(
   settings: GlobalSettings,
 ): { className: string; style: CSSProperties } {
   if (isSurfaceWrapper(node)) {
-    return surfaceWrapperStyles(node);
+    return surfaceWrapperStyles(node, settings);
   }
   if (node.kind === "container") {
     return containerStyles(node);
@@ -160,10 +161,13 @@ function containerStyles(
  */
 function surfaceWrapperStyles(
   node: SkeletonNode,
+  settings: GlobalSettings,
 ): { className: string; style: CSSProperties } {
   const direction =
     node.layout?.direction === "row" ? "flex-row" : "flex-col";
   const classes = ["flex", direction, "ring-1", "ring-foreground/10"];
+  const cardBg = CARD_BACKGROUND_CLASS[settings.cardBackground];
+  if (cardBg) classes.push(cardBg);
   const style: CSSProperties = {
     paddingTop: CARD_WRAPPER_PADDING,
     paddingRight: CARD_WRAPPER_PADDING,
