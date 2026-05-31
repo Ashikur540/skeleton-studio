@@ -2,8 +2,8 @@ import { describe, expect, it } from "vitest";
 import { PRESETS, findPreset } from "./presets";
 
 describe("PRESETS", () => {
-  it("contains at least 5 named presets", () => {
-    expect(PRESETS.length).toBeGreaterThanOrEqual(5);
+  it("contains at least 4 named presets", () => {
+    expect(PRESETS.length).toBeGreaterThanOrEqual(4);
   });
 
   it("every preset has unique id", () => {

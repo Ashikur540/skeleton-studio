@@ -1,0 +1,21 @@
+# AI tooling / agent configs
+.claude/
+.commandcode/
+AGENTS.md
+CLAUDE.md
+skills-lock.json
+
+# Local-only docs / inspiration
+docs/
+inspiration/
+README.md
+
+# Tests
+**/*.test.ts
+**/*.test.tsx
+vitest.config.ts
+
+# Build artifacts / local state
+.DS_Store
+*.tsbuildinfo
+coverage/

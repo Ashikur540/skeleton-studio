@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { PRESETS, findPreset } from "@/lib/presets";
+import { cn } from "@/lib/utils";
 
 const BASE_COLORS: { value: string; label: string }[] = [
   { value: "bg-zinc-100", label: "Zinc 100" },
@@ -19,8 +20,6 @@ const BASE_COLORS: { value: string; label: string }[] = [
   { value: "bg-blue-200", label: "Blue 200" },
   { value: "bg-blue-900/40", label: "Blue 900/40" },
 ];
-
-const CUSTOM_SENTINEL = "__custom__";
 
 /**
  * Animation tab of the properties panel. Absorbs the former GlobalControls bar
@@ -33,7 +32,6 @@ export function AnimationTab() {
   const setSettings = useSkeletonStore((s) => s.setSettings);
 
   const activePreset = findPreset(settings);
-  const presetValue = activePreset?.id ?? CUSTOM_SENTINEL;
 
   const handlePreset = (id: string) => {
     const preset = PRESETS.find((p) => p.id === id);
@@ -48,22 +46,59 @@ export function AnimationTab() {
           Preset
         </span>
       </div>
-      <div className="flex flex-col gap-3 pt-1">
-        <Select value={presetValue} onValueChange={handlePreset}>
-          <SelectTrigger className="h-8">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            {PRESETS.map((p) => (
-              <SelectItem key={p.id} value={p.id}>
+      <div className="grid grid-cols-2 gap-2 pt-1">
+        {PRESETS.map((p) => {
+          const isActive = activePreset?.id === p.id;
+          const speedSec =
+            p.settings.speed === "slow"
+              ? 2
+              : p.settings.speed === "fast"
+                ? 1
+                : 1.5;
+          const isShimmer = p.settings.animation === "shimmer";
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => handlePreset(p.id)}
+              className={cn(
+                "group flex flex-col items-stretch gap-2 rounded-lg border p-2 text-left transition-colors",
+                isActive
+                  ? "border-primary bg-primary/5 ring-1 ring-primary/40"
+                  : "border-border bg-muted/30 hover:bg-muted/50",
+              )}
+              title={p.description}
+            >
+              <div className="h-7 rounded-md bg-muted/60 flex items-center justify-center overflow-hidden">
+                <div
+                  className={cn(
+                    "h-3 w-12 rounded-sm",
+                    p.settings.baseColor,
+                    isShimmer
+                      ? "bg-gradient-to-r from-transparent via-white/40 to-transparent"
+                      : "animate-pulse",
+                  )}
+                  style={
+                    isShimmer
+                      ? {
+                          backgroundSize: "200% 100%",
+                          animation: `shimmer ${speedSec}s linear infinite`,
+                        }
+                      : { animationDuration: `${speedSec}s` }
+                  }
+                />
+              </div>
+              <span
+                className={cn(
+                  "text-[11px] font-mono lowercase text-center",
+                  isActive ? "text-primary" : "text-muted-foreground",
+                )}
+              >
                 {p.name}
-              </SelectItem>
-            ))}
-            {!activePreset && (
-              <SelectItem value={CUSTOM_SENTINEL}>Custom</SelectItem>
-            )}
-          </SelectContent>
-        </Select>
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* ANIMATION section */}

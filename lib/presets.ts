@@ -25,12 +25,6 @@ export const PRESETS: SkeletonPreset[] = [
     settings: { animation: "pulse", speed: "normal", baseColor: "bg-zinc-200" },
   },
   {
-    id: "shimmer",
-    name: "Shimmer",
-    description: "Gradient sweep left-to-right",
-    settings: { animation: "shimmer", speed: "normal", baseColor: "bg-zinc-200" },
-  },
-  {
     id: "linear",
     name: "Linear",
     description: "Slow subtle shimmer, lighter fill",
