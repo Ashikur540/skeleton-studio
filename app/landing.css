@@ -313,6 +313,15 @@
 .float-chip-3 { top: 22%; right: -56px; animation-delay: -2.4s; }
 .float-chip-4 { top: 64%; right: -44px; animation-delay: -3.6s; }
 
+@media (max-width: 767px) {
+  .float-chip-1,
+  .float-chip-2,
+  .float-chip-3,
+  .float-chip-4 {
+    display: none;
+  }
+}
+
 /* Skeleton blocks — static decorative illustrations, shimmer on specific selectors only */
 .sk-block {
   background: #232428;
@@ -599,8 +608,27 @@
   .em-float-panel,
   .btn-primary::before,
   .bento-card::after,
-  .bg-grid {
+  .bg-grid,
+  .aurora-blob-1,
+  .aurora-blob-2,
+  .aurora-blob-3,
+  .aurora-blob-4 {
     animation: none !important;
+  }
+}
+
+/* === Forced colors (Windows High Contrast Mode) === */
+@media (forced-colors: active) {
+  .gradient-heading,
+  .gradient-heading-sm,
+  .gradient-stat {
+    background: none;
+    -webkit-text-fill-color: CanvasText;
+    color: CanvasText;
+  }
+  .brand-mark {
+    background: Highlight;
+    box-shadow: none;
   }
 }
 

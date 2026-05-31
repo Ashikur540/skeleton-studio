@@ -42,7 +42,7 @@ export function Editing() {
               style={{ background: "#0d0d0f" }}
             >
               {/* Titlebar */}
-              <div className="flex items-center gap-2.5 py-[9px] px-3 bg-[#111113] border-b border-[#1a1a1d] rounded-t-xl">
+              <div className="flex items-center gap-2.5 py-[9px] px-3 bg-[#111113] border-b border-[#1a1a1d] rounded-t-xl flex-wrap">
                 <div className="flex gap-1.5">
                   <span className="w-2.5 h-2.5 rounded-full bg-[#ee3248]" />
                   <span className="w-2.5 h-2.5 rounded-full bg-[#e3c51e]" />
@@ -110,7 +110,7 @@ export function Editing() {
               </div>
 
               {/* Action bar */}
-              <div className="flex items-center justify-between py-2.5 px-3 bg-[#111113] border-t border-[#1a1a1d] rounded-b-xl">
+              <div className="flex flex-wrap gap-2 items-center justify-between py-2.5 px-3 bg-[#111113] border-t border-[#1a1a1d] rounded-b-xl">
                 <span className="text-[11px] py-1.5 px-3 rounded-md text-[#71717a] border border-[#27272a] bg-[#0d0d0f] font-medium whitespace-nowrap">
                   Browse starters
                 </span>
@@ -121,7 +121,7 @@ export function Editing() {
 
               {/* Floating Properties panel */}
               <div
-                className="em-float-panel absolute top-[60px] -right-[22px] w-[178px] z-[5] rounded-[10px] overflow-hidden border border-[#1e1e22] shadow-[0_12px_40px_rgba(0,0,0,0.6)]"
+                className="em-float-panel absolute top-[60px] -right-[22px] w-[178px] z-[5] rounded-[10px] overflow-hidden border border-[#1e1e22] shadow-[0_12px_40px_rgba(0,0,0,0.6)] max-md:hidden"
                 style={{
                   background: "rgba(15,16,18,0.92)",
                   backdropFilter: "blur(10px)",

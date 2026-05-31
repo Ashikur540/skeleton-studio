@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { DevDetailsSection } from "@/components/landing/details";
 import { Editing } from "@/components/landing/editing";
 import { ExportShowcase } from "@/components/landing/export-showcase";
@@ -9,7 +10,6 @@ import { Hero } from "@/components/landing/hero";
 import { Nav } from "@/components/landing/nav";
 import { Pipeline } from "@/components/landing/pipeline";
 import { StartersGrid } from "@/components/landing/starters-grid";
-import type { Metadata } from "next";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -30,6 +30,12 @@ export default function LandingPage() {
       className="dark landing text-foreground text-[15px] leading-[1.55] tracking-[-0.005em]"
       style={{ background: "#010d16" }}
     >
+      <a
+        href="#content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-lg focus:outline-2 focus:outline-ring"
+      >
+        Skip to content
+      </a>
       <Nav />
       <main id="content">
         <Hero />

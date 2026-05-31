@@ -79,15 +79,12 @@ export function Hero() {
 
       {/* Content */}
       <div className="max-w-[1240px] mx-auto px-8 relative z-[1]">
-        <a
-          href="#changelog"
-          className="inline-flex items-center gap-2 py-[5px] pr-3 pl-1.5 border border-white/[0.06] rounded-full bg-white/[0.025] text-[12.5px] text-muted-foreground mb-[26px] whitespace-nowrap"
-        >
+        <span className="inline-flex items-center gap-2 py-[5px] pr-3 pl-1.5 border border-white/[0.06] rounded-full bg-white/[0.025] text-[12.5px] text-muted-foreground mb-[26px] whitespace-nowrap">
           <span className="font-mono text-[11px] text-primary py-0.5 px-[7px] rounded-full tracking-[0.04em] bg-primary/10 border border-primary/20">
             NEW
           </span>
-          {process.env.NEXT_PUBLIC_PROJECT_VERSION} &mdash; Repeat &amp;
-          archetype detection
+          {process.env.NEXT_PUBLIC_PROJECT_VERSION} &mdash; Now live in public
+          beta
           <svg
             width="12"
             height="12"
@@ -101,7 +98,7 @@ export function Hero() {
           >
             <path d="M9 18l6-6-6-6" />
           </svg>
-        </a>
+        </span>
 
         <h1 className="gradient-heading text-[56px]  font-semibold leading-[1.02] tracking-[-0.035em] m-0">
           Turn real UI into <br />
@@ -126,6 +123,7 @@ export function Hero() {
               strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -150,7 +148,7 @@ export function Hero() {
           </GhostButton> */}
         </div>
 
-        <div className="mt-7 inline-flex items-center gap-4 text-[12.5px] text-muted-foreground whitespace-nowrap">
+        <div className="mt-7 inline-flex items-center gap-4 text-[12.5px] text-muted-foreground flex-wrap whitespace-nowrap">
           <strong className="text-foreground/80 font-medium">⌘K</strong> to
           search
           <span className="w-[3px] h-[3px] rounded-full bg-foreground/30" />

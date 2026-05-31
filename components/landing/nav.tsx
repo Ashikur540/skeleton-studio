@@ -8,6 +8,7 @@ const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export", "FAQ"];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     function onScroll() {
@@ -110,7 +111,11 @@ export function Nav() {
             <a
               key={label}
               href={`#${label.toLowerCase()}`}
-              className="h-8 px-2.5 flex items-center text-[13.5px] font-medium text-muted-foreground hover:text-foreground rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+              className={`h-8 px-2.5 flex items-center text-[13.5px] font-medium rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
+                activeSection === label.toLowerCase()
+                  ? "text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
             >
               {label}
             </a>
@@ -131,7 +136,7 @@ export function Nav() {
           <GhostButton href="/builder" className="h-8! px-3! text-[13px]!">
             Sign in
           </GhostButton> */}
-          <PrimaryButton href="/builder">
+          <PrimaryButton href="/builder" className="hidden sm:inline-flex">
             Open Studio
             <svg
               width="12"
@@ -142,6 +147,7 @@ export function Nav() {
               strokeWidth="2.4"
               strokeLinecap="round"
               strokeLinejoin="round"
+              aria-hidden="true"
             >
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>

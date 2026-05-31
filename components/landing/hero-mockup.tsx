@@ -29,13 +29,13 @@ export function HeroMockup() {
         }}
       >
         {/* Chrome */}
-        <div className="flex items-center justify-between h-10 px-3.5 bg-muted border-b border-white/[0.04]">
-          <div className="flex gap-1.5">
+        <div className="flex items-center justify-between h-12 sm:h-10 px-3.5 bg-muted border-b border-white/[0.04] ">
+          <div className="flex gap-1.5 hidden sm:block">
             <span className="w-[11px] h-[11px] rounded-full bg-[#ed6a5e]" />
             <span className="w-[11px] h-[11px] rounded-full bg-[#f4bf4f]" />
             <span className="w-[11px] h-[11px] rounded-full bg-[#61c554]" />
           </div>
-          <div className="flex items-center gap-2 h-6 px-3 rounded-md bg-card border border-white/[0.06] font-mono text-[11.5px] text-muted-foreground">
+          <div className="flex items-center gap-2 h-8 sm:h-6 px-3 rounded-md bg-card border border-white/[0.06] font-mono text-[11.5px] text-muted-foreground">
             <svg
               width="10"
               height="10"
@@ -48,7 +48,7 @@ export function HeroMockup() {
               <rect x="3" y="11" width="18" height="11" rx="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            {new URL(process.env.NEXT_PUBLIC_SITE_URL!).hostname}
+            <span>{process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname : "skeletonstudio.dev"}</span>
             <span className="text-primary">/builder</span>
           </div>
           <span className="font-mono text-[11px] text-muted-foreground py-1 px-2 rounded-md border border-white/[0.06] bg-card">

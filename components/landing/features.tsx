@@ -18,7 +18,7 @@ export function Features() {
           </p>
         </div>
 
-        <div className="grid grid-cols-12 gap-4">
+        <div className="grid grid-cols-12 gap-4 max-md:grid-cols-1">
           {/* Card 1 — Full */}
           <BentoCard span="full">
             <BentoDust />
@@ -337,7 +337,7 @@ export function Features() {
           <BentoCard span="wide">
             <BentoDust />
             <div className="relative z-[2] flex-1 flex items-start justify-center min-h-[220px] p-8 pt-9">
-              <div className="grid grid-cols-4 gap-3 w-full max-w-[600px]">
+              <div className="grid grid-cols-4 gap-3 w-full max-w-[600px] max-sm:grid-cols-2">
                 {[
                   {
                     bars: [
@@ -482,7 +482,7 @@ function BentoCard({
         : "col-span-4";
   return (
     <article
-      className={`bento-card ${cool ? "bento-card-cool" : ""} ${cols} relative flex flex-col rounded-[18px] overflow-hidden bg-[lab(5 -4.02 -6.35)] border border-white/[0.09] isolate transition-all duration-200 ease-in-out hover:border-white/[0.14]`}
+      className={`bento-card ${cool ? "bento-card-cool" : ""} ${cols} max-md:col-span-1 relative flex flex-col rounded-[18px] overflow-hidden bg-[lab(5 -4.02 -6.35)] border border-white/[0.09] isolate transition-all duration-200 ease-in-out hover:border-white/[0.14]`}
     >
       {children}
     </article>

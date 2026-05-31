@@ -1,18 +1,15 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { exportHTML } from "@/lib/exporters/html-tailwind";
 import { exportReact } from "@/lib/exporters/react-tailwind";
 import { useSkeletonStore } from "@/store/use-skeleton-store";
-import { useCallback, useMemo, useRef, useState } from "react";
-import { useTheme } from "next-themes";
-import CodeMirror, { EditorView } from "@uiw/react-codemirror";
 import { javascript } from "@codemirror/lang-javascript";
 import { githubDark, githubLight } from "@uiw/codemirror-theme-github";
+import CodeMirror, { EditorView } from "@uiw/react-codemirror";
+import { useTheme } from "next-themes";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 type Tab = "react" | "html";
 
@@ -76,16 +73,15 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
 
   const lines = output.split("\n").length;
   const sizeBytes = new Blob([output]).size;
-  const sizeLabel = sizeBytes > 1024 ? `${(sizeBytes / 1024).toFixed(1)} KB` : `${sizeBytes} B`;
+  const sizeLabel =
+    sizeBytes > 1024 ? `${(sizeBytes / 1024).toFixed(1)} KB` : `${sizeBytes} B`;
   const filename = componentName
     ? `${componentName}Skeleton.${tab === "react" ? "jsx" : "html"}`
     : `skeleton.${tab === "react" ? "jsx" : "html"}`;
 
   return (
     <Dialog open={true} onOpenChange={(v) => !v && onClose()}>
-      <DialogContent
-        className="flex! flex-col! max-h-[85vh] sm:max-w-200! lg:max-w-260!"
-      >
+      <DialogContent className="flex! flex-col! max-h-[85vh] sm:max-w-200! lg:max-w-260!">
         {/* Header with tabs + filename */}
         <div className="flex items-center gap-3 border-b border-border pb-2 -mt-2">
           <Tabs
@@ -93,10 +89,14 @@ export function ExportModal({ onClose }: { onClose: () => void }) {
             onValueChange={(v) => setTab(v as Tab)}
             className="flex-1"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3 flex-wrap">
               <TabsList>
-                <TabsTrigger value="react" className="text-xs">React · Tailwind</TabsTrigger>
-                <TabsTrigger value="html" className="text-xs">HTML · Tailwind</TabsTrigger>
+                <TabsTrigger value="react" className="text-xs">
+                  React · Tailwind
+                </TabsTrigger>
+                <TabsTrigger value="html" className="text-xs">
+                  HTML · Tailwind
+                </TabsTrigger>
               </TabsList>
               <span className="text-xs text-muted-foreground font-mono">
                 {filename}

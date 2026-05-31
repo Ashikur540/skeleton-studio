@@ -10,16 +10,27 @@ export function FooterSimplified() {
           </div>
 
           <div className="flex items-center gap-6">
-            {["Features", "Starters", "Changelog", "GitHub"].map((l) => (
-              <a
-                key={l}
-                href="#"
-                style={{ fontSize: 12, color: "#3f3f46" }}
-                className="hover:text-[#71717a] transition-colors"
-              >
-                {l}
-              </a>
-            ))}
+            <a
+              href="#features"
+              style={{ fontSize: 12, color: "#3f3f46" }}
+              className="hover:text-[#71717a] transition-colors"
+            >
+              Features
+            </a>
+            <a
+              href="#starters"
+              style={{ fontSize: 12, color: "#3f3f46" }}
+              className="hover:text-[#71717a] transition-colors"
+            >
+              Starters
+            </a>
+            <a
+              href="#faq"
+              style={{ fontSize: 12, color: "#3f3f46" }}
+              className="hover:text-[#71717a] transition-colors"
+            >
+              FAQ
+            </a>
           </div>
 
           <div style={{ fontSize: 11, color: "#27272a" }}>
