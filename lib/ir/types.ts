@@ -122,6 +122,14 @@ export type SkeletonNode = {
 };
 
 /**
+ * Theme-aware card surface tints. Stored as a semantic enum (never a raw
+ * Tailwind class) so light/dark mode resolves through shadcn design tokens
+ * (`bg-card`, `bg-muted/*`) at render time and one setting works in both
+ * themes. Applies only to nodes that render as a surface wrapper.
+ */
+export type CardBackground = "transparent" | "subtle" | "soft" | "elevated";
+
+/**
  * Global rendering settings applied to every node uniformly.
  * Stored once per session and persisted to localStorage by the Zustand store.
  * Chrome theme is owned by next-themes, not this struct, so light/dark switching
@@ -131,6 +139,7 @@ export type GlobalSettings = {
   animation: "pulse" | "shimmer";
   speed: "slow" | "normal" | "fast";
   baseColor: string;
+  cardBackground: CardBackground;
 };
 
 /**

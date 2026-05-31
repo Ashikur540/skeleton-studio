@@ -6,6 +6,7 @@ const settings: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
+  cardBackground: "transparent",
 };
 
 function node(partial: Partial<SkeletonNode> & { kind: SkeletonNode["kind"] }): SkeletonNode {
@@ -69,6 +70,44 @@ describe("blockStyles (card wrapper)", () => {
     expect(r.style.gap).toBe(12);
     expect(r.style.width).toBe(320);
     expect(r.style.borderRadius).toBe(12);
+  });
+
+  it("appends cardBackground class on surface wrappers when not transparent", () => {
+    const tinted: GlobalSettings = { ...settings, cardBackground: "soft" };
+    const r = blockStyles(
+      node({
+        kind: "card",
+        children: [node({ kind: "text", id: "a" })],
+      }),
+      tinted,
+    );
+    expect(r.className).toContain("bg-muted/40");
+  });
+
+  it("omits cardBackground class when set to transparent", () => {
+    const r = blockStyles(
+      node({
+        kind: "card",
+        children: [node({ kind: "text", id: "a" })],
+      }),
+      settings,
+    );
+    expect(r.className).not.toContain("bg-muted");
+    expect(r.className).not.toContain("bg-card");
+  });
+
+  it("does not apply cardBackground to plain containers or fill blocks", () => {
+    const tinted: GlobalSettings = { ...settings, cardBackground: "elevated" };
+    const container = blockStyles(
+      node({
+        kind: "container",
+        children: [node({ kind: "text", id: "a" })],
+      }),
+      tinted,
+    );
+    expect(container.className).not.toContain("bg-card");
+    const fill = blockStyles(node({ kind: "text", width: 100 }), tinted);
+    expect(fill.className).not.toContain("bg-card");
   });
 
   it("renders leaf card as animated fill block", () => {

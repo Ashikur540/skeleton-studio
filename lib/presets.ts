@@ -22,32 +22,33 @@ export const PRESETS: SkeletonPreset[] = [
     id: "tailwind",
     name: "Tailwind",
     description: "Standard opacity pulse",
-    settings: { animation: "pulse", speed: "normal", baseColor: "bg-zinc-200" },
+    settings: { animation: "pulse", speed: "normal", baseColor: "bg-zinc-200", cardBackground: "transparent" },
   },
   {
     id: "linear",
     name: "Linear",
     description: "Slow subtle shimmer, lighter fill",
-    settings: { animation: "shimmer", speed: "slow", baseColor: "bg-zinc-100" },
+    settings: { animation: "shimmer", speed: "slow", baseColor: "bg-zinc-100", cardBackground: "transparent" },
   },
   {
     id: "vercel",
     name: "Vercel",
     description: "Dark-mode optimized shimmer",
-    settings: { animation: "shimmer", speed: "fast", baseColor: "bg-zinc-800" },
+    settings: { animation: "shimmer", speed: "fast", baseColor: "bg-zinc-800", cardBackground: "transparent" },
   },
   {
     id: "notion",
     name: "Notion",
     description: "Gentle breathe on a warm fill",
-    settings: { animation: "pulse", speed: "slow", baseColor: "bg-zinc-300" },
+    settings: { animation: "pulse", speed: "slow", baseColor: "bg-zinc-300", cardBackground: "transparent" },
   },
 ];
 
 /**
- * Match the current settings against the preset list. Returns the matching
- * preset when all three fields (animation, speed, baseColor) agree, or
- * undefined when the user has manually diverged.
+ * Match the current motion settings against the preset list. Presets are a
+ * motion bundle (animation + speed); baseColor and cardBackground are
+ * independent user choices and intentionally excluded so changing color
+ * doesn't drop the preset's active highlight.
  */
 export function findPreset(
   settings: GlobalSettings,
@@ -55,7 +56,6 @@ export function findPreset(
   return PRESETS.find(
     (p) =>
       p.settings.animation === settings.animation &&
-      p.settings.speed === settings.speed &&
-      p.settings.baseColor === settings.baseColor,
+      p.settings.speed === settings.speed,
   );
 }

@@ -6,6 +6,7 @@ const settings: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
+  cardBackground: "transparent",
 };
 
 const leaf: SkeletonNode = {

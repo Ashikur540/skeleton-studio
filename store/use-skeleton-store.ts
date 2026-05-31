@@ -50,6 +50,7 @@ const DEFAULT_SETTINGS: GlobalSettings = {
   animation: "pulse",
   speed: "normal",
   baseColor: "bg-zinc-200",
+  cardBackground: "transparent",
 };
 
 /**
@@ -179,6 +180,17 @@ export const useSkeletonStore = create<State & Actions>()(
         source: s.source,
         settings: s.settings,
       }),
+      /* Merge persisted state with current defaults so older localStorage
+         saves missing newer GlobalSettings fields (e.g. cardBackground)
+         still hydrate cleanly with the default value. */
+      merge: (persisted, current) => {
+        const p = (persisted ?? {}) as Partial<State>;
+        return {
+          ...current,
+          ...p,
+          settings: { ...DEFAULT_SETTINGS, ...(p.settings ?? {}) },
+        };
+      },
       onRehydrateStorage: () => (state) => {
         if (state && state.source.trim()) {
           state.parseNow();

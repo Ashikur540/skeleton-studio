@@ -39,7 +39,9 @@ export const metadata: Metadata = {
   creator: "Skeleton Studio",
   publisher: "Skeleton Studio",
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://skeletons-studio.vercel.app",
+    process.env.NEXT_PUBLIC_SITE_URL
+      ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined)
+      ?? "https://skeletons-studio.vercel.app",
   ),
   alternates: {
     canonical: "/",
