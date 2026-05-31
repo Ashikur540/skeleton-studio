@@ -1,5 +1,23 @@
 "use client";
 
+const BRAND_HOSTNAME = "skeletonstudio.dev";
+
+/**
+ * Derive a hostname for the mockup address bar from NEXT_PUBLIC_SITE_URL,
+ * normalizing for empty/whitespace values and missing protocol so a misconfig
+ * doesn't throw at render. Falls back to the marketing brand hostname.
+ */
+function mockupHostname(): string {
+  const raw = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (!raw) return BRAND_HOSTNAME;
+  const withProtocol = /^https?:\/\//i.test(raw) ? raw : `https://${raw}`;
+  try {
+    return new URL(withProtocol).hostname;
+  } catch {
+    return BRAND_HOSTNAME;
+  }
+}
+
 export function HeroMockup() {
   return (
     <>
@@ -48,7 +66,7 @@ export function HeroMockup() {
               <rect x="3" y="11" width="18" height="11" rx="2" />
               <path d="M7 11V7a5 5 0 0 1 10 0v4" />
             </svg>
-            <span>{process.env.NEXT_PUBLIC_SITE_URL ? new URL(process.env.NEXT_PUBLIC_SITE_URL).hostname : "skeletonstudio.dev"}</span>
+            <span>{mockupHostname()}</span>
             <span className="text-primary">/builder</span>
           </div>
           <span className="font-mono text-[11px] text-muted-foreground py-1 px-2 rounded-md border border-white/[0.06] bg-card">

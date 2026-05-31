@@ -1,5 +1,6 @@
 import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
+import { resolveSiteUrl } from "@/lib/site-url";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/next";
 import type { Metadata } from "next";
@@ -38,11 +39,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Skeleton Studio" }],
   creator: "Skeleton Studio",
   publisher: "Skeleton Studio",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL
-      ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined)
-      ?? "https://skeletons-studio.vercel.app",
-  ),
+  metadataBase: new URL(resolveSiteUrl()),
   alternates: {
     canonical: "/",
   },
