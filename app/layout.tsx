@@ -1,3 +1,4 @@
+import { ClarityAnalytics } from "@/components/clarity-analytics";
 import { JsonLd } from "@/components/json-ld";
 import { ThemeProvider } from "@/components/theme-provider";
 import { resolveSiteUrl } from "@/lib/site-url";
@@ -107,6 +108,7 @@ export default function RootLayout({
         </ThemeProvider>
         <JsonLd />
         <Analytics />
+        <ClarityAnalytics />
       </body>
     </html>
   );

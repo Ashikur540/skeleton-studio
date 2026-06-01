@@ -24,11 +24,11 @@ Convert pasted JSX/TSX components into production-ready skeleton loading placeho
 ## Commands
 
 ```
-pnpm dev         # Next.js dev server
-pnpm build       # Production build
-pnpm lint        # ESLint (flat config)
-pnpm test        # Vitest (run once)
-pnpm test:watch  # Vitest (watch mode)
+npm dev         # Next.js dev server
+npm build       # Production build
+npm lint        # ESLint (flat config)
+npm test        # Vitest (run once)
+npm test:watch  # Vitest (watch mode)
 ```
 
 ---
