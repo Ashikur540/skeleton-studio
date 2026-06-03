@@ -119,7 +119,26 @@ export function Nav() {
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2.5">
+          <a
+            href="https://github.com/Ashikur540/skeleton-studio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-foreground transition-colors"
+            aria-label="GitHub repository"
+          >
+            <svg
+              fill="currentColor"
+              width="24px"
+              height="24px"
+              viewBox="0 0 0.72 0.72"
+              xmlns="http://www.w3.org/2000/svg"
+              data-name="Layer 1"
+            >
+              <path d="M0.36 0.068a0.3 0.3 0 0 0 -0.095 0.584C0.28 0.655 0.286 0.646 0.286 0.637V0.582C0.21 0.596 0.191 0.563 0.184 0.547A0.112 0.112 0 0 0 0.154 0.504C0.143 0.499 0.128 0.485 0.153 0.485a0.06 0.06 0 0 1 0.046 0.031 0.064 0.064 0 0 0 0.087 0.025 0.075 0.075 0 0 1 0.019 -0.041C0.239 0.492 0.17 0.467 0.17 0.352A0.12 0.12 0 0 1 0.2 0.271 0.105 0.105 0 0 1 0.203 0.191s0.025 -0.007 0.083 0.031a0.3 0.3 0 0 1 0.15 0C0.493 0.183 0.518 0.191 0.518 0.191a0.105 0.105 0 0 1 0.003 0.08 0.12 0.12 0 0 1 0.031 0.081c0 0.115 -0.071 0.14 -0.137 0.148A0.075 0.075 0 0 1 0.436 0.555v0.083c0 0.008 0.005 0.017 0.02 0.014A0.3 0.3 0 0 0 0.36 0.068" />
+            </svg>
+          </a>
+
           <PrimaryButton href="/builder" className="hidden sm:inline-flex">
             Open Studio
             <svg
@@ -145,11 +164,27 @@ export function Nav() {
             aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
             {mobileOpen ? (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <path d="M18 6L6 18M6 6l12 12" />
               </svg>
             ) : (
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              >
                 <path d="M3 6h18M3 12h18M3 18h18" />
               </svg>
             )}
