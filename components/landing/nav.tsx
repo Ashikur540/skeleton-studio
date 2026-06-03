@@ -8,7 +8,7 @@ const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export", "FAQ"];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("");
+  const [activeSection] = useState("");
 
   useEffect(() => {
     function onScroll() {

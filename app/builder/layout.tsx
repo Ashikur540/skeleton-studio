@@ -95,7 +95,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             viewBox="0 0 420 80"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
-            className="h-5 w-auto dark:hidden"
+            className="h-10 w-auto dark:hidden"
           >
             <path
               d="M40 72C57.6731 72 72 57.6731 72 40C72 22.3269 57.6731 8 40 8C22.3269 8 8 22.3269 8 40C8 57.6731 22.3269 72 40 72Z"
