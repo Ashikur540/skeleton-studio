@@ -8,7 +8,7 @@ const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export", "FAQ"];
 
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
-  const [activeSection] = useState("");
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     function onScroll() {
@@ -111,11 +111,7 @@ export function Nav() {
             <a
               key={label}
               href={`#${label.toLowerCase()}`}
-              className={`h-8 px-2.5 flex items-center text-[13.5px] font-medium rounded-md transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${
-                activeSection === label.toLowerCase()
-                  ? "text-foreground"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}
+              className="h-8 px-2.5 flex items-center text-[13.5px] font-medium rounded-md transition-colors text-muted-foreground hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
             >
               {label}
             </a>
@@ -124,19 +120,61 @@ export function Nav() {
 
         {/* Right */}
         <div className="flex items-center gap-2">
-          {/* <a
-            href="#"
-            className="w-8 h-8 rounded-lg grid place-items-center text-muted-foreground hover:bg-white/[0.04] hover:text-foreground transition-colors"
-            title="GitHub"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M12 .5C5.6.5.5 5.6.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.4-1.3-5.4-5.8 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2 1-.3 2-.4 3-.4s2 .1 3 .4c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.5-5.4 5.8.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.6 18.4.5 12 .5z" />
-            </svg>
-          </a>
-          <GhostButton href="/builder" className="h-8! px-3! text-[13px]!">
-            Sign in
-          </GhostButton> */}
           <PrimaryButton href="/builder" className="hidden sm:inline-flex">
+            Open Studio
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.4"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </PrimaryButton>
+
+          {/* Hamburger */}
+          <button
+            type="button"
+            onClick={() => setMobileOpen((p) => !p)}
+            className="hidden max-[1100px]:grid w-8 h-8 place-items-center text-muted-foreground hover:text-foreground transition-colors"
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
+          >
+            {mobileOpen ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M18 6L6 18M6 6l12 12" />
+              </svg>
+            ) : (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <path d="M3 6h18M3 12h18M3 18h18" />
+              </svg>
+            )}
+          </button>
+        </div>
+      </div>
+
+      {/* Mobile menu */}
+      <div
+        className={`overflow-hidden transition-all duration-300 ease-in-out ${
+          mobileOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="max-w-[1240px] mx-auto px-8 pb-4 flex flex-col gap-1 border-t border-white/[0.04] pt-3">
+          {NAV_LINKS.map((label) => (
+            <a
+              key={label}
+              href={`#${label.toLowerCase()}`}
+              onClick={() => setMobileOpen(false)}
+              className="h-10 px-3 flex items-center text-[14px] font-medium rounded-md text-muted-foreground hover:text-foreground hover:bg-white/[0.04] transition-colors"
+            >
+              {label}
+            </a>
+          ))}
+          <PrimaryButton href="/builder" className="mt-2 sm:hidden">
             Open Studio
             <svg
               width="12"
