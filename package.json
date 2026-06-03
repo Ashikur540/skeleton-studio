@@ -2,6 +2,30 @@
   "name": "skeleton-studio",
   "version": "0.1.0",
   "private": true,
+  "description": "Convert pasted JSX/TSX components into production-ready skeleton loading placeholders. Paste a component, tweak the live preview, copy React+Tailwind or HTML+Tailwind code.",
+  "license": "MIT",
+  "author": "Ashikur Rahman",
+  "homepage": "https://github.com/Ashikur540/skeleton-studio#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ashikur540/skeleton-studio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ashikur540/skeleton-studio/issues"
+  },
+  "keywords": [
+    "skeleton",
+    "skeleton-loader",
+    "loading-placeholder",
+    "react",
+    "tailwindcss",
+    "nextjs",
+    "code-generator",
+    "jsx",
+    "TypeScript",
+    "tsx",
+    "ui"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "next build",

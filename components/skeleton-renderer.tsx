@@ -2,7 +2,7 @@
 import type { GlobalSettings, SkeletonNode } from "@/lib/ir/types";
 import { blockStyles } from "@/lib/exporters/runtime-styles";
 import { applyRepeatVariance } from "@/lib/ir/repeat-variance";
-import { type KeyboardEvent, useCallback } from "react";
+import type { KeyboardEvent } from "react";
 
 /**
  * The data a parent component must supply to drive the renderer: the IR node
@@ -87,13 +87,13 @@ function SingleNode({ node, settings, selectedId, onSelect }: Props) {
     onSelect(selectId);
   };
 
-  const handleKeyDown = useCallback((e: KeyboardEvent) => {
+  const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       e.stopPropagation();
       onSelect(selectId);
     }
-  }, [selectId, onSelect]);
+  };
 
   /*
    * Shared set of keyboard/focus attributes applied to every interactive

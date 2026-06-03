@@ -102,7 +102,7 @@ export function useKeyboardShortcuts({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
+  }, [onBrowseStarters]);
 }
 
 function isInsideCodeMirror(target: EventTarget | null): boolean {
