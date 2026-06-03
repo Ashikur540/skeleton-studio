@@ -9,6 +9,7 @@ const NAV_LINKS = ["Features", "Starters", "Pipeline", "Export", "FAQ"];
 export function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
     function onScroll() {
