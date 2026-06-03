@@ -118,8 +118,8 @@ JSX String
 | Testing     | Vitest v4 (`environment: "node"`)                        |
 
 Pure logic lives in `lib/**` (framework-agnostic, fully unit-tested). UI
-components are all `"use client"`; the only server component is
-`app/layout.tsx`. See [`CLAUDE.md`](./CLAUDE.md) / [`AGENTS.md`](./AGENTS.md)
+components are all `"use client"`; the only server components are
+`app/layout.tsx` and `app/page.tsx`. See [`CLAUDE.md`](./CLAUDE.md) / [`AGENTS.md`](./AGENTS.md)
 for the full architecture reference.
 
 ## Testing

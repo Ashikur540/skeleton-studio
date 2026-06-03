@@ -22,9 +22,10 @@ Requirements: Node.js 20+ and npm.
 
 ## Project layout
 
-The app is fully client-side. Key directories:
+The app is a client-side editor served by Next.js. Key directories:
 
-- `app/` — Next.js App Router (`layout.tsx` is the only server component).
+- `app/` — Next.js App Router (only `layout.tsx` and `page.tsx` are server
+  components; all other routes are `"use client"`).
 - `components/` — all `"use client"` React components (UI + panes).
 - `lib/` — pure, framework-agnostic logic (parser, exporters, IR). **This is
   where most logic lives and where tests are required.**

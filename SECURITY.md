@@ -2,10 +2,17 @@
 
 ## Scope
 
-Skeleton Studio is a **fully client-side** application. It has no backend, no
-database, and no server-side secrets. All parsing, formatting, and code export
-run in the user's browser. The only environment variables are `NEXT_PUBLIC_*`
-values, which are public by design.
+Skeleton Studio is a **client-side editor** served by a Next.js application.
+There is no custom backend, no database, and no server-side secrets. All
+parsing, formatting, and code export run in the user's browser. The Next.js
+server handles routing, static asset delivery, and canonical URL resolution.
+
+Environment variables used at build/runtime:
+
+| Variable | Purpose |
+|---|---|
+| `NEXT_PUBLIC_*` | Public-by-design values exposed to the browser |
+| `VERCEL_URL` | Canonical URL on Vercel deployments (`lib/site-url.ts`) |
 
 The most relevant security surface is the **JSX parsing pipeline** (`lib/parser`),
 which processes untrusted pasted input. Reports about parser crashes, ReDoS, or
