@@ -5,49 +5,70 @@
   <p><strong>Paste a component → get a tweakable skeleton loader → copy production-ready code.</strong></p>
 
   <p>
-    <a href="https://skeletons-studio.vercel.app">Live Demo</a> ·
+    <a href="https://skeletons-studio.vercel.app"><strong>Try it live</strong></a> ·
     <a href="#getting-started">Getting Started</a> ·
     <a href="./CONTRIBUTING.md">Contributing</a>
   </p>
 
   <p>
+    <a href="https://github.com/Ashikur540/skeleton-studio/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/Ashikur540/skeleton-studio/actions/workflows/ci.yml/badge.svg" /></a>
+    <a href="https://github.com/Ashikur540/skeleton-studio/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Ashikur540/skeleton-studio?style=flat&logo=github" /></a>
     <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
     <img alt="Next.js" src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" />
     <img alt="React" src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" />
     <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" />
     <img alt="Tailwind CSS" src="https://img.shields.io/badge/Tailwind-v4-38BDF8?logo=tailwindcss&logoColor=white" />
   </p>
+
+  <a href="https://skeletons-studio.vercel.app">
+    <img src="./public/og-image.png" alt="Skeleton Studio: turn real UI into production-ready skeletons" width="100%" />
+  </a>
 </div>
 
 ---
 
-## What is this?
+## Why?
 
-**Skeleton Studio** turns a pasted React/JSX component into a matching skeleton
-loading placeholder — no hand-drawing grey boxes. Paste your component, watch a
-live skeleton render, drag to fine-tune dimensions and layout, then copy clean
-**React + Tailwind** or **HTML + Tailwind** code.
+Every screen that loads data needs a skeleton loader: the grey boxes you see
+while content arrives. Building one by hand is slow and boring. You copy your
+component, delete the content, swap everything for grey boxes, then guess
+sizes until it looks close. And when the real component changes, the skeleton
+no longer matches, so the page jumps when the data loads.
 
-It runs entirely in the browser. There is no backend — parsing, formatting, and
-code export all happen client-side.
+**Skeleton Studio does that work for you.** You already wrote the component,
+so it reads that and builds the skeleton from it.
+
+## How it works
+
+1. **Paste** your React/JSX component (or pick one of 12 starters).
+2. **Tweak** the live preview: drag to resize blocks, change radius, spacing
+   and animation in the side panel.
+3. **Copy** clean **React + Tailwind** or **HTML + Tailwind** code.
+
+**Example:** paste a profile card with an avatar, a name and a bio. You get
+a round placeholder for the avatar, a short bar for the name and a few lines
+for the bio, already sized from the Tailwind classes you wrote.
+
+Parsing, preview and export all run in your browser. There is no backend
+and no sign-up.
 
 ## Features
 
-- **JSX → skeleton in one paste** — `@babel/parser` reads your component and
+- **JSX → skeleton in one paste**: `@babel/parser` reads your component and
   infers structure.
-- **Live, editable preview** — drag handles resize nodes; a properties panel
+- **Live, editable preview**: drag handles resize nodes; a properties panel
   edits any block.
-- **Smart classification** — detects avatars, text, images, buttons, cards,
+- **Smart classification**: detects avatars, text, images, buttons, cards,
   inputs, and containers from tags + Tailwind classes.
-- **Archetype detection** — recognizes media objects, forms, nav bars, heroes,
+- **Archetype detection**: recognizes media objects, forms, nav bars, heroes,
   card grids, stat tiles, and pricing cards to tune spacing automatically.
-- **Repeat + variance** — `.map()` rows collapse into `repeat: N` with
+- **Repeat + variance**: `.map()` rows collapse into `repeat: N` with
   deterministic width variation so lists look natural.
-- **Two export targets** — React+Tailwind JSX or plain HTML+Tailwind, formatted
+- **Two export targets**: React+Tailwind JSX or plain HTML+Tailwind, formatted
   with Prettier.
-- **Presets, animation, theming** — curated starters, shimmer/pulse animation
+- **Presets, animation, theming**: curated starters, shimmer/pulse animation
   controls, light/dark mode.
-- **Undo/redo + keyboard shortcuts** — full history stack, arrow-nudge, delete.
+- **Undo/redo + keyboard shortcuts**: full history stack, arrow-nudge, delete.
 
 ## Getting Started
 
@@ -67,6 +88,17 @@ npm run dev
 ```
 
 Open <http://localhost:3000>.
+
+### Run with Docker
+
+```bash
+docker build -t skeleton-studio .
+docker run --rm -p 3000:3000 skeleton-studio
+```
+
+Open <http://localhost:3000>. The `NEXT_PUBLIC_*` values are baked in at
+build time, so pass them as `--build-arg` if you need to change them. For a
+server setup, see [docs/DOCKER-DEPLOY.md](./docs/DOCKER-DEPLOY.md).
 
 ### Environment variables
 
@@ -92,7 +124,7 @@ See [`.env.example`](./.env.example).
 
 ## Architecture
 
-Everything flows through a single **Intermediate Representation (IR)** —
+Everything flows through a single **Intermediate Representation (IR)**,
 `SkeletonNode`. Renderers, exporters, and the properties panel all consume the
 same tree, so there's one source of truth.
 
@@ -119,8 +151,8 @@ JSX String
 
 Pure logic lives in `lib/**` (framework-agnostic, fully unit-tested). UI
 components are all `"use client"`; the only server components are
-`app/layout.tsx` and `app/page.tsx`. See [`CLAUDE.md`](./CLAUDE.md) / [`AGENTS.md`](./AGENTS.md)
-for the full architecture reference.
+`app/layout.tsx` and `app/page.tsx`. See [`AGENTS.md`](./AGENTS.md) for the
+full architecture reference.
 
 ## Testing
 
@@ -129,22 +161,33 @@ npm test
 ```
 
 Deep unit tests cover the parser pipeline, exporters, presets, and store
-behavior. Tests are co-located (`*.test.ts` next to source).
+behavior. Tests are co-located (`*.test.ts` next to source). CI runs lint,
+tests and a production build on every pull request.
 
 ## Deployment
 
-Optimized for [Vercel](https://vercel.com). Push to your repo, import it, set
-the `NEXT_PUBLIC_*` env vars, and deploy. Any Node host that runs
-`npm run build && npm run start` works too.
+The live demo runs on [Vercel](https://vercel.com): import the repo, set the
+`NEXT_PUBLIC_*` env vars, and deploy. Any Node host that runs
+`npm run build && npm run start` works too, or use the Docker image above.
 
 ## Contributing
 
 Contributions welcome. Read [CONTRIBUTING.md](./CONTRIBUTING.md) and our
-[Code of Conduct](./CODE_OF_CONDUCT.md) first.
+[Code of Conduct](./CODE_OF_CONDUCT.md) first. Found a component that turns
+into a bad skeleton? [Open an issue](https://github.com/Ashikur540/skeleton-studio/issues/new/choose)
+with the JSX you pasted.
+
+If Skeleton Studio saves you time, a ⭐ helps other developers find it.
 
 ## Security
 
 To report a vulnerability, see [SECURITY.md](./SECURITY.md).
+
+## Author
+
+Built by **Ashikur Rahman**, a frontend-focused full-stack developer.
+[GitHub](https://github.com/Ashikur540) ·
+[LinkedIn](https://linkedin.com/in/md-ashikurrahman)
 
 ## License
 
