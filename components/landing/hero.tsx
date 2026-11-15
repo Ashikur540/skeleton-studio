@@ -152,9 +152,9 @@ export function Hero() {
           <strong className="text-foreground/80 font-medium">⌘K</strong> to
           search
           <span className="w-[3px] h-[3px] rounded-full bg-foreground/30" />
-          Works offline
+          Runs in your browser
           <span className="w-[3px] h-[3px] rounded-full bg-foreground/30" />
-          Free for personal use
+          Free &amp; open source
         </div>
       </div>
 

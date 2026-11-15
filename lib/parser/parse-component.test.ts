@@ -268,3 +268,29 @@ describe("parseComponent (leaf div promotion)", () => {
     expect(r.tree.kind).toBe("container");
   });
 });
+
+describe("parseComponent (.map repeat)", () => {
+  it("repeats only the mapped element, not every block inside it", () => {
+    const r = parseComponent(`
+      function Plans() {
+        return (
+          <div className="flex gap-6">
+            {tiers.map((t) => (
+              <div className="flex flex-col gap-4">
+                <h3 className="w-24 h-5" />
+                <ul>{t.features.map((f) => <li className="w-32 h-3" />)}</ul>
+              </div>
+            ))}
+          </div>
+        );
+      }
+    `);
+    if (!r.ok) throw new Error("expected ok");
+    const card = r.tree.children![0];
+    expect(card.repeat).toBe(3);
+    expect(card.children![0].repeat).toBeUndefined();
+    const list = card.children![1];
+    expect(list.repeat).toBeUndefined();
+    expect(list.children![0].repeat).toBe(3);
+  });
+});

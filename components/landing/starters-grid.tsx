@@ -219,7 +219,7 @@ export function StartersGrid() {
               <rect x="14" y="14" width="7" height="7" />
               <rect x="3" y="14" width="7" height="7" />
             </svg>
-            Open all 20 starters
+            Open all starters
             <svg
               width="11"
               height="11"
