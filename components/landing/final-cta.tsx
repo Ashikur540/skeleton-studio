@@ -25,7 +25,7 @@ export function FinalCTA() {
             states in minutes.
           </p>
           <p className="mt-9 text-[13px] font-mono text-foreground/30">
-            No signup · No credit card · Free for personal use
+            No signup · No credit card · Free &amp; open source
           </p>
         </div>
         <div className="flex flex-col items-end gap-3 max-md:items-center">

@@ -16,12 +16,6 @@ export const metadata: Metadata = {
   title: "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
   description:
     "Free online skeleton generator & loading skeleton generator. Paste React/JSX components and get production-ready Tailwind CSS skeleton loaders instantly. Export React+Tailwind or HTML+Tailwind code.",
-  openGraph: {
-    title:
-      "Skeleton Generator — Create Tailwind CSS Loading Skeletons from JSX",
-    description:
-      "Free online skeleton generator. Paste React components, get production-ready Tailwind CSS skeleton loaders. Edit dimensions, animations, colors — export React+Tailwind or HTML+Tailwind code.",
-  },
 };
 
 export default function LandingPage() {

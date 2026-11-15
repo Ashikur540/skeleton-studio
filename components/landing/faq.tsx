@@ -25,7 +25,7 @@ const faqs = [
   },
   {
     q: "Is this skeleton generator free?",
-    a: "Yes, this skeleton generator is completely free for personal use. You can generate unlimited skeleton loaders, export as React or HTML with Tailwind CSS, and use the code in your projects. No sign-up required, works entirely in your browser.",
+    a: "Yes, this skeleton generator is completely free and open source under the MIT license, for personal and commercial projects. You can generate unlimited skeleton loaders, export as React or HTML with Tailwind CSS, and use the code in your projects. No sign-up required, works entirely in your browser.",
   },
   {
     q: "What export formats does the skeleton generator support?",

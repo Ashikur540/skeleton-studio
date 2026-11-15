@@ -223,7 +223,7 @@ export function classify(raw: RawNode): SkeletonNode | null {
   // Dynamic-list multiplier: a `.map()` representative renders multiple times
   // so a 7-invoice table looks like a 7-row loading skeleton, not a single
   // ghost row. Default 3; list-container parents bump it below.
-  if (raw.fromMap) node.repeat = DEFAULT_MAP_REPEAT;
+  if (raw.fromMap && !raw.insideMap) node.repeat = DEFAULT_MAP_REPEAT;
 
   if (resolved.kind === "paragraph") {
     node.lineCount = lineCountForText(raw.textContent);

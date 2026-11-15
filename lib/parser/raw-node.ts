@@ -32,6 +32,9 @@ export type RawNode =
       props: Record<string, string | true>;
       children: RawNode[];
       fromMap: boolean;
+      /** True for descendants of a `.map()` element: they inherit `fromMap`
+       * for confidence, but only the mapped element itself repeats. */
+      insideMap?: boolean;
       hasTextContent: boolean;
       textContent: string;
     }
@@ -45,6 +48,7 @@ export type RawNode =
 export function toRawNode(
   node: JSXElement | JSXFragment,
   fromMap: boolean,
+  insideMap = false,
 ): RawNode | null {
   if (isJSXFragment(node)) {
     return {
@@ -63,6 +67,7 @@ export function toRawNode(
     props: getStaticProps(node),
     children: collectChildren(node.children, fromMap),
     fromMap,
+    ...(insideMap && { insideMap }),
     hasTextContent: textContent.length > 0,
     textContent,
   };
@@ -156,7 +161,7 @@ function collectChildren(
   for (const c of children) {
     if (isJSXText(c)) continue;
     if (isJSXElement(c) || isJSXFragment(c)) {
-      const n = toRawNode(c, fromMap);
+      const n = toRawNode(c, fromMap, fromMap);
       if (n) out.push(n);
       continue;
     }
